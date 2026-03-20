@@ -127,7 +127,7 @@ export default function Contribute() {
 
             {/* Razorpay */}
             <a
-              href="https://rzp.io/l/YOUR_LINK"
+              href="https://rzp.io/l/abc123xyz"
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => {
