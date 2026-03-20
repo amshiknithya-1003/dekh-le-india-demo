@@ -278,22 +278,71 @@ function Screenings() {
 }
 
 function VideoSection() {
+  const [active, setActive] = useState('sizzle');
+
+  const videos = {
+    sizzle: { id:'h_JVTDhF6RY', label:'🎬 Sizzle Reel', desc:'The full cinematic sizzle reel of Dekh Le! India' },
+    song:   { id:'mgFde16-J7c', label:'🎵 Film Song',   desc:'The soul of the film — the official song'       },
+  };
+
   return (
     <section id="video" style={{ padding:'70px 20px', background:C.dark }}>
       <div style={{ maxWidth:'860px', margin:'0 auto', textAlign:'center' }}>
         <SectionLabel color={C.saffron} label="WATCH" />
-        <h2 style={{ fontSize:'clamp(1.5rem,4vw,2.2rem)', fontWeight:800, color:C.white, marginBottom:'10px' }}>Watch the Trailer</h2>
-        <p style={{ color:'rgba(255,255,255,0.55)', marginBottom:'32px' }}>Get a glimpse of the incredible journey</p>
-        <div style={{ position:'relative', paddingBottom:'56.25%', height:0, borderRadius:'14px', overflow:'hidden', boxShadow:'0 20px 60px rgba(0,0,0,0.5)', border:`3px solid rgba(255,153,51,0.4)` }}>
+        <h2 style={{ fontSize:'clamp(1.5rem,4vw,2.2rem)', fontWeight:800, color:C.white, marginBottom:'10px' }}>
+          Watch the Film
+        </h2>
+        <p style={{ color:'rgba(255,255,255,0.55)', marginBottom:'28px' }}>
+          Experience the incredible journey of India's first blind women's cricket team
+        </p>
+
+        {/* Tab switcher */}
+        <div style={{ display:'flex', gap:'10px', justifyContent:'center', marginBottom:'28px' }}>
+          {Object.entries(videos).map(([key, v]) => (
+            <button key={key} onClick={() => setActive(key)}
+              style={{
+                padding:'10px 24px', borderRadius:'25px', fontWeight:600, fontSize:'0.9rem',
+                border:`2px solid ${active===key ? C.saffron : 'rgba(255,255,255,0.2)'}`,
+                background: active===key ? C.saffron : 'transparent',
+                color: C.white, cursor:'pointer', transition:'all 0.2s',
+              }}>
+              {v.label}
+            </button>
+          ))}
+        </div>
+
+        <p style={{ color:'rgba(255,255,255,0.4)', fontSize:'0.85rem', marginBottom:'20px' }}>
+          {videos[active].desc}
+        </p>
+
+        {/* Video embed */}
+        <div style={{ position:'relative', paddingBottom:'56.25%', height:0, borderRadius:'14px', overflow:'hidden', boxShadow:'0 20px 60px rgba(0,0,0,0.6)', border:`3px solid rgba(255,153,51,0.4)` }}>
           <iframe
-            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-            title="Dekh Le India — Trailer"
+            key={active}
+            src={`https://www.youtube.com/embed/${videos[active].id}?rel=0`}
+            title={videos[active].label}
             style={{ position:'absolute', top:0, left:0, width:'100%', height:'100%', border:'none' }}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           />
         </div>
-        <p style={{ color:'rgba(255,255,255,0.3)', fontSize:'0.75rem', marginTop:'10px' }}>Replace YouTube URL with actual trailer link</p>
+
+        {/* Direct links */}
+        <div style={{ display:'flex', gap:'12px', justifyContent:'center', flexWrap:'wrap', marginTop:'28px' }}>
+          <a href="https://www.youtube.com/watch?v=h_JVTDhF6RY" target="_blank" rel="noopener noreferrer"
+            style={{ display:'inline-flex', alignItems:'center', gap:'8px', padding:'10px 22px', borderRadius:'25px', background:'rgba(255,255,255,0.1)', color:C.white, fontWeight:600, fontSize:'0.875rem', textDecoration:'none', border:'1px solid rgba(255,255,255,0.2)', transition:'all 0.2s' }}
+            onMouseEnter={e => e.currentTarget.style.background='rgba(255,255,255,0.2)'}
+            onMouseLeave={e => e.currentTarget.style.background='rgba(255,255,255,0.1)'}>
+            🎬 Open Sizzle on YouTube
+          </a>
+          <a href="https://www.youtube.com/watch?v=mgFde16-J7c" target="_blank" rel="noopener noreferrer"
+            style={{ display:'inline-flex', alignItems:'center', gap:'8px', padding:'10px 22px', borderRadius:'25px', background:'rgba(255,255,255,0.1)', color:C.white, fontWeight:600, fontSize:'0.875rem', textDecoration:'none', border:'1px solid rgba(255,255,255,0.2)', transition:'all 0.2s' }}
+            onMouseEnter={e => e.currentTarget.style.background='rgba(255,255,255,0.2)'}
+            onMouseLeave={e => e.currentTarget.style.background='rgba(255,255,255,0.1)'}>
+            🎵 Open Song on YouTube
+          </a>
+        </div>
+
         <div style={{ marginTop:'28px' }}>
           <a href="https://www.jiohotstar.com/" target="_blank" rel="noopener noreferrer"
             style={{ display:'inline-flex', alignItems:'center', gap:'10px', padding:'13px 30px', borderRadius:'30px', background:C.saffron, color:C.white, fontWeight:700, fontSize:'0.95rem', textDecoration:'none', boxShadow:'0 4px 20px rgba(255,153,51,0.4)' }}>
