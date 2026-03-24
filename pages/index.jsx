@@ -316,7 +316,7 @@ function Hero() {
             fontSize:'clamp(5rem, 18vw, 14rem)',
             lineHeight:0.88, letterSpacing:'0.02em', margin:0,
             color:T.white,
-            textShadow:`0 0 120px rgba(0,191,255,0.2), 0 2px 0 rgba(0,0,0,0.8)`,
+            textShadow:`0 0 160px rgba(0,191,255,0.35), 0 0 40px rgba(0,0,0,0.8)`,
           }}>
             DEKH LE!
           </h1>
@@ -343,10 +343,10 @@ function Hero() {
         <div style={{ ...anim(680), fontSize:'clamp(2rem,5vw,3.5rem)', marginBottom:'28px', marginTop:'8px' }}>🇮🇳</div>
 
         {/* Subtitle */}
-        <p style={{ ...anim(800), fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'clamp(0.9rem,2vw,1.15rem)', color:T.dim, maxWidth:'560px', margin:'0 auto 10px', lineHeight:1.7, letterSpacing:'0.02em' }}>
-          An Inspiring Story of the First Ever<br />
-          <strong style={{ color:T.white, fontWeight:500 }}>Blind Women's Cricket Team of India</strong>
-        </p>
+       <p style={{ ...anim(800), fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'clamp(1rem,2.2vw,1.3rem)', color:T.dim, maxWidth:'600px', margin:'0 auto 10px', lineHeight:1.7 }}>
+  A story India never saw.<br />
+  <strong style={{ color:T.white }}>A team that refused to be unseen.</strong>
+</p>
 
         {/* Cinematic tagline */}
         <div style={{ ...anim(950), marginBottom:'44px' }}>
@@ -363,18 +363,6 @@ function Hero() {
         <p style={{ ...anim(1200), fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.62rem', letterSpacing:'0.2em', textTransform:'uppercase', color:T.faint }}>
           Streaming on JioHotstar
         </p>
-
-        {/* SIZZLE — impact numbers */}
-        <div style={{ ...anim(1300), display:'grid', gridTemplateColumns:'repeat(4,1fr)', maxWidth:'680px', margin:'60px auto 0', gap:'1px', background:`rgba(0,191,255,0.15)`, border:`1px solid rgba(0,191,255,0.2)` }}>
-          {[['10+','Awards','🏆'],['10K+','Reached','👥'],['50+','Screenings','🎬'],['8+','Countries','🌍']].map(([v,l,i]) => (
-            <div key={l} style={{ padding:'22px 12px', textAlign:'center', background:T.navyDark }}>
-              <div style={{ fontSize:'0.9rem', marginBottom:'5px' }}>{i}</div>
-              <div style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'2.2rem', color:T.accent, letterSpacing:'0.02em', lineHeight:1 }}>{v}</div>
-              <div style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.65rem', letterSpacing:'0.2em', textTransform:'uppercase', color:T.faint, marginTop:'3px' }}>{l}</div>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* Scroll pulse */}
       <div style={{ ...anim(1500), position:'absolute', bottom:'28px', left:'50%', transform:'translateX(-50%)', zIndex:10, display:'flex', flexDirection:'column', alignItems:'center', gap:'6px' }}>
