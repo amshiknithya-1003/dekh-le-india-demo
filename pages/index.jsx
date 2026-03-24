@@ -50,10 +50,26 @@ const AWARDS = [
 ];
 
 const BEHIND_SCENES = [
-  { n:'01', title:'6 States,\nOne Dream',        body:'We travelled across Odisha, Maharashtra, Karnataka, Kerala, Jharkhand, and Uttar Pradesh — seeking players whose families had never seen them play.' },
-  { n:'02', title:'500 Days\nof Filming',         body:'18 months embedded with the team. On trains, in hostels, on dusty grounds. Every moment captured with two cameras and relentless dedication.' },
-  { n:'03', title:'Edgbaston,\nBirmingham',        body:'The World Games. 60,000 seat stadium. India's blind women took the field. We were there for every ball bowled, every wicket taken, every tear shed.' },
-  { n:'04', title:'A Story\nWorld Missed',         body:'They won. Against all odds. India barely noticed. This film is the witness the world should have been.' },
+  { 
+    n:'01', 
+    title: <>6 States,<br />One Dream</>, 
+    body:"We travelled across Odisha, Maharashtra, Karnataka, Kerala, Jharkhand, and Uttar Pradesh — seeking players whose families had never seen them play." 
+  },
+  { 
+    n:'02', 
+    title: <>500 Days<br />of Filming</>, 
+    body:"18 months embedded with the team. On trains, in hostels, on dusty grounds. Every moment captured with two cameras and relentless dedication." 
+  },
+  { 
+    n:'03', 
+    title: <>Edgbaston,<br />Birmingham</>, 
+    body:"The World Games. 60,000 seat stadium. India's blind women took the field. We were there for every ball bowled, every wicket taken, every tear shed." 
+  },
+  { 
+    n:'04', 
+    title: <>A Story<br />World Missed</>, 
+    body:"They won. Against all odds. India barely noticed. This film is the witness the world should have been." 
+  },
 ];
 
 const TESTIMONIALS = [
