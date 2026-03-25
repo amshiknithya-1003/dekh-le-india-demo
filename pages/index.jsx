@@ -164,8 +164,242 @@ function Btn({ href, children, primary = true, external = false }) {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   NAVBAR
+   RAZORPAY SCRIPT LOADER
+   Loads the Razorpay checkout SDK once, on demand.
 ───────────────────────────────────────────────────────────────── */
+function loadRazorpay() {
+  return new Promise((resolve) => {
+    if (window.Razorpay) { resolve(true); return; }
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.onload  = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   DONATION MODAL
+   Dark-blue cinematic modal with amount presets + custom input.
+   Opens Razorpay checkout on confirm.
+───────────────────────────────────────────────────────────────── */
+const PRESETS = [50, 100, 200, 500, 1000];
+
+function DonationModal({ onClose }) {
+  const [selected,  setSelected]  = useState(100);
+  const [custom,    setCustom]    = useState('');
+  const [loading,   setLoading]   = useState(false);
+  const [error,     setError]     = useState('');
+
+  // Final amount: custom overrides preset
+  const finalAmount = custom ? parseInt(custom) : selected;
+
+  const handlePay = async () => {
+    setError('');
+    if (!finalAmount || finalAmount < 1) {
+      setError('Please enter a valid amount (minimum ₹1).');
+      return;
+    }
+
+    setLoading(true);
+
+    // 1 — Load Razorpay SDK
+    const ok = await loadRazorpay();
+    if (!ok) {
+      setError('Could not load payment system. Check your internet and try again.');
+      setLoading(false);
+      return;
+    }
+
+    // 2 — Create order on our server
+    let order;
+    try {
+      const res = await fetch('/api/create-order', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ amount: finalAmount * 100 }), // convert ₹ → paise
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Order creation failed');
+      order = data;
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+      return;
+    }
+
+    // 3 — Open Razorpay checkout
+    const options = {
+      key:         order.keyId,
+      amount:      order.amount,
+      currency:    order.currency,
+      name:        'Dekh Le! India',
+      description: 'Support the film movement',
+      order_id:    order.orderId,
+      theme:       { color: '#00BFFF' },
+
+      // Prefill — leave blank so user fills their details
+      prefill: { name: '', email: '', contact: '' },
+
+      handler(response) {
+        // Payment successful
+        onClose();
+        setTimeout(() => alert(`🙏 Thank you! Your contribution of ₹${finalAmount} has been received.\n\nPayment ID: ${response.razorpay_payment_id}`), 100);
+      },
+
+      modal: {
+        ondismiss() { setLoading(false); },
+      },
+    };
+
+    const rz = new window.Razorpay(options);
+    rz.on('payment.failed', (resp) => {
+      setError(`Payment failed: ${resp.error.description}`);
+      setLoading(false);
+    });
+    rz.open();
+    setLoading(false);
+  };
+
+  // Close on backdrop click
+  const handleBackdrop = (e) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
+  return (
+    <div
+      onClick={handleBackdrop}
+      style={{
+        position:'fixed', inset:0, zIndex:9999,
+        background:'rgba(3,8,16,0.88)',
+        backdropFilter:'blur(10px)',
+        display:'flex', alignItems:'center', justifyContent:'center',
+        padding:'20px',
+        animation:'fadeIn 0.25s ease',
+      }}
+    >
+      <div style={{
+        background:`linear-gradient(145deg, #0D2347 0%, #060F22 100%)`,
+        border:'1px solid rgba(0,191,255,0.25)',
+        borderRadius:'4px',
+        padding:'40px 36px',
+        maxWidth:'440px', width:'100%',
+        boxShadow:'0 24px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(0,191,255,0.1)',
+        position:'relative',
+        animation:'slideUp 0.3s ease',
+      }}>
+
+        {/* Close button */}
+        <button onClick={onClose} style={{ position:'absolute', top:'16px', right:'18px', background:'none', border:'none', color:'rgba(240,237,232,0.4)', cursor:'pointer', fontSize:'1.1rem', lineHeight:1, transition:'color 0.2s' }}
+          onMouseEnter={e => e.target.style.color='#fff'}
+          onMouseLeave={e => e.target.style.color='rgba(240,237,232,0.4)'}>
+          ✕
+        </button>
+
+        {/* Header */}
+        <div style={{ marginBottom:'24px' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'6px' }}>
+            <div style={{ height:'1px', width:'28px', background:'#00BFFF', opacity:0.7 }} />
+            <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.68rem', letterSpacing:'0.32em', color:'#00BFFF', textTransform:'uppercase' }}>
+              Support the Film
+            </span>
+          </div>
+          <h3 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'2rem', letterSpacing:'0.04em', color:'#FFFFFF', lineHeight:1.1, marginBottom:'8px' }}>
+            Contribute to<br />Dekh Le! India 🇮🇳
+          </h3>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.85rem', color:'rgba(240,237,232,0.5)', lineHeight:1.65 }}>
+            Every rupee funds skill training so these champions can build a livelihood from the game they love.
+          </p>
+        </div>
+
+        {/* Amount presets */}
+        <div style={{ marginBottom:'12px' }}>
+          <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.62rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(240,237,232,0.35)', marginBottom:'10px' }}>
+            Choose Amount (₹)
+          </p>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(5,1fr)', gap:'6px' }}>
+            {PRESETS.map(amt => (
+              <button key={amt} onClick={() => { setSelected(amt); setCustom(''); setError(''); }}
+                style={{
+                  fontFamily:'"Bebas Neue",sans-serif', fontWeight:400,
+                  fontSize:'0.95rem', letterSpacing:'0.04em',
+                  padding:'10px 4px', cursor:'pointer', border:'none', transition:'all 0.18s',
+                  background: !custom && selected === amt ? '#00BFFF'        : 'rgba(0,191,255,0.08)',
+                  color:      !custom && selected === amt ? '#060F22'        : 'rgba(240,237,232,0.65)',
+                  outline:    !custom && selected === amt ? 'none'           : '1px solid rgba(0,191,255,0.18)',
+                }}>
+                ₹{amt}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Custom amount */}
+        <div style={{ marginBottom:'24px' }}>
+          <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.62rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(240,237,232,0.35)', marginBottom:'8px' }}>
+            Or Enter Custom Amount
+          </p>
+          <div style={{ position:'relative' }}>
+            <span style={{ position:'absolute', left:'14px', top:'50%', transform:'translateY(-50%)', fontFamily:'"Bebas Neue",sans-serif', fontSize:'1.1rem', color:'rgba(240,237,232,0.4)' }}>₹</span>
+            <input
+              type="number"
+              min="1"
+              placeholder="Enter amount"
+              value={custom}
+              onChange={e => { setCustom(e.target.value); setError(''); }}
+              style={{
+                width:'100%', padding:'12px 14px 12px 30px',
+                fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1rem',
+                background:'rgba(255,255,255,0.05)',
+                border:`1px solid ${custom ? 'rgba(0,191,255,0.6)' : 'rgba(255,255,255,0.1)'}`,
+                color:'#FFFFFF', outline:'none',
+                transition:'border-color 0.2s',
+              }}
+              onFocus={e => e.target.style.borderColor='rgba(0,191,255,0.7)'}
+              onBlur={e => e.target.style.borderColor=custom?'rgba(0,191,255,0.6)':'rgba(255,255,255,0.1)'}
+            />
+          </div>
+        </div>
+
+        {/* Error */}
+        {error && (
+          <p style={{ fontFamily:'"Inter",sans-serif', fontSize:'0.8rem', color:'#FF6B6B', marginBottom:'14px', lineHeight:1.5 }}>
+            ⚠ {error}
+          </p>
+        )}
+
+        {/* Pay button */}
+        <button onClick={handlePay} disabled={loading}
+          style={{
+            width:'100%', padding:'15px 24px',
+            fontFamily:'"Bebas Neue",sans-serif', fontWeight:400,
+            fontSize:'1rem', letterSpacing:'0.22em', textTransform:'uppercase',
+            background: loading ? 'rgba(255,153,51,0.5)' : '#FF9933',
+            color: '#060F22',
+            border:'none', cursor: loading ? 'not-allowed' : 'pointer',
+            transition:'all 0.2s',
+            boxShadow: loading ? 'none' : '0 0 28px rgba(255,153,51,0.5)',
+          }}
+          onMouseEnter={e => { if(!loading) e.currentTarget.style.boxShadow='0 0 40px rgba(255,153,51,0.7)'; }}
+          onMouseLeave={e => { if(!loading) e.currentTarget.style.boxShadow='0 0 28px rgba(255,153,51,0.5)'; }}>
+          {loading ? '⏳ Opening Payment...' : `💛 Donate ₹${finalAmount || '—'} Now`}
+        </button>
+
+        {/* Trust line */}
+        <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.72rem', color:'rgba(240,237,232,0.28)', textAlign:'center', marginTop:'14px' }}>
+          🔒 Secured by Razorpay · UPI · Cards · Net Banking
+        </p>
+      </div>
+
+      <style>{`
+        @keyframes fadeIn  { from{opacity:0} to{opacity:1} }
+        @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+      `}</style>
+    </div>
+  );
+}
+
+
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open,     setOpen]     = useState(false);
@@ -246,6 +480,8 @@ function Navbar() {
 ───────────────────────────────────────────────────────────────── */
 function Hero() {
   const [in_, setIn_] = useState(false);
+  const [showDonate, setShowDonate] = useState(false);   // ← modal state
+
   useEffect(() => { const t = setTimeout(() => setIn_(true), 120); return () => clearTimeout(t); }, []);
 
   const anim = (delay) => ({
@@ -382,12 +618,30 @@ function Hero() {
         {/* ── CTAs ── */}
         <div style={{ ...anim(1100), display:'flex', gap:'14px', justifyContent:'center', flexWrap:'wrap', marginBottom:'12px' }}>
           <Btn href="https://www.jiohotstar.com/" external>▶ Watch Now</Btn>
-          <Btn href="/contribute" primary={false}>🤍 Contribute</Btn>
+          {/* Donate button — opens modal */}
+          <button
+            onClick={() => setShowDonate(true)}
+            style={{
+              fontFamily:'"Bebas Neue",sans-serif', fontWeight:400,
+              fontSize:'0.9rem', letterSpacing:'0.22em', textTransform:'uppercase',
+              display:'inline-flex', alignItems:'center', gap:'10px',
+              padding:'13px 34px',
+              background:'transparent', color:T.white,
+              border:`1px solid rgba(240,237,232,0.3)`,
+              cursor:'pointer', transition:'all 0.25s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.borderColor='rgba(240,237,232,0.7)'}
+            onMouseLeave={e => e.currentTarget.style.borderColor='rgba(240,237,232,0.3)'}>
+            🤍 Contribute
+          </button>
         </div>
         <p style={{ ...anim(1200), fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.62rem', letterSpacing:'0.2em', textTransform:'uppercase', color:T.faint }}>
           Streaming on JioHotstar
         </p>
         {/* Stats block removed — keep hero clean and focused */}
+
+        {/* Donation modal */}
+        {showDonate && <DonationModal onClose={() => setShowDonate(false)} />}
       </div>
 
       {/* Scroll pulse */}
@@ -703,6 +957,8 @@ function WatchSection() {
    FINAL CTA
 ───────────────────────────────────────────────────────────────── */
 function FinalCTA() {
+  const [showDonate, setShowDonate] = useState(false);
+
   return (
     <section style={{ padding:'140px 24px', background:`linear-gradient(170deg, ${T.navyDark} 0%, ${T.black} 100%)`, textAlign:'center', position:'relative', overflow:'hidden' }}>
       <div style={{ position:'absolute', inset:0, opacity:0.02,
@@ -721,12 +977,36 @@ function FinalCTA() {
           <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1rem', color:T.faint, lineHeight:1.75, marginBottom:'44px', maxWidth:'500px', margin:'0 auto 44px' }}>
             Help us reach 1 million viewers. Every screening, every contribution, every share brings us closer to a more inclusive India.
           </p>
+
           <div style={{ display:'flex', gap:'14px', justifyContent:'center', flexWrap:'wrap' }}>
-            <Btn href="/contribute">💛 Contribute Now</Btn>
+            {/* PRIMARY — opens Razorpay modal */}
+            <button
+              onClick={() => setShowDonate(true)}
+              style={{
+                fontFamily:'"Bebas Neue",sans-serif', fontWeight:400,
+                fontSize:'0.9rem', letterSpacing:'0.22em', textTransform:'uppercase',
+                display:'inline-flex', alignItems:'center', gap:'10px',
+                padding:'13px 34px',
+                background:T.saffron, color:T.navyDark,
+                border:'none', cursor:'pointer', transition:'all 0.25s',
+                boxShadow:`0 0 28px rgba(255,153,51,0.5)`,
+              }}
+              onMouseEnter={e => e.currentTarget.style.boxShadow='0 0 42px rgba(255,153,51,0.7)'}
+              onMouseLeave={e => e.currentTarget.style.boxShadow='0 0 28px rgba(255,153,51,0.5)'}>
+              💛 Donate Now
+            </button>
+
             <Btn href="https://www.jiohotstar.com/" external primary={false}>▶ Watch the Film</Btn>
           </div>
+
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.72rem', color:T.faint, marginTop:'16px', letterSpacing:'0.04em' }}>
+            🔒 Secured by Razorpay · Pay any amount you wish
+          </p>
         </FadeUp>
       </div>
+
+      {/* Donation modal */}
+      {showDonate && <DonationModal onClose={() => setShowDonate(false)} />}
     </section>
   );
 }
