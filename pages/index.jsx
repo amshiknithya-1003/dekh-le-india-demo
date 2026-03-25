@@ -260,26 +260,66 @@ function Hero() {
       minHeight:'100vh',
       display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center',
       overflow:'hidden',
-      background:`linear-gradient(175deg, ${T.navy} 0%, ${T.navyDark} 50%, ${T.black} 100%)`,
+      background:T.black,                     /* fallback while video loads */
     }}>
-      {/* ── Film grain ── */}
-      <div style={{ position:'absolute', inset:0, zIndex:1, pointerEvents:'none', opacity:0.045,
+
+      {/* ── BACKGROUND VIDEO (YouTube autoplay, muted, looped) ────────
+           Uses the sizzle reel as the hero background.
+           Scaled 2× and centered so it fills the viewport like object-fit:cover.
+           pointer-events:none ensures it never intercepts clicks.
+      ─────────────────────────────────────────────────────────────── */}
+      <div style={{
+        position:'absolute', inset:0, zIndex:0,
+        overflow:'hidden', pointerEvents:'none',
+      }}>
+        <iframe
+          src="https://www.youtube.com/embed/h_JVTDhF6RY?autoplay=1&mute=1&loop=1&playlist=h_JVTDhF6RY&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0"
+          title="Hero background video"
+          allow="autoplay; encrypted-media"
+          style={{
+            position:'absolute',
+            /* over-scale so the 16:9 frame covers any viewport aspect ratio */
+            top:'50%', left:'50%',
+            transform:'translate(-50%, -50%)',
+            width:'calc(100vw + 400px)',        /* wider than viewport */
+            height:'calc(100vw * 0.5625 + 225px)', /* maintain 16:9 + extra */
+            minWidth:'100%',
+            minHeight:'100%',
+            border:'none',
+            opacity:0.35,                       /* subtle — content stays readable */
+            pointerEvents:'none',
+          }}
+        />
+      </div>
+
+      {/* ── CINEMATIC OVERLAYS (stacked, darkening + color grading) ── */}
+
+      {/* Base dark veil — tones down the video brightness */}
+      <div style={{ position:'absolute', inset:0, zIndex:1, pointerEvents:'none',
+        background:'rgba(3,8,16,0.62)' }} />
+
+      {/* Navy color grade — shifts video toward cricket-jersey blue */}
+      <div style={{ position:'absolute', inset:0, zIndex:1, pointerEvents:'none',
+        background:`linear-gradient(175deg, rgba(10,31,68,0.75) 0%, rgba(6,15,34,0.6) 50%, rgba(3,8,16,0.85) 100%)`
+      }} />
+
+      {/* Vignette — darkens edges, keeps center bright */}
+      <div style={{ position:'absolute', inset:0, zIndex:2, pointerEvents:'none',
+        background:'radial-gradient(ellipse at 50% 40%, transparent 30%, rgba(3,8,16,0.7) 100%)'
+      }} />
+
+      {/* Film grain texture */}
+      <div style={{ position:'absolute', inset:0, zIndex:3, pointerEvents:'none', opacity:0.06,
         backgroundImage:`url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
       }} />
 
-      {/* ── Cricket field perspective grid ── */}
-      <div style={{ position:'absolute', inset:0, zIndex:1, pointerEvents:'none', opacity:0.025,
-        background:`repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(0,191,255,0.6) 79px, rgba(0,191,255,0.6) 80px),
-                    repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(0,191,255,0.6) 79px, rgba(0,191,255,0.6) 80px)`,
-      }} />
+      {/* Top fade — blends into navbar */}
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:'160px', zIndex:4, pointerEvents:'none',
+        background:`linear-gradient(to bottom, ${T.black} 0%, transparent 100%)` }} />
 
-      {/* ── Radial accent light ── */}
-      <div style={{ position:'absolute', top:'-5%', left:'50%', transform:'translateX(-50%)', width:'120%', height:'60%', background:`radial-gradient(ellipse, ${T.accentGlow} 0%, transparent 65%)`, opacity:0.4, pointerEvents:'none', zIndex:2 }} />
-      <div style={{ position:'absolute', bottom:'-10%', left:'20%', width:'40%', height:'50%', background:`radial-gradient(ellipse, rgba(255,153,51,0.07) 0%, transparent 60%)`, pointerEvents:'none', zIndex:2 }} />
-
-      {/* ── Cinematic top/bottom bars ── */}
-      <div style={{ position:'absolute', top:0, left:0, right:0, height:'80px', background:`linear-gradient(to bottom, ${T.black}, transparent)`, zIndex:4, pointerEvents:'none' }} />
-      <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'160px', background:`linear-gradient(to top, ${T.black}, transparent)`, zIndex:4, pointerEvents:'none' }} />
+      {/* Bottom fade — blends into next section */}
+      <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'200px', zIndex:4, pointerEvents:'none',
+        background:`linear-gradient(to top, ${T.black} 0%, transparent 100%)` }} />
 
       {/* ── CONTENT ── */}
       <div style={{ position:'relative', zIndex:10, textAlign:'center', padding:'120px 24px 80px', maxWidth:'1100px', width:'100%' }}>
