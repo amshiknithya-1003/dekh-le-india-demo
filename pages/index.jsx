@@ -50,26 +50,10 @@ const AWARDS = [
 ];
 
 const BEHIND_SCENES = [
-  { 
-    n:'01', 
-    title: <>6 States,<br />One Dream</>, 
-    body:"We travelled across Odisha, Maharashtra, Karnataka, Kerala, Jharkhand, and Uttar Pradesh — seeking players whose families had never seen them play." 
-  },
-  { 
-    n:'02', 
-    title: <>500 Days<br />of Filming</>, 
-    body:"18 months embedded with the team. On trains, in hostels, on dusty grounds. Every moment captured with two cameras and relentless dedication." 
-  },
-  { 
-    n:'03', 
-    title: <>Edgbaston,<br />Birmingham</>, 
-    body:"The World Games. 60,000 seat stadium. India's blind women took the field. We were there for every ball bowled, every wicket taken, every tear shed." 
-  },
-  { 
-    n:'04', 
-    title: <>A Story<br />World Missed</>, 
-    body:"They won. Against all odds. India barely noticed. This film is the witness the world should have been." 
-  },
+  { n:'01', title:'6 States,\nOne Dream',        body:'We travelled across Odisha, Maharashtra, Karnataka, Kerala, Jharkhand, and Uttar Pradesh — seeking players whose families had never seen them play.' },
+  { n:'02', title:'500 Days\nof Filming',         body:'18 months embedded with the team. On trains, in hostels, on dusty grounds. Every moment captured with two cameras and relentless dedication.' },
+  { n:'03', title:'Edgbaston,\nBirmingham',        body:'The World Games. 60,000 seat stadium. India's blind women took the field. We were there for every ball bowled, every wicket taken, every tear shed.' },
+  { n:'04', title:'A Story\nWorld Missed',         body:'They won. Against all odds. India barely noticed. This film is the witness the world should have been.' },
 ];
 
 const TESTIMONIALS = [
@@ -316,7 +300,7 @@ function Hero() {
             fontSize:'clamp(5rem, 18vw, 14rem)',
             lineHeight:0.88, letterSpacing:'0.02em', margin:0,
             color:T.white,
-            textShadow:`0 0 160px rgba(0,191,255,0.35), 0 0 40px rgba(0,0,0,0.8)`,
+            textShadow:`0 0 60px rgba(0,191,255,0.9), 0 0 120px rgba(0,191,255,0.5), 0 0 200px rgba(0,191,255,0.2), 0 4px 0 rgba(0,0,0,0.9)`,
           }}>
             DEKH LE!
           </h1>
@@ -333,7 +317,7 @@ function Hero() {
             fontSize:'clamp(5rem, 18vw, 14rem)',
             lineHeight:0.88, letterSpacing:'0.02em', margin:0,
             color:T.accent, position:'relative', zIndex:1,
-            textShadow:`0 0 100px ${T.accentGlow}, 0 2px 0 rgba(0,0,0,0.8)`,
+            textShadow:`0 0 50px rgba(0,191,255,1), 0 0 100px rgba(0,191,255,0.7), 0 0 180px rgba(0,191,255,0.35), 0 4px 0 rgba(0,0,0,0.9)`,
           }}>
             INDIA
           </h1>
@@ -342,20 +326,20 @@ function Hero() {
         {/* Flag emoji — outside any clip context */}
         <div style={{ ...anim(680), fontSize:'clamp(2rem,5vw,3.5rem)', marginBottom:'28px', marginTop:'8px' }}>🇮🇳</div>
 
-        {/* Subtitle */}
-       <p style={{ ...anim(800), fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'clamp(1rem,2.2vw,1.3rem)', color:T.dim, maxWidth:'600px', margin:'0 auto 10px', lineHeight:1.7 }}>
-  A story India never saw.<br />
-  <strong style={{ color:T.white }}>A team that refused to be unseen.</strong>
-</p>
+        {/* ── NEW SUBTITLE — emotional, cinematic ── */}
+        <p style={{ ...anim(800), fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'clamp(1rem,2.2vw,1.25rem)', color:T.dim, maxWidth:'580px', margin:'0 auto 16px', lineHeight:1.7, letterSpacing:'0.02em' }}>
+          A story India never saw.<br />
+          <strong style={{ color:T.white, fontWeight:400, fontStyle:'italic' }}>A team that refused to be unseen.</strong>
+        </p>
 
-        {/* Cinematic tagline */}
-        <div style={{ ...anim(950), marginBottom:'44px' }}>
-          <p style={{ fontFamily:'"Georgia",serif', fontStyle:'italic', fontWeight:400, fontSize:'clamp(0.85rem,1.8vw,1.05rem)', color:T.faint, letterSpacing:'0.04em', margin:0 }}>
+        {/* ── Tagline ── */}
+        <div style={{ ...anim(950), marginBottom:'48px' }}>
+          <p style={{ fontFamily:'"Georgia",serif', fontStyle:'italic', fontWeight:400, fontSize:'clamp(0.85rem,1.6vw,1rem)', color:T.faint, letterSpacing:'0.06em', margin:0 }}>
             "No Pity &nbsp;·&nbsp; No Sympathy &nbsp;·&nbsp; Just Give Us an Opportunity"
           </p>
         </div>
 
-        {/* CTAs */}
+        {/* ── CTAs ── */}
         <div style={{ ...anim(1100), display:'flex', gap:'14px', justifyContent:'center', flexWrap:'wrap', marginBottom:'12px' }}>
           <Btn href="https://www.jiohotstar.com/" external>▶ Watch Now</Btn>
           <Btn href="/contribute" primary={false}>🤍 Contribute</Btn>
@@ -363,6 +347,8 @@ function Hero() {
         <p style={{ ...anim(1200), fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.62rem', letterSpacing:'0.2em', textTransform:'uppercase', color:T.faint }}>
           Streaming on JioHotstar
         </p>
+        {/* Stats block removed — keep hero clean and focused */}
+      </div>
 
       {/* Scroll pulse */}
       <div style={{ ...anim(1500), position:'absolute', bottom:'28px', left:'50%', transform:'translateX(-50%)', zIndex:10, display:'flex', flexDirection:'column', alignItems:'center', gap:'6px' }}>
