@@ -440,7 +440,7 @@ function WatchSection() {
       <div style={{ maxWidth:'1000px', margin:'0 auto' }}>
         <FadeUp>
           <SectionEyebrow label="Watch" />
-          <SectionTitle>Watch the Film</SectionTitle>
+          <SectionTitle>Watch the Trailer</SectionTitle>
           <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1rem', color:T.dim, textAlign:'center', marginBottom:'32px' }}>Experience the incredible journey</p>
           <div style={{ display:'flex', justifyContent:'center', gap:'1px', background:`rgba(0,191,255,0.15)`, border:`1px solid rgba(0,191,255,0.2)`, width:'fit-content', margin:'0 auto 14px' }}>
             {Object.entries(vids).map(([k,v]) => (
