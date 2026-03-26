@@ -1,1318 +1,1121 @@
-/**
- * DEKH LE! INDIA — Homepage  v2
- * ─────────────────────────────────────────────────────
- * DROP THIS FILE INTO:  app/page.jsx  (or pages/index.jsx)
- *
- * SETUP REQUIRED:
- *   • Add /public/hero.jpg  ← real film photo (16:9, dark/moody)
- *   • Add /public/favicon.ico
- *   • (Optional) /public/awards/*.jpg, /public/blog/*.jpg
- *
- * v1 CHANGES:
- *  1. Hero announcement banner "Releasing on Jio Hotstar — June 2026"
- *  2. Stronger storytelling description
- *  3. Updated stats: 10 States · 2.5 Years · 110h · 70 Min + Languages
- *  4. Journey Timeline / Accolades / Reactions / Rock Song / Blog sections
- *  5. Donation banner (post-watch CTA)
- *
- * v2 CHANGES  ← NEW:
- *  6. Hero: real image background (url('/hero.jpg')) + cinematic dark overlay
- *  7. Smooth scroll + global CSS reset (also add to globals.css — see bottom)
- *  8. Hover effects — buttons scale(1.05), cards translateY(-5px)
- *  9. Section padding upgraded to 80px vertical
- * 10. Donation section — stronger emotional copy + "Support the Movement" heading
- * 11. <head> — title + favicon (layout.jsx snippet included at bottom)
- * 12. Mobile — min tap targets 44px, readable font floors, no overflow
- */
+// pages/index.jsx
+// Dekh Le! India — Premium Cinematic Redesign
+// Netflix / NatGeo inspired · Bebas Neue · Dark blue cricket jersey theme
+// Sections: Hero · Sizzle · Story · Behind the Scenes · Awards · Impact · CTA
 
-"use client";
+import Head from 'next/head';
+import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
 
-import { useEffect, useRef, useState } from "react";
-// If using Next.js Pages Router, also import Head:
-// import Head from "next/head";
+/* ─────────────────────────────────────────────────────────────────
+   DESIGN TOKENS
+───────────────────────────────────────────────────────────────── */
+const T = {
+  // Core palette
+  navy:      '#0A1F44',
+  navyDark:  '#060F22',
+  navyMid:   '#123A73',
+  navyUp:    '#1A4F8A',
+  black:     '#030810',
 
-/* ─── CONSTANTS ──────────────────────────────────────────────── */
-const NAV_LINKS = [
-  { href: "#story",    label: "Story" },
-  { href: "#timeline", label: "Journey" },
-  { href: "#awards",   label: "Accolades" },
-  { href: "#reactions",label: "Reactions" },
-  { href: "#song",     label: "Rock Song" },
-  { href: "#impact",   label: "Impact" },
-  { href: "#blog",     label: "Blog" },
-  { href: "#watch",    label: "Watch" },
-];
+  // Accents
+  accent:    '#00BFFF',      // deep sky blue — electric highlight
+  accentDim: 'rgba(0,191,255,0.18)',
+  accentGlow:'rgba(0,191,255,0.35)',
+  saffron:   '#FF9933',
+  green:     '#2E8B57',
 
-const TIMELINE = [
-  {
-    year: "2020",
-    title: "The Idea Sparks",
-    body: "Shanthi Mohan discovers India's blind women's cricket team by accident — no press, no coverage, no Wikipedia page. A camera goes up the same day.",
-  },
-  {
-    year: "2021",
-    title: "Hitting the Road",
-    body: "The two-person crew boards sleeper trains to Odisha, Jharkhand, Maharashtra, Karnataka, Kerala, Uttar Pradesh and four more states — chasing players whose families have never seen them play.",
-  },
-  {
-    year: "2022",
-    title: "Inside the Training Camps",
-    body: "Embedded in BCCI training camps. Witnessing players bowl and bat by sound alone. 110 hours of raw footage accumulate. The story refuses to stay small.",
-  },
-  {
-    year: "2023",
-    title: "Edgbaston, Birmingham",
-    body: "World Games. India vs Australia. Final. A 60,000-seat stadium. The world was not watching. We were — every frame, every breath, every tear.",
-  },
-  {
-    year: "2024",
-    title: "The Edit Room",
-    body: "110 hours compressed into 70 minutes. Music composed. Colour graded. Festivals approached. The film earns recognition across 8+ countries.",
-  },
-  {
-    year: "June 2026",
-    title: "Releasing on Jio Hotstar",
-    body: "India finally gets to see its heroes. Streaming across the country — in Hindi, Tamil, Telugu, Kannada, Malayalam, Bengali and English.",
-    highlight: true,
-  },
-];
+  // Text
+  white:     '#FFFFFF',
+  cream:     '#F0EDE8',
+  dim:       'rgba(240,237,232,0.6)',
+  faint:     'rgba(240,237,232,0.3)',
+  ghost:     'rgba(240,237,232,0.1)',
+};
 
+/* ─────────────────────────────────────────────────────────────────
+   DATA
+───────────────────────────────────────────────────────────────── */
 const AWARDS = [
-  { icon: "🏆", title: "Best Lyrics",        org: "CLEF Music Awards",          year: "2025", type: "Winner" },
-  { icon: "🎸", title: "Best Rock Guitarist", org: "CLEF Music Awards",          year: "2025", type: "Winner" },
-  { icon: "🎬", title: "Best Director",        org: "NCIFF Nepal",                year: "2026", type: "Winner" },
-  { icon: "🥇", title: "Chairman's Award",     org: "KISFF Kenya",                year: "2025", type: "Winner" },
-  { icon: "🎭", title: "Official Selection",   org: "17th IDSFFK Kerala",         year: "2025", type: "Selection" },
-  { icon: "🌏", title: "Official Selection",   org: "IIFFB Boston",               year: "2025", type: "Selection" },
-  { icon: "🌍", title: "Finalist",             org: "LIFF Lulea, Sweden",         year: "2025", type: "Finalist" },
-  { icon: "🎞️", title: "Official Selection",   org: "MLOFF Manchester",           year: "2026", type: "Selection" },
-  { icon: "🎪", title: "Delhi Premiere",       org: "Kriti Film Club Delhi",      year: "2026", type: "Premiere" },
-  { icon: "🌺", title: "Semi Finalist",        org: "Istanbul Women Film Festival", year: "2026", type: "Finalist" },
+  { icon:'🏆', name:'CLEF Music Awards',             result:'Winner — Best Lyrics',         year:'2025' },
+  { icon:'🎸', name:'CLEF Music Awards',             result:'Winner — Best Rock Guitarist',  year:'2025' },
+  { icon:'🎬', name:'NCIFF Nepal',                   result:'Winner — Best Director',        year:'2026' },
+  { icon:'🥇', name:'KISFF Kenya',                   result:"Chairman's Award",              year:'2025' },
+  { icon:'🎭', name:'17th IDSFFK Kerala',            result:'Official Selection',            year:'2025' },
+  { icon:'🌏', name:'IIFFB Boston',                  result:'Official Selection',            year:'2025' },
+  { icon:'🌍', name:'LIFF Lulea, Sweden',            result:'Finalist',                     year:'2025' },
+  { icon:'🎞️', name:'MLOFF Manchester',              result:'Official Selection',            year:'2026' },
+  { icon:'🎪', name:'Kriti Film Club Delhi',         result:'Delhi Premiere',               year:'2026' },
+  { icon:'🌺', name:'Istanbul Women Film Festival',  result:'Semi Finalist',                year:'2026' },
 ];
 
-const REACTIONS = [
-  { quote: "Every student must watch this. It rewired how I see disability entirely.", name: "Principal", org: "Delhi Public School, Bangalore" },
-  { quote: "We screened it for 500 employees. The auditorium was completely silent — then erupted.", name: "HR Director", org: "TechCorp India" },
-  { quote: "I stood up and cried. This is the India I want to believe in.", name: "Student", org: "IIT Bombay" },
-  { quote: "The most important documentary made in India in the last decade.", name: "Film Critic", org: "The Hindu" },
-  { quote: "Nothing prepared me for how this film would end. I watched it twice in a row.", name: "Viewer", org: "Mumbai Screening" },
-  { quote: "My daughters will grow up knowing this film exists. That matters more than any award.", name: "Parent", org: "Kendriya Vidyalaya, Jaipur" },
+const BEHIND_SCENES = [
+  { n:'01', title:'6 States,\nOne Dream',        body:'We travelled across Odisha, Maharashtra, Karnataka, Kerala, Jharkhand, and Uttar Pradesh — seeking players whose families had never seen them play.' },
+  { n:'02', title:'500 Days\nof Filming',         body:'18 months embedded with the team. On trains, in hostels, on dusty grounds. Every moment captured with two cameras and relentless dedication.' },
+  { n:'03', title:'Edgbaston,\nBirmingham',        body:"The World Games. 60,000 seat stadium. India's blind women took the field. We were there for every ball bowled, every wicket taken, every tear shed." },
+  { n:'04', title:'A Story\nWorld Missed',         body:'They won. Against all odds. India barely noticed. This film is the witness the world should have been.' },
 ];
 
-const BLOG_POSTS = [
-  {
-    date: "March 2026",
-    title: "Why It Took 2.5 Years to Make a 70-Minute Film",
-    excerpt: "We didn't plan for a feature. We planned for a short film. Then the women kept winning, kept defying, kept living stories too big for any runtime we'd budgeted.",
-    readTime: "6 min read",
-  },
-  {
-    date: "January 2026",
-    title: "The Night We Almost Lost All the Birmingham Footage",
-    excerpt: "A hard drive. A monsoon. A 14-hour layover in Dubai. The story of how the most important footage in the film nearly disappeared forever.",
-    readTime: "4 min read",
-  },
-  {
-    date: "November 2025",
-    title: "What 10 States Taught Us About Invisible India",
-    excerpt: "From a paddy field in Odisha to a terrace in Kerala — the players we found were not waiting to be rescued. They were waiting to be seen.",
-    readTime: "8 min read",
-  },
+const TESTIMONIALS = [
+  { q:'Every student must watch this. It rewired how I see disability.',           who:'Principal, Delhi Public School, Bangalore'  },
+  { q:'We screened it for 500 employees. Not a dry eye in the auditorium.',        who:'HR Director, TechCorp India'               },
+  { q:'I stood up and cried. This is the India I want to believe in.',             who:'Student, IIT Bombay'                       },
+  { q:'The most important documentary made in India in the last 10 years.',        who:'Film Critic, The Hindu'                    },
 ];
 
-/* ─── COMPONENT ──────────────────────────────────────────────── */
-export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const heroRef = useRef(null);
+const IMPACT_STATS = [
+  { value:'10K+', label:'People Reached',    icon:'👥' },
+  { value:'50+',  label:'School Screenings', icon:'🏫' },
+  { value:'10+',  label:'Companies',         icon:'🏢' },
+  { value:'10+',  label:'Awards Won',        icon:'🏆' },
+  { value:'8+',   label:'Countries',         icon:'🌍' },
+  { value:'6',    label:'States Covered',    icon:'🗺️' },
+];
 
-  // Parallax on hero title
+/* ─────────────────────────────────────────────────────────────────
+   SCROLL FADE HOOK
+───────────────────────────────────────────────────────────────── */
+function useFade(threshold = 0.15) {
+  const ref = useRef(null);
+  const [vis, setVis] = useState(false);
   useEffect(() => {
-    const onScroll = () => {
-      if (heroRef.current) {
-        heroRef.current.style.transform = `translateY(${window.scrollY * 0.18}px)`;
-      }
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setVis(true); obs.disconnect(); }
+    }, { threshold });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return [ref, vis];
+}
 
+function FadeUp({ children, delay = 0, style = {} }) {
+  const [ref, vis] = useFade();
   return (
-    <>
-      <style>{GLOBAL_CSS}</style>
-
-      {/* ── NAV ── */}
-      <nav className="nav">
-        <a href="#" className="nav-logo">Dekh Le! India</a>
-        <div className={`nav-links ${menuOpen ? "open" : ""}`}>
-          {NAV_LINKS.map(l => (
-            <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)}>{l.label}</a>
-          ))}
-          <a href="https://www.jiohotstar.com/" target="_blank" rel="noreferrer" className="nav-cta">▶ Watch Now</a>
-        </div>
-        <button className="hamburger" onClick={() => setMenuOpen(o => !o)} aria-label="menu">
-          {menuOpen ? "✕" : "☰"}
-        </button>
-      </nav>
-
-      {/* ════════════════════════════════════════════════════
-          ── CHANGE 1: HERO ANNOUNCEMENT BANNER ──
-          Paste this block right at the top, above the hero.
-      ════════════════════════════════════════════════════ */}
-      <div className="announcement-banner">
-        <span className="announcement-dot" />
-        <strong>Releasing on Jio Hotstar</strong>
-        <span className="announcement-divider">·</span>
-        <span>June 2026</span>
-        <a href="https://www.jiohotstar.com/" target="_blank" rel="noreferrer" className="announcement-link">
-          Set Reminder →
-        </a>
-      </div>
-
-      {/* ── HERO ── */}
-      <section className="hero" id="hero">
-        <div className="hero-bg">
-          <div className="hero-grain" />
-          <div className="hero-vignette" />
-          {/* Cinematic horizontal scan lines */}
-          <div className="hero-scanlines" />
-        </div>
-
-        <div className="hero-content" ref={heroRef}>
-          <p className="hero-byline">A Documentary Film by Shanthi Mohan & Mukund Moorthy</p>
-          <h1 className="hero-title">
-            <span className="hero-title-small">DEKH LE!</span>
-            <span className="hero-title-large">INDIA</span>
-            <span className="hero-flag">🇮🇳</span>
-          </h1>
-
-          {/* ── CHANGE 2: STRONGER STORYTELLING DESCRIPTION ── */}
-          <p className="hero-desc">
-            Ten states. A hundred and ten hours of footage.<br />
-            One team the country forgot to watch.<br />
-            <em>We watched for you.</em>
-          </p>
-
-          <p className="hero-tagline">"No Pity · No Sympathy · Just Give Us an Opportunity"</p>
-
-          <div className="hero-actions">
-            <a href="https://www.jiohotstar.com/" target="_blank" rel="noreferrer" className="btn-primary">
-              ▶ Watch Now
-            </a>
-            <a href="#donate" className="btn-ghost">🤍 Contribute</a>
-          </div>
-
-          {/* ── CHANGE 3: UPDATED STATS ── */}
-          <div className="hero-stats">
-            <div className="stat"><span className="stat-n">10</span><span className="stat-l">States</span></div>
-            <div className="stat-sep" />
-            <div className="stat"><span className="stat-n">2.5</span><span className="stat-l">Years Filming</span></div>
-            <div className="stat-sep" />
-            <div className="stat"><span className="stat-n">110h</span><span className="stat-l">Raw Footage</span></div>
-            <div className="stat-sep" />
-            <div className="stat"><span className="stat-n">70</span><span className="stat-l">Min Film</span></div>
-          </div>
-
-          {/* ── CHANGE 3b: LANGUAGES ── */}
-          <div className="hero-languages">
-            <span className="lang-label">Available in</span>
-            {["Hindi", "Tamil", "Telugu", "Kannada", "Malayalam", "Bengali", "English"].map(l => (
-              <span key={l} className="lang-tag">{l}</span>
-            ))}
-          </div>
-
-          <p className="hero-streaming">Streaming on JioHotstar · June 2026</p>
-        </div>
-
-        <div className="hero-scroll">
-          <span>Scroll</span>
-          <div className="scroll-line" />
-        </div>
-      </section>
-
-      {/* ── FILM PILLARS ── */}
-      <section className="section" id="story">
-        <div className="section-header">
-          <span className="section-eyebrow">The Film</span>
-          <h2>They Played With Courage.<br />We Filmed With Love.</h2>
-          {/* ── CHANGE 2b: STRONGER BODY COPY ── */}
-          <p className="section-body">
-            <em>Dekh Le! India</em> is a 2.5-year odyssey across ten Indian states — trailing India's
-            first blind women's national cricket team from dusty village grounds to the World Games
-            at Edgbaston, Birmingham. 110 hours of raw footage. One 70-minute film. A story that
-            should have been front-page news for years.
-          </p>
-        </div>
-
-        <div className="pillars">
-          {[
-            { n: "01", title: "10 States, One Dream", body: "We travelled across Odisha, Maharashtra, Karnataka, Kerala, Jharkhand, Uttar Pradesh and four more states — seeking players whose families had never seen them play." },
-            { n: "02", title: "2.5 Years of Filming", body: "Two filmmakers. One mission. 110 hours of footage recorded across training camps, village fields, railway platforms and international stadiums." },
-            { n: "03", title: "Edgbaston, Birmingham", body: "The World Games. 60,000 seat stadium. India's blind women took the field. We were there for every ball bowled, every wicket taken, every tear shed." },
-            { n: "04", title: "A Story the World Missed", body: "They won. Against all odds. India barely noticed. This 70-minute film is the witness the world should have been." },
-          ].map(p => (
-            <div key={p.n} className="pillar">
-              <span className="pillar-n">{p.n}</span>
-              <h3>{p.title}</h3>
-              <p>{p.body}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="film-meta">
-          {["Documentary", "70 Minutes", "Hindi · Tamil · Telugu · Kannada · Malayalam · Bengali · English", "2024–2026", "India"].map(t => (
-            <span key={t} className="meta-tag">{t}</span>
-          ))}
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════════════════
-          ── CHANGE 4a: JOURNEY TIMELINE (NEW SECTION) ──
-          Insert after the story section.
-      ════════════════════════════════════════════════════ */}
-      <section className="section timeline-section" id="timeline">
-        <div className="section-header">
-          <span className="section-eyebrow">The Making</span>
-          <h2>A Journey 2.5 Years in the Making</h2>
-          <p className="section-body">Every frame in this film cost time, travel, and trust.</p>
-        </div>
-
-        <div className="timeline">
-          {TIMELINE.map((item, i) => (
-            <div key={i} className={`timeline-item ${item.highlight ? "highlight" : ""} ${i % 2 === 0 ? "left" : "right"}`}>
-              <div className="timeline-dot" />
-              <div className="timeline-card">
-                <span className="timeline-year">{item.year}</span>
-                <h3>{item.title}</h3>
-                <p>{item.body}</p>
-                {item.highlight && (
-                  <a href="https://www.jiohotstar.com/" target="_blank" rel="noreferrer" className="btn-primary small">
-                    ▶ Watch on Jio Hotstar
-                  </a>
-                )}
-              </div>
-            </div>
-          ))}
-          <div className="timeline-spine" />
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════════════════
-          ── CHANGE 4b: ACCOLADES (UPGRADED WITH IMAGES) ──
-          Replaces the old Awards section.
-          👉 Swap `accolade-img-placeholder` divs with real
-             <img src="/awards/clef.jpg" alt="..." /> assets.
-      ════════════════════════════════════════════════════ */}
-      <section className="section awards-section" id="awards">
-        <div className="section-header">
-          <span className="section-eyebrow">Recognition</span>
-          <h2>Awards & Festival Selections</h2>
-          <p className="section-body">Recognised across 8+ countries at prestigious international film festivals.</p>
-        </div>
-
-        <div className="accolades-grid">
-          {AWARDS.map((a, i) => (
-            <div key={i} className={`accolade-card ${a.type === "Winner" ? "winner" : ""}`}>
-              {/* ── Swap this div with <img src="/awards/yourimage.jpg"> ── */}
-              <div className="accolade-img-placeholder">{a.icon}</div>
-              <div className="accolade-type">{a.type}</div>
-              <h4>{a.title}</h4>
-              <p className="accolade-org">{a.org}</p>
-              <span className="accolade-year">{a.year}</span>
-            </div>
-          ))}
-        </div>
-
-        <div className="awards-count-row">
-          {[
-            { n: "10+", l: "Awards Won" },
-            { n: "8+",  l: "Countries" },
-            { n: "5",   l: "Continents" },
-          ].map(s => (
-            <div key={s.l} className="awards-count">
-              <span>{s.n}</span>
-              <label>{s.l}</label>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════════════════
-          ── CHANGE 4c: AUDIENCE REACTIONS (NEW SECTION) ──
-      ════════════════════════════════════════════════════ */}
-      <section className="section reactions-section" id="reactions">
-        <div className="section-header">
-          <span className="section-eyebrow">Audience</span>
-          <h2>What People Said When the Lights Came On</h2>
-        </div>
-
-        <div className="reactions-marquee-wrapper">
-          <div className="reactions-track">
-            {[...REACTIONS, ...REACTIONS].map((r, i) => (
-              <div key={i} className="reaction-card">
-                <span className="reaction-quote-mark">"</span>
-                <p>{r.quote}</p>
-                <footer>
-                  <strong>{r.name}</strong>
-                  <span>{r.org}</span>
-                </footer>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="screenings-strip">
-          <p className="screenings-label">Notable Screenings</p>
-          <div className="screenings-tags">
-            {["Kriti Film Club · Delhi", "IIT Bombay", "DPS Bengaluru", "Infosys Campus, Pune", "TISS Mumbai", "Kendriya Vidyalaya, Jaipur", "Jain University"].map(s => (
-              <span key={s} className="screening-tag">📍 {s}</span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════════════════
-          ── CHANGE 4d: ROCK SONG SECTION (NEW) ──
-      ════════════════════════════════════════════════════ */}
-      <section className="section song-section" id="song">
-        <div className="song-inner">
-          <div className="song-text">
-            <span className="section-eyebrow">The Music</span>
-            <h2>A Rock Song for the Unheard</h2>
-            <p>
-              Award-winning composer Lokesh Bakshi wrote a rock anthem for the film — raw, urgent,
-              defiant. It won <strong>Best Lyrics</strong> and <strong>Best Rock Guitarist</strong>
-              at the 2025 CLEF Music Awards. This is not background music. This is a war cry.
-            </p>
-            <div className="song-awards">
-              <span className="song-award-badge">🏆 Best Lyrics — CLEF 2025</span>
-              <span className="song-award-badge">🎸 Best Rock Guitarist — CLEF 2025</span>
-            </div>
-            <div className="song-actions">
-              <a href="https://www.youtube.com/watch?v=mgFde16-J7c" target="_blank" rel="noreferrer" className="btn-primary">
-                🎵 Watch on YouTube
-              </a>
-              <a href="https://www.youtube.com/watch?v=h_JVTDhF6RY" target="_blank" rel="noreferrer" className="btn-ghost">
-                🎬 Watch Sizzle Reel
-              </a>
-            </div>
-          </div>
-
-          <div className="song-visual">
-            <div className="song-vinyl">
-              <div className="vinyl-outer">
-                <div className="vinyl-inner">
-                  <span>🎸</span>
-                </div>
-              </div>
-              {/* Spinning grooves */}
-              {[1,2,3,4,5].map(n => (
-                <div key={n} className="vinyl-groove" style={{ "--n": n }} />
-              ))}
-            </div>
-            <p className="song-composer">Music by Lokesh Bakshi</p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── IMPACT ── (existing, lightly updated) */}
-      <section className="section impact-section" id="impact">
-        <div className="section-header">
-          <span className="section-eyebrow">Community Impact</span>
-          <h2>A Movement Across India</h2>
-          <p className="section-body">School to school. Office to office. The film is creating real change — one screening at a time.</p>
-        </div>
-
-        <div className="impact-grid">
-          {[
-            { icon: "👥", n: "10K+",  l: "People Reached" },
-            { icon: "🏫", n: "50+",   l: "School Screenings" },
-            { icon: "🏢", n: "10+",   l: "Companies" },
-            { icon: "🏆", n: "10+",   l: "Awards Won" },
-            { icon: "🌍", n: "8+",    l: "Countries" },
-            { icon: "🗺️", n: "10",    l: "States Covered" },
-          ].map(s => (
-            <div key={s.l} className="impact-stat">
-              <span className="impact-icon">{s.icon}</span>
-              <span className="impact-n">{s.n}</span>
-              <span className="impact-l">{s.l}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════════════════
-          ── CHANGE 4e: BLOG SECTION (NEW) ──
-      ════════════════════════════════════════════════════ */}
-      <section className="section blog-section" id="blog">
-        <div className="section-header">
-          <span className="section-eyebrow">Behind the Camera</span>
-          <h2>Journey So Far</h2>
-          <p className="section-body">The film is 70 minutes. The story of making it is a novel.</p>
-        </div>
-
-        <div className="blog-grid">
-          {BLOG_POSTS.map((post, i) => (
-            <article key={i} className="blog-card">
-              <div className="blog-card-img-placeholder">
-                <span>{["📷", "💾", "🗺️"][i]}</span>
-              </div>
-              <div className="blog-card-body">
-                <div className="blog-meta">
-                  <span>{post.date}</span>
-                  <span>{post.readTime}</span>
-                </div>
-                <h3>{post.title}</h3>
-                <p>{post.excerpt}</p>
-                <a href="#" className="blog-read-more">Read Story →</a>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* ── WATCH ── */}
-      <section className="section watch-section" id="watch">
-        <div className="section-header">
-          <span className="section-eyebrow">Watch</span>
-          <h2>Watch the Film</h2>
-          <p className="section-body">Experience the incredible journey.</p>
-        </div>
-
-        <div className="watch-cards">
-          <a href="https://www.youtube.com/watch?v=h_JVTDhF6RY" target="_blank" rel="noreferrer" className="watch-card">
-            <span>🎬</span>
-            <strong>Sizzle Reel</strong>
-            <p>Watch on YouTube ↗</p>
-          </a>
-          <a href="https://www.youtube.com/watch?v=mgFde16-J7c" target="_blank" rel="noreferrer" className="watch-card">
-            <span>🎵</span>
-            <strong>The Film Song</strong>
-            <p>Watch on YouTube ↗</p>
-          </a>
-          <a href="https://www.jiohotstar.com/" target="_blank" rel="noreferrer" className="watch-card featured">
-            <span>▶</span>
-            <strong>Full Film</strong>
-            <p>Watch on Jio Hotstar · June 2026</p>
-          </a>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════════════════
-          ── CHANGE 10: DONATION BANNER — emotional rewrite ──
-      ════════════════════════════════════════════════════ */}
-      <section className="donation-banner" id="donate">
-        <div className="donation-inner">
-          <div className="donation-text">
-            {/* Eyebrow */}
-            <span className="donation-eyebrow">Support the Movement</span>
-            {/* Headline — personal, direct */}
-            <h2>If this story moved you,<br />you can help it move further.</h2>
-            {/* Emotional body — not transactional */}
-            <p>
-              These women played in silence for years — no cameras, no coverage, no crowd.
-              Your contribution changes that. Every rupee goes directly to taking this film
-              to schools, communities, and corners of India that have never seen themselves
-              on screen.
-            </p>
-            <p className="donation-subline">
-              If you watched the film and loved it, you can contribute here.
-            </p>
-          </div>
-          <div className="donation-actions">
-            <a href="/contribute" className="btn-gold">💛 Contribute Now</a>
-            <p className="donation-secure">🔒 Secured by Razorpay · Pay any amount you wish</p>
-            <div className="donation-impact-row">
-              <span>₹500 → 1 school screening</span>
-              <span>₹2000 → outreach kit</span>
-              <span>₹5000 → new state</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── MAIN CTA ── */}
-      <section className="cta-section">
-        <div className="cta-grain" />
-        <span className="cta-flag">🇮🇳</span>
-        <h2>Bring This Film to Every School & Workplace in India.</h2>
-        <p>Help us reach 1 million viewers. Every screening, every contribution, every share brings us closer to a more inclusive India.</p>
-        <div className="cta-actions">
-          <a href="/contribute" className="btn-gold">💛 Donate Now</a>
-          <a href="https://www.jiohotstar.com/" target="_blank" rel="noreferrer" className="btn-primary">▶ Watch the Film</a>
-        </div>
-        <p className="cta-secure">🔒 Secured by Razorpay · Pay any amount you wish</p>
-      </section>
-
-      {/* ── FOOTER ── */}
-      <footer className="footer">
-        <div className="footer-top">
-          <div className="footer-brand">
-            <p className="footer-title">Dekh Le! India</p>
-            <p className="footer-sub">Documentary Film · 2024–2026</p>
-            <p className="footer-desc">The story of India's first blind women's cricket team and their extraordinary journey to the World Games.</p>
-          </div>
-          <div className="footer-nav">
-            <p className="footer-nav-title">Navigate</p>
-            {NAV_LINKS.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
-            <a href="/contribute">Contribute</a>
-          </div>
-          <div className="footer-contact">
-            <p className="footer-nav-title">Contact</p>
-            <a href="mailto:m_moorthy@yahoo.com">m_moorthy@yahoo.com</a>
-            <a href="tel:+919880214587">+91-9880214587</a>
-            <p className="footer-directors">Dir. Shanthi Mohan<br />& Mukund Moorthy</p>
-          </div>
-        </div>
-        <div className="footer-credits">
-          <p>Directors: Shanthi Mohan & Mukund Moorthy · Music: Lokesh Bakshi · Editor: Shahnawaz Khan & Swati Jaiswal · DOP: Shanthi Mohan & Khushee Hegde · Sound: Suresh Raskar</p>
-        </div>
-        <div className="footer-bottom">
-          <p>© 2026 Dekh Le! India · The Loose Canon · Sol Production · DejaVu Arts</p>
-        </div>
-      </footer>
-    </>
+    <div ref={ref} style={{
+      opacity:   vis ? 1 : 0,
+      transform: vis ? 'translateY(0)' : 'translateY(32px)',
+      transition:`opacity 0.9s ease ${delay}ms, transform 0.9s ease ${delay}ms`,
+      ...style,
+    }}>
+      {children}
+    </div>
   );
 }
 
-/* ─── GLOBAL CSS ─────────────────────────────────────────────── */
-const GLOBAL_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
+/* ─────────────────────────────────────────────────────────────────
+   REUSABLE COMPONENTS
+───────────────────────────────────────────────────────────────── */
+function SectionEyebrow({ label }) {
+  return (
+    <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:'14px', marginBottom:'18px' }}>
+      <div style={{ height:'1px', width:'40px', background:T.accent, opacity:0.7 }} />
+      <span style={{
+        fontFamily:'"Bebas Neue",sans-serif',
+        fontWeight:400, fontSize:'0.75rem',
+        letterSpacing:'0.35em', textTransform:'uppercase',
+        color:T.accent,
+      }}>
+        {label}
+      </span>
+      <div style={{ height:'1px', width:'40px', background:T.accent, opacity:0.7 }} />
+    </div>
+  );
+}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+function SectionTitle({ children, light = false }) {
+  return (
+    <h2 style={{
+      fontFamily:'"Bebas Neue",sans-serif',
+      fontWeight:400,
+      fontSize:'clamp(2.4rem, 6vw, 5rem)',
+      letterSpacing:'0.04em',
+      lineHeight:1.0,
+      color: light ? T.navyDark : T.white,
+      textAlign:'center',
+      margin:'0 0 14px',
+    }}>
+      {children}
+    </h2>
+  );
+}
 
-  :root {
-    --navy:     #050d1a;
-    --navy2:    #081629;
-    --navy3:    #0d2044;
-    --blue:     #1a3a6e;
-    --accent:   #c8a84b;
-    --accent2:  #e8c96a;
-    --white:    #f0eee8;
-    --muted:    #8a99b0;
-    --border:   rgba(200,168,75,0.18);
-    --red:      #c0392b;
-  }
+function Btn({ href, children, primary = true, external = false }) {
+  const base = {
+    fontFamily:'"Bebas Neue",sans-serif',
+    fontWeight:400, fontSize:'0.9rem',
+    letterSpacing:'0.22em', textTransform:'uppercase',
+    display:'inline-flex', alignItems:'center', gap:'10px',
+    padding:'13px 34px',
+    textDecoration:'none', transition:'all 0.25s',
+    cursor:'pointer', border:'none',
+  };
+  const style = primary
+    ? { ...base, background:T.saffron, color:T.navyDark, boxShadow:`0 0 28px rgba(255,153,51,0.5)` }
+    : { ...base, background:'transparent', color:T.white, border:`1px solid rgba(240,237,232,0.3)` };
 
-  html { scroll-behavior: smooth; }
+  if (external) return <a href={href} target="_blank" rel="noopener noreferrer" style={style}
+    onMouseEnter={e => primary ? e.currentTarget.style.boxShadow='0 0 42px rgba(255,153,51,0.7)' : e.currentTarget.style.borderColor='rgba(240,237,232,0.7)'}
+    onMouseLeave={e => primary ? e.currentTarget.style.boxShadow='0 0 28px rgba(255,153,51,0.5)' : e.currentTarget.style.borderColor='rgba(240,237,232,0.3)'}>{children}</a>;
+  return <Link href={href} style={style}
+    onMouseEnter={e => primary ? e.currentTarget.style.boxShadow='0 0 42px rgba(255,153,51,0.7)' : e.currentTarget.style.borderColor='rgba(240,237,232,0.7)'}
+    onMouseLeave={e => primary ? e.currentTarget.style.boxShadow='0 0 28px rgba(255,153,51,0.5)' : e.currentTarget.style.borderColor='rgba(240,237,232,0.3)'}>{children}</Link>;
+}
 
-  body {
-    background: var(--navy);
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
+/* ─────────────────────────────────────────────────────────────────
+   RAZORPAY SCRIPT LOADER
+   Loads the Razorpay checkout SDK once, on demand.
+───────────────────────────────────────────────────────────────── */
+function loadRazorpay() {
+  return new Promise((resolve) => {
+    if (window.Razorpay) { resolve(true); return; }
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.onload  = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+}
 
-  h1, h2, h3, h4 {
-    font-family: 'Playfair Display', serif;
-    line-height: 1.15;
-  }
+/* ─────────────────────────────────────────────────────────────────
+   DONATION MODAL
+   Dark-blue cinematic modal with amount presets + custom input.
+   Opens Razorpay checkout on confirm.
+───────────────────────────────────────────────────────────────── */
+const PRESETS = [50, 100, 200, 500, 1000];
 
-  a { color: inherit; text-decoration: none; }
+function DonationModal({ onClose }) {
+  const [selected,  setSelected]  = useState(100);
+  const [custom,    setCustom]    = useState('');
+  const [loading,   setLoading]   = useState(false);
+  const [error,     setError]     = useState('');
 
-  /* ── NAV ── */
-  .nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 2.5rem;
-    background: rgba(5,13,26,0.85);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-  }
-  .nav-logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--accent);
-  }
-  .nav-links {
-    display: flex; align-items: center; gap: 1.5rem;
-    font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--muted);
-  }
-  .nav-links a:hover { color: var(--white); }
-  .nav-cta {
-    background: var(--accent); color: var(--navy) !important;
-    padding: 0.4rem 1rem; border-radius: 2px;
-    font-weight: 500;
-  }
-  .hamburger {
-    display: none; background: none; border: none;
-    color: var(--white); font-size: 1.4rem; cursor: pointer;
-  }
-  @media (max-width: 900px) {
-    .hamburger { display: block; }
-    .nav-links {
-      display: none; position: absolute; top: 100%; left: 0; right: 0;
-      flex-direction: column; background: var(--navy2);
-      padding: 1.5rem; gap: 1rem;
-    }
-    .nav-links.open { display: flex; }
-  }
+  // Final amount: custom overrides preset
+  const finalAmount = custom ? parseInt(custom) : selected;
 
-  /* ── ANNOUNCEMENT BANNER (CHANGE 1) ── */
-  .announcement-banner {
-    margin-top: 60px;
-    background: linear-gradient(90deg, #0a1f3a 0%, #0f2d50 50%, #0a1f3a 100%);
-    border-bottom: 2px solid var(--accent);
-    padding: 0.75rem 2rem;
-    display: flex; align-items: center; justify-content: center;
-    gap: 0.75rem; flex-wrap: wrap;
-    font-size: 0.9rem; letter-spacing: 0.04em;
-    text-align: center;
-  }
-  .announcement-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--accent);
-    animation: pulse 1.6s ease-in-out infinite;
-    flex-shrink: 0;
-  }
-  .announcement-banner strong { color: var(--accent2); font-weight: 700; font-size: 1rem; }
-  .announcement-divider { color: var(--muted); }
-  .announcement-link {
-    margin-left: 0.5rem; color: var(--accent);
-    border: 1px solid var(--accent); padding: 0.2rem 0.75rem;
-    border-radius: 2px; font-size: 0.78rem; letter-spacing: 0.08em;
-    text-transform: uppercase;
-    transition: background 0.2s;
-  }
-  .announcement-link:hover { background: var(--accent); color: var(--navy); }
-  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
-
-  /* ── HERO ── (v2: real image background) */
-  .hero {
-    min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    position: relative; overflow: hidden;
-    /*
-     * ── CHANGE 6: REAL IMAGE BG ──────────────────────────────────────
-     * ADD /public/hero.jpg — ideally a cinematic wide shot of the team,
-     * Edgbaston stadium, or a player mid-action.
-     * The dark overlays below keep text fully readable over any image.
-     * ─────────────────────────────────────────────────────────────────
-     */
-    background:
-      url('/hero.jpg') center / cover no-repeat;
-  }
-  /* Primary cinematic overlay — deep navy tint so text always wins */
-  .hero::before {
-    content: ''; position: absolute; inset: 0; z-index: 1;
-    background: linear-gradient(
-      160deg,
-      rgba(5,13,26,0.82) 0%,
-      rgba(8,22,41,0.72) 40%,
-      rgba(10,31,58,0.65) 70%,
-      rgba(5,13,26,0.88) 100%
-    );
-  }
-  /* Bottom fade so hero-scroll indicator is readable */
-  .hero::after {
-    content: ''; position: absolute; bottom: 0; left: 0; right: 0; z-index: 1;
-    height: 220px;
-    background: linear-gradient(to bottom, transparent, rgba(5,13,26,0.95));
-  }
-  .hero-bg { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
-  .hero-grain {
-    position: absolute; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    opacity: 0.35; /* slightly reduced — real photo adds its own texture */
-  }
-  .hero-vignette {
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse at center, transparent 20%, rgba(5,13,26,0.65) 100%);
-  }
-  .hero-scanlines {
-    position: absolute; inset: 0;
-    background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.03) 3px, rgba(0,0,0,0.03) 4px);
-    pointer-events: none;
-  }
-  .hero-content {
-    position: relative; z-index: 3; /* above ::before, ::after, and hero-bg */
-    text-align: center; padding: 6rem 2rem 4rem;
-    max-width: 900px;
-  }
-  .hero-byline {
-    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 1.5rem;
-  }
-  .hero-title {
-    display: flex; flex-direction: column; align-items: center; gap: 0;
-    margin-bottom: 1.5rem;
-  }
-  .hero-title-small {
-    font-size: clamp(2.5rem, 8vw, 6rem);
-    font-weight: 700; color: var(--muted);
-    letter-spacing: 0.12em;
-  }
-  .hero-title-large {
-    font-size: clamp(5rem, 18vw, 14rem);
-    font-weight: 900; color: var(--white);
-    letter-spacing: -0.02em; line-height: 1;
-    background: linear-gradient(180deg, #f0eee8 0%, #c8a84b 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  }
-  .hero-flag { font-size: clamp(2rem, 5vw, 4rem); margin-top: 0.5rem; }
-  .hero-desc {
-    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-    color: var(--white); line-height: 1.6; margin-bottom: 1rem;
-  }
-  .hero-desc em { color: var(--accent2); font-style: italic; }
-  .hero-tagline {
-    font-size: 0.8rem; letter-spacing: 0.12em;
-    color: var(--muted); margin-bottom: 2.5rem;
-    text-transform: uppercase;
-  }
-  .hero-actions {
-    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
-    margin-bottom: 3rem;
-  }
-  /* ── CHANGE 3: UPDATED STATS ── */
-  .hero-stats {
-    display: flex; align-items: center; justify-content: center;
-    gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;
-  }
-  .stat { text-align: center; }
-  .stat-n { display: block; font-family: 'DM Mono', monospace; font-size: 1.6rem; color: var(--accent2); }
-  .stat-l { display: block; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-  .stat-sep { width: 1px; height: 2.5rem; background: var(--border); }
-  /* ── CHANGE 3b: LANGUAGES ── */
-  .hero-languages {
-    display: flex; align-items: center; justify-content: center;
-    gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;
-  }
-  .lang-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-  .lang-tag {
-    font-size: 0.68rem; padding: 0.2rem 0.6rem;
-    border: 1px solid var(--border); border-radius: 2px;
-    color: var(--muted); letter-spacing: 0.06em;
-  }
-  .hero-streaming {
-    font-size: 0.72rem; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--accent);
-  }
-  .hero-scroll {
-    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-    font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--muted); z-index: 3;
-    animation: fadeInUp 1s 1.5s both;
-  }
-  .scroll-line {
-    width: 1px; height: 40px;
-    background: linear-gradient(to bottom, var(--muted), transparent);
-    animation: scrollPulse 1.8s ease-in-out infinite;
-  }
-  @keyframes scrollPulse { 0%,100%{height:40px;} 50%{height:20px;} }
-  @keyframes fadeInUp { from{opacity:0;transform:translateX(-50%) translateY(20px);} to{opacity:1;transform:translateX(-50%) translateY(0);} }
-
-  /* ── CHANGE 8: GLOBAL HOVER TRANSITIONS ── */
-  /* All interactive elements get a unified transition so nothing feels snappy */
-  a, button { transition: all 0.3s ease; }
-
-  /* ── BUTTONS ── */
-  .btn-primary {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    background: var(--white); color: var(--navy);
-    padding: 0.75rem 1.8rem; border-radius: 2px;
-    font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em;
-    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
-    min-height: 44px; /* mobile tap target */
-  }
-  .btn-primary:hover {
-    background: var(--accent2);
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(200,168,75,0.3);
-  }
-  .btn-primary.small { padding: 0.5rem 1.2rem; font-size: 0.78rem; }
-  .btn-ghost {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    border: 1px solid rgba(240,238,232,0.3); color: var(--white);
-    padding: 0.75rem 1.8rem; border-radius: 2px;
-    font-size: 0.85rem; letter-spacing: 0.06em;
-    transition: border-color 0.3s, background 0.3s, transform 0.3s;
-    min-height: 44px;
-  }
-  .btn-ghost:hover {
-    border-color: var(--white);
-    background: rgba(240,238,232,0.06);
-    transform: scale(1.05);
-  }
-  .btn-gold {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: var(--navy);
-    padding: 0.85rem 2rem; border-radius: 2px;
-    font-size: 0.9rem; font-weight: 700; letter-spacing: 0.04em;
-    transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 4px 24px rgba(200,168,75,0.25);
-    min-height: 44px;
-  }
-  .btn-gold:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 36px rgba(200,168,75,0.45);
-  }
-
-  /* ── SECTIONS ── (v2: 80px vertical padding for breathing room) */
-  .section {
-    padding: 80px 20px; /* CHANGE 9 */
-    max-width: 1200px; margin: 0 auto;
-  }
-  .section-header {
-    text-align: center; margin-bottom: 4rem;
-  }
-  .section-eyebrow {
-    display: block; font-size: 0.68rem; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--accent); margin-bottom: 1rem;
-  }
-  .section-header h2 {
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    margin-bottom: 1rem;
-  }
-  .section-body {
-    max-width: 680px; margin: 0 auto;
-    color: var(--muted); font-size: 1rem; line-height: 1.8;
-  }
-
-  /* ── PILLARS ── */
-  .pillars {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 2px; margin-bottom: 3rem;
-  }
-  .pillar {
-    background: var(--navy2); padding: 2rem 1.8rem;
-    border: 1px solid var(--border);
-    transition: border-color 0.3s, background 0.3s, transform 0.3s, box-shadow 0.3s;
-  }
-  .pillar:hover {
-    border-color: var(--accent);
-    background: var(--navy3);
-    transform: translateY(-5px);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
-  }
-  .pillar-n {
-    display: block; font-family: 'DM Mono', monospace;
-    font-size: 0.7rem; color: var(--accent);
-    letter-spacing: 0.1em; margin-bottom: 1rem;
-  }
-  .pillar h3 { font-size: 1.1rem; margin-bottom: 0.75rem; }
-  .pillar p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
-  .film-meta {
-    display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;
-  }
-  .meta-tag {
-    font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
-    border: 1px solid var(--border); padding: 0.35rem 0.9rem; border-radius: 2px;
-    color: var(--muted);
-  }
-
-  /* ── TIMELINE (CHANGE 4a) ── */
-  .timeline-section { overflow: hidden; }
-  .timeline {
-    position: relative; max-width: 900px; margin: 0 auto;
-    padding: 1rem 0;
-  }
-  .timeline-spine {
-    position: absolute; top: 0; bottom: 0; left: 50%;
-    width: 1px; background: var(--border);
-    transform: translateX(-50%);
-  }
-  .timeline-item {
-    display: flex; align-items: flex-start;
-    gap: 3rem; margin-bottom: 3rem; position: relative;
-  }
-  .timeline-item.left { flex-direction: row-reverse; }
-  .timeline-item.right { flex-direction: row; }
-  .timeline-dot {
-    position: absolute; left: 50%; top: 1.2rem;
-    width: 12px; height: 12px; border-radius: 50%;
-    background: var(--blue); border: 2px solid var(--accent);
-    transform: translateX(-50%); z-index: 2; flex-shrink: 0;
-  }
-  .timeline-item.highlight .timeline-dot {
-    background: var(--accent); box-shadow: 0 0 12px var(--accent);
-  }
-  .timeline-card {
-    width: calc(50% - 2.5rem);
-    background: var(--navy2); border: 1px solid var(--border);
-    padding: 1.8rem; border-radius: 2px;
-    transition: border-color 0.2s;
-  }
-  .timeline-item.highlight .timeline-card {
-    border-color: var(--accent);
-    background: linear-gradient(135deg, var(--navy2), #0a2240);
-  }
-  .timeline-card:hover { border-color: var(--accent); }
-  .timeline-year {
-    display: block; font-family: 'DM Mono', monospace;
-    font-size: 0.75rem; color: var(--accent); letter-spacing: 0.1em;
-    margin-bottom: 0.5rem;
-  }
-  .timeline-card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
-  .timeline-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
-  @media (max-width: 700px) {
-    .timeline-spine { left: 1.2rem; }
-    .timeline-item, .timeline-item.left, .timeline-item.right { flex-direction: column; padding-left: 3rem; }
-    .timeline-dot { left: 1.2rem; }
-    .timeline-card { width: 100%; }
-  }
-
-  /* ── ACCOLADES (CHANGE 4b) ── */
-  .accolades-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1.5rem; margin-bottom: 3rem;
-  }
-  .accolade-card {
-    background: var(--navy2); border: 1px solid var(--border);
-    padding: 1.5rem; text-align: center;
-    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-    border-radius: 2px;
-  }
-  .accolade-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--accent);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
-  }
-  .accolade-card.winner { border-color: rgba(200,168,75,0.4); }
-  /* 👉 Replace this with <img> of real award photo/certificate */
-  .accolade-img-placeholder {
-    width: 64px; height: 64px; margin: 0 auto 1rem;
-    background: var(--navy3); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.8rem; border: 1px solid var(--border);
-  }
-  .accolade-type {
-    font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 0.4rem;
-  }
-  .accolade-card h4 { font-size: 0.95rem; margin-bottom: 0.4rem; font-family: 'DM Sans'; font-weight: 500; }
-  .accolade-org { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.5rem; }
-  .accolade-year { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--accent); }
-  .awards-count-row {
-    display: flex; justify-content: center; gap: 4rem; flex-wrap: wrap;
-  }
-  .awards-count { text-align: center; }
-  .awards-count span { display: block; font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--accent); }
-  .awards-count label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-
-  /* ── REACTIONS (CHANGE 4c) ── */
-  .reactions-section { overflow: hidden; }
-  .reactions-marquee-wrapper {
-    overflow: hidden; position: relative; margin-bottom: 3rem;
-  }
-  .reactions-track {
-    display: flex; gap: 1.5rem;
-    animation: marqueeScroll 32s linear infinite;
-    width: max-content;
-  }
-  .reactions-track:hover { animation-play-state: paused; }
-  @keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  .reaction-card {
-    width: 340px; flex-shrink: 0;
-    background: var(--navy2); border: 1px solid var(--border);
-    padding: 2rem; border-radius: 2px;
-    position: relative;
-  }
-  .reaction-quote-mark {
-    position: absolute; top: 1rem; right: 1.2rem;
-    font-size: 4rem; color: var(--border);
-    font-family: 'Playfair Display', serif; line-height: 1;
-  }
-  .reaction-card p { font-size: 0.9rem; line-height: 1.7; margin-bottom: 1.2rem; font-style: italic; }
-  .reaction-card footer { font-size: 0.78rem; }
-  .reaction-card footer strong { display: block; color: var(--accent); }
-  .reaction-card footer span { color: var(--muted); }
-  .screenings-strip { text-align: center; }
-  .screenings-label { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
-  .screenings-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
-  .screening-tag { font-size: 0.75rem; color: var(--muted); border: 1px solid var(--border); padding: 0.3rem 0.8rem; border-radius: 2px; }
-
-  /* ── ROCK SONG (CHANGE 4d) ── */
-  .song-section {
-    background: linear-gradient(135deg, var(--navy2) 0%, #0a1829 100%);
-    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-    max-width: 100%; padding: 6rem 2rem;
-  }
-  .song-inner {
-    max-width: 1100px; margin: 0 auto;
-    display: flex; align-items: center; gap: 5rem; flex-wrap: wrap;
-  }
-  .song-text { flex: 1; min-width: 300px; }
-  .song-text h2 { font-size: clamp(1.8rem, 3.5vw, 2.8rem); margin: 0.75rem 0 1rem; }
-  .song-text p { color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem; }
-  .song-text strong { color: var(--white); }
-  .song-awards { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2rem; }
-  .song-award-badge {
-    font-size: 0.75rem; padding: 0.35rem 0.9rem;
-    background: rgba(200,168,75,0.1); border: 1px solid var(--border);
-    color: var(--accent); border-radius: 2px;
-  }
-  .song-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .song-visual { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
-  .song-vinyl {
-    position: relative; width: 180px; height: 180px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .vinyl-outer {
-    width: 180px; height: 180px; border-radius: 50%;
-    background: radial-gradient(circle, #1a1a2e 30%, #0f0f1e 100%);
-    border: 2px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    animation: spin 8s linear infinite;
-  }
-  .vinyl-inner {
-    width: 60px; height: 60px; border-radius: 50%;
-    background: var(--navy); border: 2px solid var(--accent);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.5rem;
-  }
-  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-  .vinyl-groove {
-    position: absolute; border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.04);
-    width: calc(70px + var(--n) * 18px);
-    height: calc(70px + var(--n) * 18px);
-    pointer-events: none;
-  }
-  .song-composer { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-
-  /* ── IMPACT ── */
-  .impact-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
-  }
-  .impact-stat {
-    background: var(--navy2); border: 1px solid var(--border);
-    padding: 2rem 1rem; text-align: center; border-radius: 2px;
-    transition: border-color 0.2s;
-  }
-  .impact-stat:hover { border-color: var(--accent); }
-  .impact-icon { display: block; font-size: 1.8rem; margin-bottom: 0.75rem; }
-  .impact-n { display: block; font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--accent2); }
-  .impact-l { display: block; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 0.25rem; }
-
-  /* ── BLOG (CHANGE 4e) ── */
-  .blog-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-  }
-  .blog-card {
-    background: var(--navy2); border: 1px solid var(--border);
-    border-radius: 2px; overflow: hidden;
-    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-  }
-  .blog-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--accent);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
-  }
-  .blog-card-img-placeholder {
-    height: 160px; background: var(--navy3);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 3rem; border-bottom: 1px solid var(--border);
-  }
-  /* 👉 Replace with <img src="/blog/yourimage.jpg" alt="..." style={{width:'100%',height:'160px',objectFit:'cover'}} /> */
-  .blog-card-body { padding: 1.5rem; }
-  .blog-meta { display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-  .blog-card h3 { font-size: 1rem; margin-bottom: 0.75rem; line-height: 1.4; }
-  .blog-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.2rem; }
-  .blog-read-more { font-size: 0.78rem; color: var(--accent); letter-spacing: 0.06em; }
-  .blog-read-more:hover { color: var(--accent2); }
-
-  /* ── WATCH ── */
-  .watch-cards {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem;
-  }
-  .watch-card {
-    background: var(--navy2); border: 1px solid var(--border);
-    padding: 2.5rem 1.5rem; text-align: center; border-radius: 2px;
-    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
-    min-height: 44px;
-  }
-  .watch-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-5px);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
-  }
-  .watch-card.featured {
-    background: linear-gradient(135deg, var(--navy3), #0c1e3c);
-    border-color: var(--accent);
-  }
-  .watch-card span { display: block; font-size: 2.5rem; margin-bottom: 1rem; }
-  .watch-card strong { display: block; font-family: 'Playfair Display', serif; margin-bottom: 0.5rem; }
-  .watch-card p { font-size: 0.82rem; color: var(--muted); }
-
-  /* ── DONATION BANNER (v2: emotional rewrite) ── */
-  .donation-banner {
-    background: linear-gradient(135deg, #0c1e38 0%, #0f2a4a 100%);
-    border-top: 2px solid var(--accent); border-bottom: 1px solid var(--border);
-    padding: 5rem 2rem;
-  }
-  .donation-inner {
-    max-width: 1000px; margin: 0 auto;
-    display: flex; align-items: flex-start; justify-content: space-between;
-    gap: 3rem; flex-wrap: wrap;
-  }
-  .donation-text { flex: 1; min-width: 280px; }
-  .donation-eyebrow {
-    display: block;
-    font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 0.9rem;
-  }
-  .donation-text h2 {
-    font-size: clamp(1.5rem, 3vw, 2.4rem);
-    margin-bottom: 1.2rem; line-height: 1.25;
-  }
-  .donation-text p {
-    color: var(--muted); font-size: 0.92rem; line-height: 1.85;
-    margin-bottom: 0.75rem;
-  }
-  .donation-subline {
-    font-size: 0.95rem !important;
-    color: var(--white) !important;
-    font-style: italic;
-    border-left: 2px solid var(--accent);
-    padding-left: 1rem; margin-top: 1.25rem !important;
-  }
-  .donation-actions {
-    text-align: center;
-    display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
-    padding-top: 0.5rem;
-  }
-  .donation-secure { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.06em; }
-  .donation-impact-row {
-    display: flex; flex-direction: column; gap: 0.4rem;
-    margin-top: 0.5rem;
-    border: 1px solid var(--border); border-radius: 2px;
-    padding: 1rem 1.25rem; background: rgba(200,168,75,0.04);
-    width: 100%;
-  }
-  .donation-impact-row span {
-    font-size: 0.75rem; color: var(--muted); letter-spacing: 0.04em;
-  }
-  .donation-impact-row span::before { content: "→ "; color: var(--accent); }
-
-  /* ── MAIN CTA ── */
-  .cta-section {
-    background: linear-gradient(160deg, #081629 0%, #0d2044 50%, #050d1a 100%);
-    padding: 7rem 2rem; text-align: center;
-    position: relative; overflow: hidden;
-    border-top: 1px solid var(--border);
-  }
-  .cta-grain {
-    position: absolute; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    opacity: 0.3; pointer-events: none;
-  }
-  .cta-flag { font-size: 3rem; display: block; margin-bottom: 1.5rem; position: relative; z-index: 1; }
-  .cta-section h2 { font-size: clamp(1.6rem, 3.5vw, 2.6rem); max-width: 720px; margin: 0 auto 1.5rem; position: relative; z-index: 1; }
-  .cta-section > p { color: var(--muted); max-width: 560px; margin: 0 auto 2.5rem; position: relative; z-index: 1; }
-  .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; margin-bottom: 1.5rem; }
-  .cta-secure { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.06em; position: relative; z-index: 1; }
-
-  /* ── FOOTER ── */
-  .footer {
-    background: var(--navy2); border-top: 1px solid var(--border);
-    padding: 4rem 2rem 2rem;
-  }
-  .footer-top {
-    max-width: 1100px; margin: 0 auto;
-    display: grid; grid-template-columns: 2fr 1fr 1fr;
-    gap: 3rem; margin-bottom: 3rem;
-  }
-  @media (max-width: 700px) { .footer-top { grid-template-columns: 1fr; } }
-  .footer-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 0.25rem; color: var(--accent); }
-  .footer-sub { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; }
-  .footer-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
-  .footer-nav { display: flex; flex-direction: column; gap: 0.6rem; }
-  .footer-nav-title { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.25rem; }
-  .footer-nav a, .footer-contact a { font-size: 0.82rem; color: var(--muted); transition: color 0.2s; }
-  .footer-nav a:hover, .footer-contact a:hover { color: var(--white); }
-  .footer-contact { display: flex; flex-direction: column; gap: 0.6rem; }
-  .footer-directors { font-size: 0.82rem; color: var(--muted); margin-top: 0.5rem; line-height: 1.6; }
-  .footer-credits { max-width: 1100px; margin: 0 auto 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.72rem; color: var(--muted); line-height: 1.7; }
-  .footer-bottom { max-width: 1100px; margin: 0 auto; font-size: 0.7rem; color: var(--muted); letter-spacing: 0.06em; text-align: center; }
-
-  /* ─────────────────────────────────────────────
-     MOBILE RESPONSIVE (CHANGE 12 — thorough pass)     ───────────────────────────────────────────── */
-  @media (max-width: 600px) {
-    /* nav */
-    .nav { padding: 0.9rem 1.2rem; }
-    .nav-logo { font-size: 0.88rem; }
-
-    /* announcement */
-    .announcement-banner { font-size: 0.8rem; gap: 0.5rem; padding: 0.6rem 1rem; }
-    .announcement-link { display: none; } /* keep it clean on tiny screens */
-
-    /* hero */
-    .hero-content { padding: 5rem 1.2rem 3rem; }
-    .hero-title-small { font-size: clamp(1.8rem, 10vw, 3rem); }
-    .hero-title-large { font-size: clamp(3.5rem, 18vw, 7rem); }
-    .hero-desc { font-size: 1rem; }
-    .hero-stats { gap: 1rem; }
-    .stat-n { font-size: 1.25rem; }
-    .stat-sep { display: none; } /* stack cleanly */
-    .hero-languages { gap: 0.35rem; }
-    .lang-tag { font-size: 0.62rem; padding: 0.15rem 0.45rem; }
-
-    /* hero actions — stack on mobile */
-    .hero-actions { flex-direction: column; align-items: center; gap: 0.75rem; }
-    .btn-primary, .btn-ghost, .btn-gold {
-      width: 100%; max-width: 280px;
-      justify-content: center;
-      font-size: 0.88rem;
+  const handlePay = async () => {
+    setError('');
+    if (!finalAmount || finalAmount < 1) {
+      setError('Please enter a valid amount (minimum ₹1).');
+      return;
     }
 
-    /* sections */
-    .section { padding: 60px 16px; }
-    .section-header h2 { font-size: 1.6rem; }
+    setLoading(true);
 
-    /* pillars */
-    .pillars { grid-template-columns: 1fr; gap: 1px; }
+    // 1 — Load Razorpay SDK
+    const ok = await loadRazorpay();
+    if (!ok) {
+      setError('Could not load payment system. Check your internet and try again.');
+      setLoading(false);
+      return;
+    }
 
-    /* timeline */
-    .timeline-card { padding: 1.2rem; }
-    .timeline-card h3 { font-size: 0.95rem; }
+    // 2 — Create order on our server
+    let order;
+    try {
+      const res = await fetch('/api/create-order', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ amount: finalAmount * 100 }), // convert ₹ → paise
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Order creation failed');
+      order = data;
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+      return;
+    }
 
-    /* accolades */
-    .accolades-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-    .awards-count-row { gap: 2rem; }
+    // 3 — Open Razorpay checkout
+    const options = {
+      key:         order.keyId,
+      amount:      order.amount,
+      currency:    order.currency,
+      name:        'Dekh Le! India',
+      description: 'Support the film movement',
+      order_id:    order.orderId,
+      theme:       { color: '#00BFFF' },
 
-    /* reactions marquee — reduce speed for readability */
-    .reactions-track { animation-duration: 48s; }
-    .reaction-card { width: 280px; padding: 1.5rem 1.2rem; }
+      // Prefill — leave blank so user fills their details
+      prefill: { name: '', email: '', contact: '' },
 
-    /* song */
-    .song-inner { flex-direction: column; gap: 2.5rem; }
-    .song-visual { order: -1; }
+      handler(response) {
+        // Payment successful
+        onClose();
+        setTimeout(() => alert(`🙏 Thank you! Your contribution of ₹${finalAmount} has been received.\n\nPayment ID: ${response.razorpay_payment_id}`), 100);
+      },
 
-    /* impact */
-    .impact-grid { grid-template-columns: repeat(2, 1fr); }
+      modal: {
+        ondismiss() { setLoading(false); },
+      },
+    };
 
-    /* blog */
-    .blog-grid { grid-template-columns: 1fr; }
+    const rz = new window.Razorpay(options);
+    rz.on('payment.failed', (resp) => {
+      setError(`Payment failed: ${resp.error.description}`);
+      setLoading(false);
+    });
+    rz.open();
+    setLoading(false);
+  };
 
-    /* watch */
-    .watch-cards { grid-template-columns: 1fr; }
+  // Close on backdrop click
+  const handleBackdrop = (e) => {
+    if (e.target === e.currentTarget) onClose();
+  };
 
-    /* donation */
-    .donation-inner { flex-direction: column; }
-    .donation-impact-row { font-size: 0.72rem; }
+  return (
+    <div
+      onClick={handleBackdrop}
+      style={{
+        position:'fixed', inset:0, zIndex:9999,
+        background:'rgba(3,8,16,0.88)',
+        backdropFilter:'blur(10px)',
+        display:'flex', alignItems:'center', justifyContent:'center',
+        padding:'20px',
+        animation:'fadeIn 0.25s ease',
+      }}
+    >
+      <div style={{
+        background:`linear-gradient(145deg, #0D2347 0%, #060F22 100%)`,
+        border:'1px solid rgba(0,191,255,0.25)',
+        borderRadius:'4px',
+        padding:'40px 36px',
+        maxWidth:'440px', width:'100%',
+        boxShadow:'0 24px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(0,191,255,0.1)',
+        position:'relative',
+        animation:'slideUp 0.3s ease',
+      }}>
 
-    /* cta */
-    .cta-section { padding: 5rem 1.2rem; }
-    .cta-actions { flex-direction: column; align-items: center; }
+        {/* Close button */}
+        <button onClick={onClose} style={{ position:'absolute', top:'16px', right:'18px', background:'none', border:'none', color:'rgba(240,237,232,0.4)', cursor:'pointer', fontSize:'1.1rem', lineHeight:1, transition:'color 0.2s' }}
+          onMouseEnter={e => e.target.style.color='#fff'}
+          onMouseLeave={e => e.target.style.color='rgba(240,237,232,0.4)'}>
+          ✕
+        </button>
 
-    /* footer */
-    .footer-credits { font-size: 0.66rem; }
-  }
+        {/* Header */}
+        <div style={{ marginBottom:'24px' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'6px' }}>
+            <div style={{ height:'1px', width:'28px', background:'#00BFFF', opacity:0.7 }} />
+            <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.68rem', letterSpacing:'0.32em', color:'#00BFFF', textTransform:'uppercase' }}>
+              Support the Film
+            </span>
+          </div>
+          <h3 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'2rem', letterSpacing:'0.04em', color:'#FFFFFF', lineHeight:1.1, marginBottom:'8px' }}>
+            Contribute to<br />Dekh Le! India 🇮🇳
+          </h3>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.85rem', color:'rgba(240,237,232,0.5)', lineHeight:1.65 }}>
+            Every rupee funds skill training so these champions can build a livelihood from the game they love.
+          </p>
+        </div>
 
-  @media (max-width: 400px) {
-    .accolades-grid { grid-template-columns: 1fr; }
-    .hero-stats { flex-direction: column; gap: 0.75rem; }
-    .stat-sep { display: none; }
-  }
-`;
+        {/* Amount presets */}
+        <div style={{ marginBottom:'12px' }}>
+          <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.62rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(240,237,232,0.35)', marginBottom:'10px' }}>
+            Choose Amount (₹)
+          </p>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(5,1fr)', gap:'6px' }}>
+            {PRESETS.map(amt => (
+              <button key={amt} onClick={() => { setSelected(amt); setCustom(''); setError(''); }}
+                style={{
+                  fontFamily:'"Bebas Neue",sans-serif', fontWeight:400,
+                  fontSize:'0.95rem', letterSpacing:'0.04em',
+                  padding:'10px 4px', cursor:'pointer', border:'none', transition:'all 0.18s',
+                  background: !custom && selected === amt ? '#00BFFF'        : 'rgba(0,191,255,0.08)',
+                  color:      !custom && selected === amt ? '#060F22'        : 'rgba(240,237,232,0.65)',
+                  outline:    !custom && selected === amt ? 'none'           : '1px solid rgba(0,191,255,0.18)',
+                }}>
+                ₹{amt}
+              </button>
+            ))}
+          </div>
+        </div>
 
+        {/* Custom amount */}
+        <div style={{ marginBottom:'24px' }}>
+          <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.62rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(240,237,232,0.35)', marginBottom:'8px' }}>
+            Or Enter Custom Amount
+          </p>
+          <div style={{ position:'relative' }}>
+            <span style={{ position:'absolute', left:'14px', top:'50%', transform:'translateY(-50%)', fontFamily:'"Bebas Neue",sans-serif', fontSize:'1.1rem', color:'rgba(240,237,232,0.4)' }}>₹</span>
+            <input
+              type="number"
+              min="1"
+              placeholder="Enter amount"
+              value={custom}
+              onChange={e => { setCustom(e.target.value); setError(''); }}
+              style={{
+                width:'100%', padding:'12px 14px 12px 30px',
+                fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1rem',
+                background:'rgba(255,255,255,0.05)',
+                border:`1px solid ${custom ? 'rgba(0,191,255,0.6)' : 'rgba(255,255,255,0.1)'}`,
+                color:'#FFFFFF', outline:'none',
+                transition:'border-color 0.2s',
+              }}
+              onFocus={e => e.target.style.borderColor='rgba(0,191,255,0.7)'}
+              onBlur={e => e.target.style.borderColor=custom?'rgba(0,191,255,0.6)':'rgba(255,255,255,0.1)'}
+            />
+          </div>
+        </div>
+
+        {/* Error */}
+        {error && (
+          <p style={{ fontFamily:'"Inter",sans-serif', fontSize:'0.8rem', color:'#FF6B6B', marginBottom:'14px', lineHeight:1.5 }}>
+            ⚠ {error}
+          </p>
+        )}
+
+        {/* Pay button */}
+        <button onClick={handlePay} disabled={loading}
+          style={{
+            width:'100%', padding:'15px 24px',
+            fontFamily:'"Bebas Neue",sans-serif', fontWeight:400,
+            fontSize:'1rem', letterSpacing:'0.22em', textTransform:'uppercase',
+            background: loading ? 'rgba(255,153,51,0.5)' : '#FF9933',
+            color: '#060F22',
+            border:'none', cursor: loading ? 'not-allowed' : 'pointer',
+            transition:'all 0.2s',
+            boxShadow: loading ? 'none' : '0 0 28px rgba(255,153,51,0.5)',
+          }}
+          onMouseEnter={e => { if(!loading) e.currentTarget.style.boxShadow='0 0 40px rgba(255,153,51,0.7)'; }}
+          onMouseLeave={e => { if(!loading) e.currentTarget.style.boxShadow='0 0 28px rgba(255,153,51,0.5)'; }}>
+          {loading ? '⏳ Opening Payment...' : `💛 Donate ₹${finalAmount || '—'} Now`}
+        </button>
+
+        {/* Trust line */}
+        <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.72rem', color:'rgba(240,237,232,0.28)', textAlign:'center', marginTop:'14px' }}>
+          🔒 Secured by Razorpay · UPI · Cards · Net Banking
+        </p>
+      </div>
+
+      <style>{`
+        @keyframes fadeIn  { from{opacity:0} to{opacity:1} }
+        @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+      `}</style>
+    </div>
+  );
+}
+
+
+function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [open,     setOpen]     = useState(false);
+
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 60);
+    window.addEventListener('scroll', fn, { passive:true });
+    return () => window.removeEventListener('scroll', fn);
+  }, []);
+
+  const links = [['#story','Story'],['#behind','Behind Scenes'],['#awards','Awards'],['#impact','Impact'],['#watch','Watch']];
+
+  return (
+    <nav style={{
+      position:'fixed', top:0, left:0, right:0, zIndex:1000,
+      transition:'all 0.4s',
+      background: scrolled ? 'rgba(6,15,34,0.97)' : 'transparent',
+      backdropFilter: scrolled ? 'blur(20px)' : 'none',
+      borderBottom: scrolled ? '1px solid rgba(0,191,255,0.12)' : 'none',
+    }}>
+      {/* Tricolor strip */}
+      <div style={{ height:'2px', background:`linear-gradient(90deg, ${T.saffron} 33.33%, rgba(255,255,255,0.12) 33.33% 66.66%, ${T.green} 66.66%)` }} />
+
+      <div style={{ maxWidth:'1280px', margin:'0 auto', padding:'0 32px', height:'68px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+        {/* Logo */}
+        <a href="#" style={{ textDecoration:'none' }}>
+          <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.4rem', letterSpacing:'0.08em', color:T.white, display:'block', lineHeight:1 }}>
+            Dekh Le! India
+          </span>
+          <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.55rem', letterSpacing:'0.3em', color:T.accent, display:'block', marginTop:'2px' }}>
+            Documentary Film · 2024
+          </span>
+        </a>
+
+        {/* Desktop */}
+        <div className="d-nav" style={{ display:'flex', gap:'32px', alignItems:'center' }}>
+          {links.map(([h,l]) => (
+            <a key={h} href={h} style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.85rem', letterSpacing:'0.18em', textTransform:'uppercase', color:T.dim, textDecoration:'none', transition:'color 0.2s' }}
+               onMouseEnter={e => e.target.style.color=T.white}
+               onMouseLeave={e => e.target.style.color=T.dim}>{l}</a>
+          ))}
+          <Btn href="https://www.jiohotstar.com/" external>▶ Watch Now</Btn>
+        </div>
+
+        {/* Hamburger */}
+        <button className="m-ham" onClick={() => setOpen(!open)}
+          style={{ display:'none', background:'none', border:`1px solid ${T.ghost}`, color:T.white, width:'40px', height:'40px', cursor:'pointer', fontSize:'1rem' }}>
+          {open ? '✕' : '☰'}
+        </button>
+      </div>
+
+      {/* Mobile drawer */}
+      {open && (
+        <div style={{ background:'rgba(6,15,34,0.99)', borderTop:`1px solid ${T.accentDim}`, padding:'20px 32px 28px' }}>
+          {links.map(([h,l]) => (
+            <a key={h} href={h} onClick={() => setOpen(false)}
+              style={{ display:'block', fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.2rem', letterSpacing:'0.14em', textTransform:'uppercase', color:T.dim, textDecoration:'none', padding:'11px 0', borderBottom:`1px solid ${T.ghost}` }}>
+              {l}
+            </a>
+          ))}
+          <div style={{ marginTop:'20px', display:'flex', flexDirection:'column', gap:'10px' }}>
+            <Btn href="https://www.jiohotstar.com/" external>▶ Watch on JioHotstar</Btn>
+            <Btn href="/contribute" primary={false}>🤍 Contribute</Btn>
+          </div>
+        </div>
+      )}
+
+      <style>{`
+        @media(max-width:960px){.d-nav{display:none!important}.m-ham{display:flex!important;align-items:center;justify-content:center}}
+        @media(max-width:480px){.award-grid{grid-template-columns:1fr!important}.stat-grid{grid-template-columns:repeat(2,1fr)!important}}
+      `}</style>
+    </nav>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   HERO — full cinematic
+───────────────────────────────────────────────────────────────── */
+function Hero() {
+  const [in_, setIn_] = useState(false);
+  const [showDonate, setShowDonate] = useState(false);   // ← modal state
+
+  useEffect(() => { const t = setTimeout(() => setIn_(true), 120); return () => clearTimeout(t); }, []);
+
+  const anim = (delay) => ({
+    opacity:   in_ ? 1 : 0,
+    transform: in_ ? 'translateY(0)' : 'translateY(30px)',
+    transition:`opacity 1s ease ${delay}ms, transform 1s ease ${delay}ms`,
+  });
+
+  return (
+    <section style={{
+      position:'relative',
+      minHeight:'100vh',
+      display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center',
+      overflow:'hidden',
+      background:T.black,                     /* fallback while video loads */
+    }}>
+
+      {/* ── BACKGROUND VIDEO (YouTube autoplay, muted, looped) ────────
+           Uses the sizzle reel as the hero background.
+           Scaled 2× and centered so it fills the viewport like object-fit:cover.
+           pointer-events:none ensures it never intercepts clicks.
+      ─────────────────────────────────────────────────────────────── */}
+      <div style={{
+        position:'absolute', inset:0, zIndex:0,
+        overflow:'hidden', pointerEvents:'none',
+      }}>
+        <iframe
+          src="https://www.youtube.com/embed/h_JVTDhF6RY?autoplay=1&mute=1&loop=1&playlist=h_JVTDhF6RY&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0"
+          title="Hero background video"
+          allow="autoplay; encrypted-media"
+          style={{
+            position:'absolute',
+            /* over-scale so the 16:9 frame covers any viewport aspect ratio */
+            top:'50%', left:'50%',
+            transform:'translate(-50%, -50%)',
+            width:'calc(100vw + 400px)',        /* wider than viewport */
+            height:'calc(100vw * 0.5625 + 225px)', /* maintain 16:9 + extra */
+            minWidth:'100%',
+            minHeight:'100%',
+            border:'none',
+            opacity:0.35,                       /* subtle — content stays readable */
+            pointerEvents:'none',
+          }}
+        />
+      </div>
+
+      {/* ── CINEMATIC OVERLAYS (stacked, darkening + color grading) ── */}
+
+      {/* Base dark veil — tones down the video brightness */}
+      <div style={{ position:'absolute', inset:0, zIndex:1, pointerEvents:'none',
+        background:'rgba(3,8,16,0.62)' }} />
+
+      {/* Navy color grade — shifts video toward cricket-jersey blue */}
+      <div style={{ position:'absolute', inset:0, zIndex:1, pointerEvents:'none',
+        background:`linear-gradient(175deg, rgba(10,31,68,0.75) 0%, rgba(6,15,34,0.6) 50%, rgba(3,8,16,0.85) 100%)`
+      }} />
+
+      {/* Vignette — darkens edges, keeps center bright */}
+      <div style={{ position:'absolute', inset:0, zIndex:2, pointerEvents:'none',
+        background:'radial-gradient(ellipse at 50% 40%, transparent 30%, rgba(3,8,16,0.7) 100%)'
+      }} />
+
+      {/* Film grain texture */}
+      <div style={{ position:'absolute', inset:0, zIndex:3, pointerEvents:'none', opacity:0.06,
+        backgroundImage:`url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+      }} />
+
+      {/* Top fade — blends into navbar */}
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:'160px', zIndex:4, pointerEvents:'none',
+        background:`linear-gradient(to bottom, ${T.black} 0%, transparent 100%)` }} />
+
+      {/* Bottom fade — blends into next section */}
+      <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'200px', zIndex:4, pointerEvents:'none',
+        background:`linear-gradient(to top, ${T.black} 0%, transparent 100%)` }} />
+
+      {/* ── CONTENT ── */}
+      <div style={{ position:'relative', zIndex:10, textAlign:'center', padding:'120px 24px 80px', maxWidth:'1100px', width:'100%' }}>
+
+        {/* Pre-line */}
+        <div style={{ ...anim(200), display:'flex', alignItems:'center', justifyContent:'center', gap:'14px', marginBottom:'24px' }}>
+          <div style={{ height:'1px', width:'48px', background:T.accent }} />
+          <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.72rem', letterSpacing:'0.38em', color:T.accent, textTransform:'uppercase' }}>
+            A Documentary Film by Shanthi Mohan &amp; Mukund Moorthy
+          </span>
+          <div style={{ height:'1px', width:'48px', background:T.accent }} />
+        </div>
+
+        {/* MAIN TITLE */}
+        <div style={{ ...anim(400), marginBottom:'4px' }}>
+          <h1 style={{
+            fontFamily:'"Bebas Neue",sans-serif', fontWeight:400,
+            fontSize:'clamp(5rem, 18vw, 14rem)',
+            lineHeight:0.88, letterSpacing:'0.02em', margin:0,
+            color:T.white,
+            textShadow:`0 0 60px rgba(0,191,255,0.9), 0 0 120px rgba(0,191,255,0.5), 0 0 200px rgba(0,191,255,0.2), 0 4px 0 rgba(0,0,0,0.9)`,
+          }}>
+            DEKH LE!
+          </h1>
+        </div>
+
+        {/* INDIA — accent color */}
+        <div style={{ ...anim(560), marginBottom:'4px', position:'relative', display:'inline-block' }}>
+          {/* Flag brush stroke */}
+          <div style={{ position:'absolute', bottom:'10%', left:'-2%', right:'-2%', height:'28%',
+            background:`linear-gradient(90deg, ${T.saffron}22, rgba(255,255,255,0.05), ${T.green}22)`,
+            pointerEvents:'none', zIndex:0 }} />
+          <h1 style={{
+            fontFamily:'"Bebas Neue",sans-serif', fontWeight:400,
+            fontSize:'clamp(5rem, 18vw, 14rem)',
+            lineHeight:0.88, letterSpacing:'0.02em', margin:0,
+            color:T.accent, position:'relative', zIndex:1,
+            textShadow:`0 0 50px rgba(0,191,255,1), 0 0 100px rgba(0,191,255,0.7), 0 0 180px rgba(0,191,255,0.35), 0 4px 0 rgba(0,0,0,0.9)`,
+          }}>
+            INDIA
+          </h1>
+        </div>
+
+        {/* Flag emoji — outside any clip context */}
+        <div style={{ ...anim(680), fontSize:'clamp(2rem,5vw,3.5rem)', marginBottom:'28px', marginTop:'8px' }}>🇮🇳</div>
+
+        {/* ── NEW SUBTITLE — emotional, cinematic ── */}
+        <p style={{ ...anim(800), fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'clamp(1rem,2.2vw,1.25rem)', color:T.dim, maxWidth:'580px', margin:'0 auto 16px', lineHeight:1.7, letterSpacing:'0.02em' }}>
+          A story India never saw.<br />
+          <strong style={{ color:T.white, fontWeight:400, fontStyle:'italic' }}>A team that refused to be unseen.</strong>
+        </p>
+
+        {/* ── Tagline ── */}
+        <div style={{ ...anim(950), marginBottom:'48px' }}>
+          <p style={{ fontFamily:'"Georgia",serif', fontStyle:'italic', fontWeight:400, fontSize:'clamp(0.85rem,1.6vw,1rem)', color:T.faint, letterSpacing:'0.06em', margin:0 }}>
+            "No Pity &nbsp;·&nbsp; No Sympathy &nbsp;·&nbsp; Just Give Us an Opportunity"
+          </p>
+        </div>
+
+        {/* ── CTAs ── */}
+        <div style={{ ...anim(1100), display:'flex', gap:'14px', justifyContent:'center', flexWrap:'wrap', marginBottom:'12px' }}>
+          <Btn href="https://www.jiohotstar.com/" external>▶ Watch Now</Btn>
+          {/* Donate button — opens modal */}
+          <button
+            onClick={() => setShowDonate(true)}
+            style={{
+              fontFamily:'"Bebas Neue",sans-serif', fontWeight:400,
+              fontSize:'0.9rem', letterSpacing:'0.22em', textTransform:'uppercase',
+              display:'inline-flex', alignItems:'center', gap:'10px',
+              padding:'13px 34px',
+              background:'transparent', color:T.white,
+              border:`1px solid rgba(240,237,232,0.3)`,
+              cursor:'pointer', transition:'all 0.25s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.borderColor='rgba(240,237,232,0.7)'}
+            onMouseLeave={e => e.currentTarget.style.borderColor='rgba(240,237,232,0.3)'}>
+            🤍 Contribute
+          </button>
+        </div>
+        <p style={{ ...anim(1200), fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.62rem', letterSpacing:'0.2em', textTransform:'uppercase', color:T.faint }}>
+          Streaming on JioHotstar
+        </p>
+        {/* Stats block removed — keep hero clean and focused */}
+
+        {/* Donation modal */}
+        {showDonate && <DonationModal onClose={() => setShowDonate(false)} />}
+      </div>
+
+      {/* Scroll pulse */}
+      <div style={{ ...anim(1500), position:'absolute', bottom:'28px', left:'50%', transform:'translateX(-50%)', zIndex:10, display:'flex', flexDirection:'column', alignItems:'center', gap:'6px' }}>
+        <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.55rem', letterSpacing:'0.3em', textTransform:'uppercase', color:T.faint }}>Scroll</span>
+        <div style={{ width:'1px', height:'40px', background:`linear-gradient(to bottom, ${T.accent}88, transparent)`, animation:'scrollPulse 2s ease-in-out infinite' }} />
+      </div>
+
+      <style>{`@keyframes scrollPulse{0%,100%{opacity:0.3}50%{opacity:1}}`}</style>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   STORY SECTION
+───────────────────────────────────────────────────────────────── */
+function StorySection() {
+  return (
+    <section id="story" style={{ padding:'120px 24px', background:`linear-gradient(180deg, ${T.black} 0%, ${T.navyDark} 100%)`, position:'relative', overflow:'hidden' }}>
+      <div style={{ position:'absolute', top:'50%', left:'-100px', transform:'translateY(-50%)', width:'400px', height:'400px', borderRadius:'50%', background:`radial-gradient(circle, ${T.accentDim} 0%, transparent 60%)`, pointerEvents:'none' }} />
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.accent}44 50%, transparent 100%)` }} />
+
+      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+        <FadeUp>
+          <SectionEyebrow label="The Film" />
+          <SectionTitle>
+            They Played With Courage.<br />
+            <span style={{ color:T.accent }}>We Filmed With Love.</span>
+          </SectionTitle>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'600px', margin:'0 auto 60px', lineHeight:1.75 }}>
+            Dekh Le! India chronicles the extraordinary journey of India's first blind women's national cricket team — from remote villages across six states to the World Games at Edgbaston, Birmingham.
+          </p>
+        </FadeUp>
+
+        {/* Story cards */}
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))', gap:'1px', background:`rgba(0,191,255,0.1)` }}>
+          {BEHIND_SCENES.map((item, i) => (
+            <FadeUp key={item.n} delay={i * 100}>
+              <div style={{ padding:'36px 28px', background:T.navyDark, height:'100%', borderTop:`1px solid rgba(0,191,255,0.15)`, transition:'background 0.3s', cursor:'default' }}
+                onMouseEnter={e => e.currentTarget.style.background=T.navyMid}
+                onMouseLeave={e => e.currentTarget.style.background=T.navyDark}>
+                <div style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'3.5rem', color:`rgba(0,191,255,0.12)`, lineHeight:1, marginBottom:'16px', letterSpacing:'0.02em' }}>{item.n}</div>
+                <h3 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.4rem', letterSpacing:'0.06em', color:T.white, marginBottom:'12px', whiteSpace:'pre-line', lineHeight:1.1 }}>{item.title}</h3>
+                <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.9rem', color:T.dim, lineHeight:1.75, margin:0 }}>{item.body}</p>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
+
+        {/* Tags */}
+        <FadeUp delay={300}>
+          <div style={{ display:'flex', gap:'8px', justifyContent:'center', flexWrap:'wrap', marginTop:'44px' }}>
+            {['Documentary','60 Minutes','Hindi & English','2024','India'].map(tag => (
+              <span key={tag} style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.75rem', letterSpacing:'0.18em', textTransform:'uppercase', padding:'7px 18px', color:T.accent, border:`1px solid rgba(0,191,255,0.3)` }}>
+                {tag}
+              </span>
+            ))}
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   BEHIND THE SCENES
+───────────────────────────────────────────────────────────────── */
+function BehindScenes() {
+  return (
+    <section id="behind" style={{ padding:'120px 24px', background:T.black, position:'relative', overflow:'hidden' }}>
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.saffron}44 50%, transparent 100%)` }} />
+      <div style={{ position:'absolute', top:'40%', right:'-80px', width:'350px', height:'350px', borderRadius:'50%', background:`radial-gradient(circle, rgba(255,153,51,0.06) 0%, transparent 60%)`, pointerEvents:'none' }} />
+
+      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+        <FadeUp>
+          <SectionEyebrow label="Behind the Scenes" />
+          <SectionTitle>
+            Inside the<br />
+            <span style={{ color:T.saffron }}>Making of the Film</span>
+          </SectionTitle>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'560px', margin:'0 auto 60px', lineHeight:1.75 }}>
+            18 months. 6 states. One crew. One team. And a story the world needed to hear.
+          </p>
+        </FadeUp>
+
+        {/* Timeline */}
+        <div style={{ maxWidth:'800px', margin:'0 auto', position:'relative' }}>
+          {/* Vertical line */}
+          <div style={{ position:'absolute', left:'24px', top:0, bottom:0, width:'1px', background:`linear-gradient(to bottom, ${T.accent}55, transparent)` }} />
+
+          <div style={{ display:'flex', flexDirection:'column', gap:'0' }}>
+            {[
+              { year:'2020–21', title:'Finding the Players',       body:'We crisscrossed six states tracking down blind women cricketers — players whose families had never seen them play.' },
+              { year:'2022',    title:'Training Camps',            body:'Embedded in BCCI training camps, we witnessed the raw beauty of players learning to bowl and bat by sound and touch alone.' },
+              { year:'2023',    title:'The World Games — Birmingham', body:'Edgbaston. India vs Australia. Final. The world was not watching. We were. Every frame captured, every emotion preserved.' },
+              { year:'2024',    title:'The Film is Complete',      body:'18 months of editing, colour grading, and music composition later — Dekh Le! India was ready for the world to finally see.' },
+            ].map((t, i) => (
+              <FadeUp key={t.year} delay={i * 120}>
+                <div style={{ display:'flex', gap:'32px', padding:'32px 0 32px 60px', borderBottom:`1px solid rgba(255,255,255,0.04)`, position:'relative' }}>
+                  {/* Dot */}
+                  <div style={{ position:'absolute', left:'17px', top:'36px', width:'16px', height:'16px', borderRadius:'50%', background:i===2?T.saffron:T.accent, boxShadow:i===2?`0 0 16px rgba(255,153,51,0.6)`:`0 0 16px ${T.accentGlow}` }} />
+                  <div style={{ minWidth:'80px', flexShrink:0 }}>
+                    <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.75rem', letterSpacing:'0.18em', color:i===2?T.saffron:T.accent }}>{t.year}</span>
+                  </div>
+                  <div>
+                    <h3 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.3rem', letterSpacing:'0.06em', color:T.white, marginBottom:'8px' }}>{t.title}</h3>
+                    <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.9rem', color:T.dim, lineHeight:1.7, margin:0 }}>{t.body}</p>
+                  </div>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
+        </div>
+
+        {/* Video links */}
+        <FadeUp delay={300}>
+          <div style={{ marginTop:'56px', display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))', gap:'1px', background:`rgba(0,191,255,0.1)` }}>
+            {[
+              { icon:'🎬', title:'Sizzle Reel',     desc:'The cinematic sizzle reel', href:'https://www.youtube.com/watch?v=h_JVTDhF6RY' },
+              { icon:'🎵', title:'The Film Song',   desc:'Official song by Lokesh Bakshi', href:'https://www.youtube.com/watch?v=mgFde16-J7c' },
+            ].map(v => (
+              <a key={v.title} href={v.href} target="_blank" rel="noopener noreferrer"
+                style={{ padding:'28px', background:T.navyDark, display:'flex', gap:'18px', alignItems:'center', textDecoration:'none', transition:'background 0.3s', borderTop:`3px solid ${T.accent}` }}
+                onMouseEnter={e => e.currentTarget.style.background=T.navyMid}
+                onMouseLeave={e => e.currentTarget.style.background=T.navyDark}>
+                <span style={{ fontSize:'2rem' }}>{v.icon}</span>
+                <div>
+                  <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.1rem', letterSpacing:'0.06em', color:T.white, marginBottom:'3px' }}>{v.title}</p>
+                  <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.8rem', color:T.dim }}>Watch on YouTube ↗</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   AWARDS
+───────────────────────────────────────────────────────────────── */
+function AwardsSection() {
+  return (
+    <section id="awards" style={{ padding:'120px 24px', background:`linear-gradient(180deg, ${T.black} 0%, ${T.navyDark} 100%)` }}>
+      <div style={{ position:'absolute', left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.accent}44 50%, transparent 100%)` }} />
+
+      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+        <FadeUp>
+          <SectionEyebrow label="Recognition" />
+          <SectionTitle>
+            Awards &amp;<br />
+            <span style={{ color:T.accent }}>Festival Selections</span>
+          </SectionTitle>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'520px', margin:'0 auto 56px', lineHeight:1.75 }}>
+            Recognised across <span style={{ color:T.accent }}>8+ countries</span> at prestigious international film festivals.
+          </p>
+        </FadeUp>
+
+        <div className="award-grid" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(310px,1fr))', gap:'1px', background:`rgba(0,191,255,0.1)` }}>
+          {AWARDS.map((a, i) => {
+            const acc = i%3===0 ? T.saffron : i%3===1 ? T.accent : `rgba(46,139,87,0.9)`;
+            return (
+              <FadeUp key={i} delay={(i%3)*80}>
+                <div style={{ padding:'26px 22px', background:T.navyDark, borderLeft:`4px solid ${acc}`, transition:'background 0.3s' }}
+                  onMouseEnter={e => e.currentTarget.style.background=T.navyMid}
+                  onMouseLeave={e => e.currentTarget.style.background=T.navyDark}>
+                  <span style={{ fontSize:'1.8rem', display:'block', marginBottom:'10px' }}>{a.icon}</span>
+                  <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.05rem', letterSpacing:'0.04em', color:T.white, marginBottom:'4px', lineHeight:1.2 }}>{a.name}</p>
+                  <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:500, fontSize:'0.82rem', color:acc, marginBottom:'3px' }}>{a.result}</p>
+                  <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.68rem', letterSpacing:'0.15em', color:T.faint }}>{a.year}</p>
+                </div>
+              </FadeUp>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   COMMUNITY IMPACT
+───────────────────────────────────────────────────────────────── */
+function ImpactSection() {
+  return (
+    <section id="impact" style={{ padding:'120px 24px', background:`linear-gradient(180deg, ${T.navyDark} 0%, ${T.black} 100%)` }}>
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.green}55 50%, transparent 100%)` }} />
+
+      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+        <FadeUp>
+          <SectionEyebrow label="Community Impact" />
+          <SectionTitle>
+            A Movement Across<br />
+            <span style={{ color:`rgba(46,139,87,0.9)` }}>India</span>
+          </SectionTitle>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'560px', margin:'0 auto 56px', lineHeight:1.75 }}>
+            School to school. Office to office. The film is creating real change — one screening at a time.
+          </p>
+        </FadeUp>
+
+        {/* Stats */}
+        <div className="stat-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'1px', background:`rgba(46,139,87,0.2)`, marginBottom:'1px' }}>
+          {IMPACT_STATS.map((s, i) => (
+            <FadeUp key={s.label} delay={i*80}>
+              <div style={{ padding:'36px 20px', textAlign:'center', background:T.navyDark, borderTop:`3px solid ${i%3===0?T.saffron:i%3===1?T.accent:'rgba(46,139,87,0.9)'}` }}>
+                <div style={{ fontSize:'1.6rem', marginBottom:'8px' }}>{s.icon}</div>
+                <div style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'3rem', color:T.accent, letterSpacing:'-0.02em', lineHeight:1 }}>{s.value}</div>
+                <div style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.7rem', letterSpacing:'0.2em', textTransform:'uppercase', color:T.faint, marginTop:'5px' }}>{s.label}</div>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
+
+        {/* Testimonials */}
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))', gap:'1px', background:`rgba(0,191,255,0.08)`, marginBottom:'48px' }}>
+          {TESTIMONIALS.map((t, i) => (
+            <FadeUp key={i} delay={i*80}>
+              <div style={{ padding:'28px 24px', background:T.navyDark, borderTop:`2px solid ${i%2===0?T.saffron:T.accent}`, height:'100%', transition:'background 0.3s' }}
+                onMouseEnter={e => e.currentTarget.style.background=T.navyMid}
+                onMouseLeave={e => e.currentTarget.style.background=T.navyDark}>
+                <p style={{ fontFamily:'"Georgia",serif', fontStyle:'italic', fontSize:'1.4rem', color:i%2===0?T.saffron:T.accent, lineHeight:1, marginBottom:'12px' }}>❝</p>
+                <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.9rem', color:T.dim, lineHeight:1.75, marginBottom:'16px', fontStyle:'italic' }}>{t.q}</p>
+                <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.7rem', letterSpacing:'0.14em', textTransform:'uppercase', color:T.faint }}>— {t.who}</p>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
+
+        {/* Notable venues */}
+        <FadeUp delay={200}>
+          <div style={{ padding:'28px', background:T.navyDark, border:`1px solid rgba(0,191,255,0.15)` }}>
+            <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.72rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.faint, textAlign:'center', marginBottom:'18px' }}>Notable Screenings</p>
+            <div style={{ display:'flex', flexWrap:'wrap', gap:'8px', justifyContent:'center' }}>
+              {['Kriti Film Club · Delhi Premiere','IIT Bombay','DPS Bengaluru','Infosys Campus, Pune','TISS Mumbai','Kendriya Vidyalaya, Jaipur','Jain University'].map(v => (
+                <span key={v} style={{ fontFamily:'"Inter",sans-serif', fontWeight:400, fontSize:'0.78rem', padding:'6px 14px', background:T.accentDim, color:T.cream, border:`1px solid rgba(0,191,255,0.2)` }}>
+                  📍 {v}
+                </span>
+              ))}
+            </div>
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   VIDEO SECTION
+───────────────────────────────────────────────────────────────── */
+function WatchSection() {
+  const [active, setActive] = useState('sizzle');
+  const vids = {
+    sizzle:{ id:'h_JVTDhF6RY', label:'Sizzle Reel', icon:'🎬' },
+    song:  { id:'mgFde16-J7c', label:'Film Song',   icon:'🎵' },
+  };
+
+  return (
+    <section id="watch" style={{ padding:'120px 24px', background:T.black }}>
+      <div style={{ maxWidth:'1000px', margin:'0 auto' }}>
+        <FadeUp>
+          <SectionEyebrow label="Watch" />
+          <SectionTitle>Watch the Film</SectionTitle>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1rem', color:T.dim, textAlign:'center', marginBottom:'32px' }}>
+            Experience the incredible journey
+          </p>
+
+          {/* Switcher */}
+          <div style={{ display:'flex', justifyContent:'center', gap:'1px', background:`rgba(0,191,255,0.15)`, border:`1px solid rgba(0,191,255,0.2)`, width:'fit-content', margin:'0 auto 14px' }}>
+            {Object.entries(vids).map(([k,v]) => (
+              <button key={k} onClick={() => setActive(k)}
+                style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.82rem', letterSpacing:'0.2em', textTransform:'uppercase', padding:'11px 28px', cursor:'pointer', border:'none', transition:'all 0.2s',
+                  background: active===k ? T.saffron : 'transparent',
+                  color:      active===k ? T.navyDark : T.dim,
+                }}>
+                {v.icon} {v.label}
+              </button>
+            ))}
+          </div>
+        </FadeUp>
+
+        <FadeUp delay={100}>
+          <div style={{ position:'relative', paddingBottom:'56.25%', height:0, border:`1px solid rgba(0,191,255,0.25)`, boxShadow:`0 0 100px rgba(0,0,0,0.7), 0 0 40px ${T.accentDim}` }}>
+            <iframe key={active}
+              src={`https://www.youtube.com/embed/${vids[active].id}?rel=0`}
+              title={vids[active].label}
+              style={{ position:'absolute', top:0, left:0, width:'100%', height:'100%', border:'none' }}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+          </div>
+        </FadeUp>
+
+        <FadeUp delay={150}>
+          <div style={{ display:'flex', gap:'10px', justifyContent:'center', marginTop:'20px', flexWrap:'wrap' }}>
+            {[{href:'https://www.youtube.com/watch?v=h_JVTDhF6RY',label:'🎬 Sizzle on YouTube'},{href:'https://www.youtube.com/watch?v=mgFde16-J7c',label:'🎵 Song on YouTube'}].map(l => (
+              <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer"
+                style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.72rem', letterSpacing:'0.18em', textTransform:'uppercase', padding:'8px 18px', background:'transparent', color:T.faint, border:`1px solid ${T.ghost}`, textDecoration:'none', transition:'all 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.color=T.white; e.currentTarget.style.borderColor='rgba(255,255,255,0.35)'; }}
+                onMouseLeave={e => { e.currentTarget.style.color=T.faint; e.currentTarget.style.borderColor=T.ghost; }}>
+                {l.label}
+              </a>
+            ))}
+          </div>
+          <div style={{ textAlign:'center', marginTop:'28px' }}>
+            <Btn href="https://www.jiohotstar.com/" external>▶ Watch Full Film on JioHotstar</Btn>
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   FINAL CTA
+───────────────────────────────────────────────────────────────── */
+function FinalCTA() {
+  const [showDonate, setShowDonate] = useState(false);
+
+  return (
+    <section style={{ padding:'140px 24px', background:`linear-gradient(170deg, ${T.navyDark} 0%, ${T.black} 100%)`, textAlign:'center', position:'relative', overflow:'hidden' }}>
+      <div style={{ position:'absolute', inset:0, opacity:0.02,
+        background:`repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(0,191,255,0.6) 79px, rgba(0,191,255,0.6) 80px),repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(0,191,255,0.6) 79px, rgba(0,191,255,0.6) 80px)`,
+        pointerEvents:'none' }} />
+      <div style={{ position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)', width:'700px', height:'700px', borderRadius:'50%', background:`radial-gradient(circle, ${T.accentDim} 0%, transparent 60%)`, pointerEvents:'none' }} />
+
+      <div style={{ maxWidth:'700px', margin:'0 auto', position:'relative' }}>
+        <FadeUp>
+          <div style={{ fontSize:'2.8rem', marginBottom:'24px' }}>🇮🇳</div>
+          <h2 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'clamp(2.2rem,6vw,4.5rem)', color:T.white, lineHeight:1.0, letterSpacing:'0.03em', marginBottom:'20px' }}>
+            Bring This Film to Every<br />
+            School &amp; Workplace<br />
+            <span style={{ color:T.accent }}>in India.</span>
+          </h2>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1rem', color:T.faint, lineHeight:1.75, marginBottom:'44px', maxWidth:'500px', margin:'0 auto 44px' }}>
+            Help us reach 1 million viewers. Every screening, every contribution, every share brings us closer to a more inclusive India.
+          </p>
+
+          <div style={{ display:'flex', gap:'14px', justifyContent:'center', flexWrap:'wrap' }}>
+            {/* PRIMARY — opens Razorpay modal */}
+            <button
+              onClick={() => setShowDonate(true)}
+              style={{
+                fontFamily:'"Bebas Neue",sans-serif', fontWeight:400,
+                fontSize:'0.9rem', letterSpacing:'0.22em', textTransform:'uppercase',
+                display:'inline-flex', alignItems:'center', gap:'10px',
+                padding:'13px 34px',
+                background:T.saffron, color:T.navyDark,
+                border:'none', cursor:'pointer', transition:'all 0.25s',
+                boxShadow:`0 0 28px rgba(255,153,51,0.5)`,
+              }}
+              onMouseEnter={e => e.currentTarget.style.boxShadow='0 0 42px rgba(255,153,51,0.7)'}
+              onMouseLeave={e => e.currentTarget.style.boxShadow='0 0 28px rgba(255,153,51,0.5)'}>
+              💛 Donate Now
+            </button>
+
+            <Btn href="https://www.jiohotstar.com/" external primary={false}>▶ Watch the Film</Btn>
+          </div>
+
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.72rem', color:T.faint, marginTop:'16px', letterSpacing:'0.04em' }}>
+            🔒 Secured by Razorpay · Pay any amount you wish
+          </p>
+        </FadeUp>
+      </div>
+
+      {/* Donation modal */}
+      {showDonate && <DonationModal onClose={() => setShowDonate(false)} />}
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────────────────────────────── */
+function Footer() {
+  return (
+    <footer id="contact" style={{ background:'#020810', padding:'64px 24px 28px' }}>
+      <div style={{ height:'2px', background:`linear-gradient(90deg, ${T.saffron}77, rgba(255,255,255,0.1), ${T.green}77)`, marginBottom:'52px' }} />
+
+      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))', gap:'40px', marginBottom:'52px' }}>
+          <div>
+            <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.2rem', letterSpacing:'0.1em', color:T.white, marginBottom:'4px' }}>Dekh Le! India</p>
+            <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.58rem', letterSpacing:'0.28em', color:T.accent, marginBottom:'16px', textTransform:'uppercase' }}>Documentary Film · 2024</p>
+            <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.84rem', color:'rgba(240,237,232,0.35)', lineHeight:1.7 }}>
+              The story of India's first blind women's cricket team and their extraordinary journey to the World Games.
+            </p>
+          </div>
+
+          <div>
+            <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.65rem', letterSpacing:'0.25em', textTransform:'uppercase', color:T.accent, marginBottom:'18px' }}>Navigate</p>
+            {[['#story','Story'],['#behind','Behind the Scenes'],['#awards','Awards'],['#impact','Impact'],['#watch','Watch'],['contribute','Contribute']].map(([h,l]) => (
+              <a key={h} href={h.startsWith('#')?h:`/${h}`}
+                style={{ display:'block', fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.875rem', color:'rgba(240,237,232,0.38)', textDecoration:'none', marginBottom:'8px', transition:'color 0.2s' }}
+                onMouseEnter={e => e.target.style.color=T.white}
+                onMouseLeave={e => e.target.style.color='rgba(240,237,232,0.38)'}>
+                {l}
+              </a>
+            ))}
+          </div>
+
+          <div>
+            <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.65rem', letterSpacing:'0.25em', textTransform:'uppercase', color:T.accent, marginBottom:'18px' }}>Contact</p>
+            <a href="mailto:m_moorthy@yahoo.com" style={{ display:'block', fontFamily:'"Inter",sans-serif', fontWeight:400, fontSize:'0.875rem', color:T.saffron, textDecoration:'none', marginBottom:'8px' }}>m_moorthy@yahoo.com</a>
+            <a href="tel:+919880214587" style={{ display:'block', fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.875rem', color:'rgba(240,237,232,0.38)', textDecoration:'none', marginBottom:'12px' }}>+91-9880214587</a>
+            <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.84rem', color:'rgba(240,237,232,0.38)', lineHeight:1.6 }}>Dir. Shanthi Mohan<br />&amp; Mukund Moorthy</p>
+          </div>
+
+          <div>
+            <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.65rem', letterSpacing:'0.25em', textTransform:'uppercase', color:T.accent, marginBottom:'18px' }}>Production</p>
+            {[['Directors','Shanthi Mohan & Mukund Moorthy'],['Music','Lokesh Bakshi'],['Editor','Shahnawaz Khan & Swati Jaiswal'],['DOP','Shanthi Mohan & Khushee Hegde'],['Sound','Suresh Raskar']].map(([r,n]) => (
+              <div key={r} style={{ marginBottom:'7px' }}>
+                <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.62rem', letterSpacing:'0.14em', textTransform:'uppercase', color:'rgba(240,237,232,0.28)' }}>{r}: </span>
+                <span style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.78rem', color:'rgba(240,237,232,0.48)' }}>{n}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ borderTop:'1px solid rgba(255,255,255,0.06)', paddingTop:'22px', display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:'12px' }}>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.72rem', color:'rgba(240,237,232,0.2)' }}>
+            © {new Date().getFullYear()} Dekh Le! India · The Loose Canon · Sol Production · DejaVu Arts
+          </p>
+          <div style={{ display:'flex', gap:'5px' }}>
+            {[T.saffron,'rgba(255,255,255,0.2)',T.green].map((c,i) => <div key={i} style={{ width:'8px', height:'8px', borderRadius:'50%', background:c }} />)}
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   ROOT PAGE
+───────────────────────────────────────────────────────────────── */
+export default function Home() {
+  return (
+    <>
+      <Head>
+        <title>Dekh Le! India 🇮🇳 — Documentary Film</title>
+        <meta name="description" content="An Inspiring Story of the First Ever Blind Women's Cricket Team of India. 10+ International Awards." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content="Dekh Le! India 🇮🇳" />
+        <meta property="og:description" content="No Pity. No Sympathy. Just Give Us an Opportunity." />
+
+        {/* Google Fonts — Bebas Neue + Inter */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+        <style dangerouslySetInnerHTML={{ __html:`
+          *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+          html { scroll-behavior:smooth; }
+          body { background:#030810; color:#F0EDE8; }
+          ::selection { background:rgba(0,191,255,0.3); color:#fff; }
+          ::-webkit-scrollbar { width:4px; }
+          ::-webkit-scrollbar-track { background:#030810; }
+          ::-webkit-scrollbar-thumb { background:#123A73; }
+          @media(max-width:480px){
+            .stat-grid { grid-template-columns:repeat(2,1fr)!important; }
+            .award-grid { grid-template-columns:1fr!important; }
+          }
+        `}} />
+      </Head>
+
+      <Navbar />
+      <main>
+        <Hero />
+        <StorySection />
+        <BehindScenes />
+        <AwardsSection />
+        <ImpactSection />
+        <WatchSection />
+        <FinalCTA />
+      </main>
+      <Footer />
+    </>
+  );
+}
