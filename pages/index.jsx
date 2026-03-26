@@ -301,13 +301,9 @@ function DonationModal({ onClose }) {
           <h3 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'2rem', letterSpacing:'0.04em', color:'#FFFFFF', lineHeight:1.1, marginBottom:'8px' }}>
             Contribute to<br />Dekh Le! India 🇮🇳
           </h3>
-          
-          <div style={{ background:'rgba(255,153,51,0.15)', borderLeft:'3px solid #FF9933', padding:'12px 16px', marginBottom:'14px', borderRadius:'4px' }}>
-            <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:500, fontSize:'0.9rem', color:T.white, lineHeight:1.6, margin:0 }}>
-              If you watched the film and loved it, you can do your bit and contribute here.
-            </p>
-          </div>
-          
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.85rem', color:'rgba(240,237,232,0.7)', lineHeight:1.65, fontStyle:'italic', borderLeft:'2px solid #FF9933', paddingLeft:'12px', marginBottom:'10px' }}>
+            If you watched the film and loved it, you can do your bit and contribute here.
+          </p>
           <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.82rem', color:'rgba(240,237,232,0.45)', lineHeight:1.65 }}>
             Every rupee funds skill training so these champions can build a livelihood from the game they love.
           </p>
@@ -402,7 +398,7 @@ function Navbar() {
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
-  const links = [['#story','Story'],['#behind','Timeline'],['#awards','Accolades'],['#reactions','Reactions'],['#blog','Blog'],['#impact','Impact'],['#watch','Watch']];
+  const links = [['#story','Story'],['#behind','Behind Scenes'],['#awards','Accolades'],['#reactions','Reactions'],['#blog','Blog'],['#impact','Impact'],['#watch','Watch']];
 
   return (
     <nav style={{
@@ -480,7 +476,6 @@ function Hero() {
       overflow:'hidden',
       background:T.black,
     }}>
-      {/* Background video */}
       <div style={{ position:'absolute', inset:0, zIndex:0, overflow:'hidden', pointerEvents:'none' }}>
         <iframe
           src="https://www.youtube.com/embed/h_JVTDhF6RY?autoplay=1&mute=1&loop=1&playlist=h_JVTDhF6RY&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0"
@@ -512,19 +507,17 @@ function Hero() {
         background:`linear-gradient(to top, ${T.black} 0%, transparent 100%)` }} />
 
       <div style={{ position:'relative', zIndex:10, textAlign:'center', padding:'120px 24px 80px', maxWidth:'1100px', width:'100%' }}>
-        
-        {/* BIG HERO ANNOUNCEMENT */}
-        <div style={{ ...anim(100), marginBottom:'24px' }}>
+
+        <div style={{ ...anim(100), marginBottom:'20px' }}>
           <div style={{
-            display:'inline-flex', alignItems:'center', gap:'14px',
-            background:'rgba(255,153,51,0.18)',
-            border:'2px solid rgba(255,153,51,0.8)',
-            padding:'14px 36px',
-            borderRadius:'6px',
-            boxShadow:'0 0 30px rgba(255,153,51,0.3)',
+            display:'inline-flex', alignItems:'center', gap:'10px',
+            background:'rgba(255,153,51,0.12)',
+            border:'1px solid rgba(255,153,51,0.45)',
+            padding:'8px 22px',
+            marginBottom:'4px',
           }}>
-            <span style={{ width:'10px', height:'10px', borderRadius:'50%', background:T.saffron, display:'inline-block', animation:'heroPulse 1.6s ease-in-out infinite', flexShrink:0 }} />
-            <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.4rem', letterSpacing:'0.2em', textTransform:'uppercase', color:T.saffron }}>
+            <span style={{ width:'7px', height:'7px', borderRadius:'50%', background:T.saffron, display:'inline-block', animation:'heroPulse 1.6s ease-in-out infinite', flexShrink:0 }} />
+            <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.88rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.saffron }}>
               <strong>Releasing on Jio Hotstar — June 2026</strong>
             </span>
           </div>
@@ -597,6 +590,10 @@ function Hero() {
           </button>
         </div>
 
+        <p style={{ ...anim(1200), fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.68rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.saffron }}>
+          🎬 Releasing on Jio Hotstar — June 2026
+        </p>
+
         {showDonate && <DonationModal onClose={() => setShowDonate(false)} />}
       </div>
 
@@ -614,7 +611,322 @@ function Hero() {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   WATCH / SIZZLE SECTION
+   STORY SECTION
+───────────────────────────────────────────────────────────────── */
+function StorySection() {
+  return (
+    <section id="story" style={{ padding:'120px 24px', background:`linear-gradient(180deg, ${T.black} 0%, ${T.navyDark} 100%)`, position:'relative', overflow:'hidden' }}>
+      <div style={{ position:'absolute', top:'50%', left:'-100px', transform:'translateY(-50%)', width:'400px', height:'400px', borderRadius:'50%', background:`radial-gradient(circle, ${T.accentDim} 0%, transparent 60%)`, pointerEvents:'none' }} />
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.accent}44 50%, transparent 100%)` }} />
+
+      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+        <FadeUp>
+          <SectionEyebrow label="The Film" />
+          <SectionTitle>
+            They Played With Courage.<br />
+            <span style={{ color:T.accent }}>We Filmed With Love.</span>
+          </SectionTitle>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'600px', margin:'0 auto 60px', lineHeight:1.75 }}>
+            Dekh Le! India chronicles the extraordinary journey of India&#39;s first blind women&#39;s national cricket team — from remote villages across different states of India to the World Games at Edgbaston, UK.
+          </p>
+        </FadeUp>
+
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))', gap:'1px', background:`rgba(0,191,255,0.1)` }}>
+          {BEHIND_SCENES.map((item, i) => (
+            <FadeUp key={item.n} delay={i * 100}>
+              <div style={{ padding:'36px 28px', background:T.navyDark, height:'100%', borderTop:`1px solid rgba(0,191,255,0.15)`, transition:'background 0.3s', cursor:'default' }}
+                onMouseEnter={e => e.currentTarget.style.background=T.navyMid}
+                onMouseLeave={e => e.currentTarget.style.background=T.navyDark}>
+                <div style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'3.5rem', color:`rgba(0,191,255,0.12)`, lineHeight:1, marginBottom:'16px', letterSpacing:'0.02em' }}>{item.n}</div>
+                <h3 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.4rem', letterSpacing:'0.06em', color:T.white, marginBottom:'12px', whiteSpace:'pre-line', lineHeight:1.1 }}>{item.title}</h3>
+                <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.9rem', color:T.dim, lineHeight:1.75, margin:0 }}>{item.body}</p>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
+
+        <FadeUp delay={300}>
+          <div style={{ display:'flex', gap:'8px', justifyContent:'center', flexWrap:'wrap', marginTop:'44px' }}>
+            {['Documentary','70 Minutes','English, Hindi, Odia, Assamese and Multiple Indian Languages','India'].map(tag => (
+              <span key={tag} style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.75rem', letterSpacing:'0.18em', textTransform:'uppercase', padding:'7px 18px', color:T.accent, border:`1px solid rgba(0,191,255,0.3)` }}>
+                {tag}
+              </span>
+            ))}
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   BEHIND THE SCENES
+───────────────────────────────────────────────────────────────── */
+function BehindScenes() {
+  return (
+    <section id="behind" style={{ padding:'120px 24px', background:T.black, position:'relative', overflow:'hidden' }}>
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.saffron}44 50%, transparent 100%)` }} />
+      <div style={{ position:'absolute', top:'40%', right:'-80px', width:'350px', height:'350px', borderRadius:'50%', background:`radial-gradient(circle, rgba(255,153,51,0.06) 0%, transparent 60%)`, pointerEvents:'none' }} />
+
+      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+        <FadeUp>
+          <SectionEyebrow label="Behind the Scenes" />
+          <SectionTitle>
+            Inside the<br />
+            <span style={{ color:T.saffron }}>Making of the Film</span>
+          </SectionTitle>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'560px', margin:'0 auto 60px', lineHeight:1.75 }}>
+            2.5 years. 10 states. One crew. One team. And a story the world needed to hear.
+          </p>
+        </FadeUp>
+
+        <div style={{ maxWidth:'800px', margin:'0 auto', position:'relative' }}>
+          <div style={{ position:'absolute', left:'24px', top:0, bottom:0, width:'1px', background:`linear-gradient(to bottom, ${T.accent}55, transparent)` }} />
+          <div style={{ display:'flex', flexDirection:'column', gap:'0' }}>
+            {[
+              { year:'2020–21', title:'Finding the Players',          body:'We crisscrossed ten states tracking down blind women cricketers — players whose families had never seen them play.' },
+              { year:'2022',    title:'Training Camps',               body:'Embedded in BCCI training camps, we witnessed the raw beauty of players learning to bowl and bat by sound and touch alone.' },
+              { year:'2023',    title:'The World Games — Birmingham', body:'Edgbaston. India vs Australia. Final. The world was not watching. We were. Every frame captured, every emotion preserved.' },
+              { year:'2025',    title:'The Film is Complete',         body:'2.5 years of filming, editing, colour grading, and music composition later — Dekh Le! India was ready for the world to finally see.' },
+              { year:'June 2026', title:'Releasing on Jio Hotstar',   body:'India finally sees its heroes — in English, Hindi, Odia, Assamese and Multiple Indian Languages.', highlight: true },
+            ].map((t, i) => (
+              <FadeUp key={t.year} delay={i * 120}>
+                <div style={{ display:'flex', gap:'32px', padding:'32px 0 32px 60px', borderBottom:`1px solid rgba(255,255,255,0.04)`, position:'relative' }}>
+                  <div style={{ position:'absolute', left:'17px', top:'36px', width:'16px', height:'16px', borderRadius:'50%',
+                    background: t.highlight ? T.saffron : i===2 ? T.saffron : T.accent,
+                    boxShadow: t.highlight ? `0 0 20px rgba(255,153,51,0.8)` : i===2 ? `0 0 16px rgba(255,153,51,0.6)` : `0 0 16px ${T.accentGlow}`,
+                  }} />
+                  <div style={{ minWidth:'80px', flexShrink:0 }}>
+                    <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.75rem', letterSpacing:'0.18em', color: t.highlight ? T.saffron : i===2 ? T.saffron : T.accent }}>{t.year}</span>
+                  </div>
+                  <div>
+                    <h3 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.3rem', letterSpacing:'0.06em', color: t.highlight ? T.saffron : T.white, marginBottom:'8px' }}>{t.title}</h3>
+                    <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.9rem', color:T.dim, lineHeight:1.7, margin:0 }}>{t.body}</p>
+                  </div>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
+        </div>
+
+        <FadeUp delay={300}>
+          <div style={{ marginTop:'56px', display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))', gap:'1px', background:`rgba(0,191,255,0.1)` }}>
+            {[
+              { icon:'🎬', title:'Sizzle Reel',    desc:'The cinematic sizzle reel', href:'https://www.youtube.com/watch?v=h_JVTDhF6RY' },
+              { icon:'🎵', title:'The Film Song',  desc:'Official song by Lokesh Bakshi', href:'https://www.youtube.com/watch?v=mgFde16-J7c' },
+            ].map(v => (
+              <a key={v.title} href={v.href} target="_blank" rel="noopener noreferrer"
+                style={{ padding:'28px', background:T.navyDark, display:'flex', gap:'18px', alignItems:'center', textDecoration:'none', transition:'background 0.3s', borderTop:`3px solid ${T.accent}` }}
+                onMouseEnter={e => e.currentTarget.style.background=T.navyMid}
+                onMouseLeave={e => e.currentTarget.style.background=T.navyDark}>
+                <span style={{ fontSize:'2rem' }}>{v.icon}</span>
+                <div>
+                  <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.1rem', letterSpacing:'0.06em', color:T.white, marginBottom:'3px' }}>{v.title}</p>
+                  <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.8rem', color:T.dim }}>Watch on YouTube ↗</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   ACCOLADES
+───────────────────────────────────────────────────────────────── */
+function AwardsSection() {
+  return (
+    <section id="awards" style={{ padding:'120px 24px', background:`linear-gradient(180deg, ${T.black} 0%, ${T.navyDark} 100%)`, position:'relative' }}>
+      <div style={{ position:'absolute', left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.accent}44 50%, transparent 100%)` }} />
+
+      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+        <FadeUp>
+          <SectionEyebrow label="Accolades" />
+          <SectionTitle>
+            Awards &amp;<br />
+            <span style={{ color:T.accent }}>Festival Selections</span>
+          </SectionTitle>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'520px', margin:'0 auto 56px', lineHeight:1.75 }}>
+            Recognised across <span style={{ color:T.accent }}>8+ countries</span> at prestigious international film festivals.
+          </p>
+        </FadeUp>
+
+        <FadeUp delay={100}>
+          <div style={{ display:'flex', justifyContent:'center', gap:'48px', flexWrap:'wrap', marginBottom:'56px', padding:'28px', border:`1px solid rgba(0,191,255,0.15)`, background:'rgba(0,191,255,0.04)' }}>
+            {[{ n:'4', l:'Wins' }, { n:'9', l:'Selections' }, { n:'8+', l:'Countries' }, { n:'5', l:'Continents' }].map(s => (
+              <div key={s.l} style={{ textAlign:'center' }}>
+                <div style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'2.8rem', color:T.saffron, lineHeight:1 }}>{s.n}</div>
+                <div style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.68rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.faint, marginTop:'4px' }}>{s.l}</div>
+              </div>
+            ))}
+          </div>
+        </FadeUp>
+
+        <div className="award-grid" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(310px,1fr))', gap:'1px', background:`rgba(0,191,255,0.1)` }}>
+          {AWARDS.map((a, i) => {
+            const acc = i%3===0 ? T.saffron : i%3===1 ? T.accent : `rgba(46,139,87,0.9)`;
+            return (
+              <FadeUp key={i} delay={(i%3)*80}>
+                <div style={{ padding:'26px 22px', background:T.navyDark, borderLeft:`4px solid ${acc}`, transition:'background 0.3s' }}
+                  onMouseEnter={e => e.currentTarget.style.background=T.navyMid}
+                  onMouseLeave={e => e.currentTarget.style.background=T.navyDark}>
+                  <span style={{ fontSize:'1.8rem', display:'block', marginBottom:'10px' }}>{a.icon}</span>
+                  <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.05rem', letterSpacing:'0.04em', color:T.white, marginBottom:'4px', lineHeight:1.2 }}>{a.name}</p>
+                  <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:500, fontSize:'0.82rem', color:acc, marginBottom:'3px' }}>{a.result}</p>
+                  <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.68rem', letterSpacing:'0.15em', color:T.faint }}>{a.year}</p>
+                </div>
+              </FadeUp>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   AUDIENCE REACTIONS
+───────────────────────────────────────────────────────────────── */
+function ReactionsSection() {
+  return (
+    <section id="reactions" style={{ padding:'120px 24px', background:T.black, position:'relative', overflow:'hidden' }}>
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.saffron}44 50%, transparent 100%)` }} />
+
+      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+        <FadeUp>
+          <SectionEyebrow label="Audience Reactions" />
+          <SectionTitle>
+            What People Said<br />
+            <span style={{ color:T.saffron }}>When the Lights Came On</span>
+          </SectionTitle>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'560px', margin:'0 auto 56px', lineHeight:1.75 }}>
+            From classrooms to boardrooms — the film is changing how India sees itself.
+          </p>
+        </FadeUp>
+
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))', gap:'1px', background:`rgba(0,191,255,0.08)`, marginBottom:'48px' }}>
+          {TESTIMONIALS.map((t, i) => (
+            <FadeUp key={i} delay={i*80}>
+              <div style={{ padding:'28px 24px', background:T.navyDark, borderTop:`2px solid ${i%2===0?T.saffron:T.accent}`, height:'100%', transition:'background 0.3s' }}
+                onMouseEnter={e => e.currentTarget.style.background=T.navyMid}
+                onMouseLeave={e => e.currentTarget.style.background=T.navyDark}>
+                <p style={{ fontFamily:'"Georgia",serif', fontStyle:'italic', fontSize:'1.4rem', color:i%2===0?T.saffron:T.accent, lineHeight:1, marginBottom:'12px' }}>❝</p>
+                <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.9rem', color:T.dim, lineHeight:1.75, marginBottom:'16px', fontStyle:'italic' }}>{t.q}</p>
+                <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.7rem', letterSpacing:'0.14em', textTransform:'uppercase', color:T.faint }}>— {t.who}</p>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
+
+        <FadeUp delay={200}>
+          <div style={{ padding:'28px', background:T.navyDark, border:`1px solid rgba(0,191,255,0.15)` }}>
+            <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.72rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.faint, textAlign:'center', marginBottom:'18px' }}>Notable Screenings</p>
+            <div style={{ display:'flex', flexWrap:'wrap', gap:'8px', justifyContent:'center' }}>
+              {['IIT Bombay','DPS Bengaluru','Infosys Campus, Pune','TISS Mumbai','Kendriya Vidyalaya, Jaipur','Jain University'].map(v => (
+                <span key={v} style={{ fontFamily:'"Inter",sans-serif', fontWeight:400, fontSize:'0.78rem', padding:'6px 14px', background:T.accentDim, color:T.cream, border:`1px solid rgba(0,191,255,0.2)` }}>
+                  📍 {v}
+                </span>
+              ))}
+            </div>
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   BLOG SECTION
+───────────────────────────────────────────────────────────────── */
+function BlogSection() {
+  return (
+    <section id="blog" style={{ padding:'120px 24px', background:`linear-gradient(180deg, ${T.navyDark} 0%, ${T.black} 100%)`, position:'relative', overflow:'hidden' }}>
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.green}44 50%, transparent 100%)` }} />
+
+      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+        <FadeUp>
+          <SectionEyebrow label="Journey So Far" />
+          <SectionTitle>
+            Behind the<br />
+            <span style={{ color:`rgba(46,139,87,0.9)` }}>Camera</span>
+          </SectionTitle>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'560px', margin:'0 auto 56px', lineHeight:1.75 }}>
+            The film is 70 minutes. The story of making it is a novel.
+          </p>
+        </FadeUp>
+
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(320px,1fr))', gap:'1px', background:`rgba(46,139,87,0.15)` }}>
+          {BLOG_POSTS.map((post, i) => (
+            <FadeUp key={i} delay={i*100}>
+              <div style={{ background:T.navyDark, borderTop:`3px solid ${i===0?T.saffron:i===1?T.accent:'rgba(46,139,87,0.9)'}`, padding:'32px 28px', height:'100%', transition:'background 0.3s', cursor:'pointer' }}
+                onMouseEnter={e => e.currentTarget.style.background=T.navyMid}
+                onMouseLeave={e => e.currentTarget.style.background=T.navyDark}>
+                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'16px' }}>
+                  <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.65rem', letterSpacing:'0.22em', textTransform:'uppercase', color: i===0?T.saffron:i===1?T.accent:'rgba(46,139,87,0.9)' }}>
+                    {post.date}
+                  </span>
+                  <span style={{ fontFamily:'"Inter",sans-serif', fontSize:'0.72rem', color:T.faint, border:`1px solid ${T.ghost}`, padding:'3px 10px' }}>
+                    {post.readTime} read
+                  </span>
+                </div>
+                <h3 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.25rem', letterSpacing:'0.04em', color:T.white, lineHeight:1.15, marginBottom:'14px' }}>
+                  {post.title}
+                </h3>
+                <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.875rem', color:T.dim, lineHeight:1.75, marginBottom:'24px' }}>
+                  {post.excerpt}
+                </p>
+                <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.72rem', letterSpacing:'0.2em', textTransform:'uppercase', color: i===0?T.saffron:i===1?T.accent:'rgba(46,139,87,0.9)' }}>
+                  Read Story →
+                </span>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   COMMUNITY IMPACT
+───────────────────────────────────────────────────────────────── */
+function ImpactSection() {
+  return (
+    <section id="impact" style={{ padding:'120px 24px', background:`linear-gradient(180deg, ${T.navyDark} 0%, ${T.black} 100%)`, position:'relative' }}>
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.green}55 50%, transparent 100%)` }} />
+
+      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+        <FadeUp>
+          <SectionEyebrow label="Community Impact" />
+          <SectionTitle>
+            A Movement Across<br />
+            <span style={{ color:`rgba(46,139,87,0.9)` }}>India</span>
+          </SectionTitle>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'560px', margin:'0 auto 56px', lineHeight:1.75 }}>
+            School to school. Office to office. The film is creating real change — one screening at a time.
+          </p>
+        </FadeUp>
+
+        <div className="stat-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'1px', background:`rgba(46,139,87,0.2)`, marginBottom:'1px' }}>
+          {IMPACT_STATS.map((s, i) => (
+            <FadeUp key={s.label} delay={i*80}>
+              <div style={{ padding:'36px 20px', textAlign:'center', background:T.navyDark, borderTop:`3px solid ${i%3===0?T.saffron:i%3===1?T.accent:'rgba(46,139,87,0.9)'}` }}>
+                <div style={{ fontSize:'1.6rem', marginBottom:'8px' }}>{s.icon}</div>
+                <div style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'3rem', color:T.accent, letterSpacing:'-0.02em', lineHeight:1 }}>{s.value}</div>
+                <div style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.7rem', letterSpacing:'0.2em', textTransform:'uppercase', color:T.faint, marginTop:'5px' }}>{s.label}</div>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   VIDEO / WATCH SECTION
 ───────────────────────────────────────────────────────────────── */
 function WatchSection() {
   const [active, setActive] = useState('sizzle');
@@ -676,320 +988,6 @@ function WatchSection() {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   STORY SECTION
-───────────────────────────────────────────────────────────────── */
-function StorySection() {
-  return (
-    <section id="story" style={{ padding:'120px 24px', background:`linear-gradient(180deg, ${T.black} 0%, ${T.navyDark} 100%)`, position:'relative', overflow:'hidden' }}>
-      <div style={{ position:'absolute', top:'50%', left:'-100px', transform:'translateY(-50%)', width:'400px', height:'400px', borderRadius:'50%', background:`radial-gradient(circle, ${T.accentDim} 0%, transparent 60%)`, pointerEvents:'none' }} />
-      <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.accent}44 50%, transparent 100%)` }} />
-
-      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
-        <FadeUp>
-          <SectionEyebrow label="The Film" />
-          <SectionTitle>
-            They Played With Courage.<br />
-            <span style={{ color:T.accent }}>We Filmed With Love.</span>
-          </SectionTitle>
-          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'600px', margin:'0 auto 60px', lineHeight:1.75 }}>
-            Dekh Le! India chronicles the extraordinary journey of India&#39;s first blind women&#39;s national cricket team — from remote villages across Odisha, Maharashtra, Karnataka, Kerala, Andhra Pradesh, Telangana, Assam, Madhya Pradesh, Delhi and Gujarat to the World Games at Edgbaston, UK.
-          </p>
-        </FadeUp>
-
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))', gap:'1px', background:`rgba(0,191,255,0.1)` }}>
-          {BEHIND_SCENES.map((item, i) => (
-            <FadeUp key={item.n} delay={i * 100}>
-              <div style={{ padding:'36px 28px', background:T.navyDark, height:'100%', borderTop:`1px solid rgba(0,191,255,0.15)`, transition:'background 0.3s', cursor:'default' }}
-                onMouseEnter={e => e.currentTarget.style.background=T.navyMid}
-                onMouseLeave={e => e.currentTarget.style.background=T.navyDark}>
-                <div style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'3.5rem', color:`rgba(0,191,255,0.12)`, lineHeight:1, marginBottom:'16px', letterSpacing:'0.02em' }}>{item.n}</div>
-                <h3 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.4rem', letterSpacing:'0.06em', color:T.white, marginBottom:'12px', whiteSpace:'pre-line', lineHeight:1.1 }}>{item.title}</h3>
-                <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.9rem', color:T.dim, lineHeight:1.75, margin:0 }}>{item.body}</p>
-              </div>
-            </FadeUp>
-          ))}
-        </div>
-
-        <FadeUp delay={300}>
-          <div style={{ display:'flex', gap:'8px', justifyContent:'center', flexWrap:'wrap', marginTop:'44px' }}>
-            {['Documentary','70 Minutes','English, Hindi, Kannada, Odia, Assamese, Telugu, Malayalam, Santali','India'].map(tag => (
-              <span key={tag} style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.75rem', letterSpacing:'0.18em', textTransform:'uppercase', padding:'7px 18px', color:T.accent, border:`1px solid rgba(0,191,255,0.3)` }}>
-                {tag}
-              </span>
-            ))}
-          </div>
-        </FadeUp>
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────────
-   ROCK SONG SECTION
-───────────────────────────────────────────────────────────────── */
-function RockSongSection() {
-  return (
-    <section style={{ padding:'100px 24px', background:'#060F22', borderTop:`1px solid ${T.accentDim}` }}>
-      <div style={{ maxWidth:'1000px', margin:'0 auto', textAlign:'center' }}>
-        <FadeUp>
-          <SectionEyebrow label="Original Soundtrack" />
-          <SectionTitle>The Rock Anthem</SectionTitle>
-          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:400, fontSize:'1.1rem', color:T.saffron, marginBottom:'24px', letterSpacing:'0.05em' }}>
-            Winner — Best Rock Guitarist (CLEF Music Awards 2025)
-          </p>
-          <div style={{ display:'flex', justifyContent:'center', gap:'20px', flexWrap:'wrap', marginTop:'32px' }}>
-             {['Spotify','Amazon Music','YouTube Music','Apple Music'].map(platform => (
-               <a key={platform} href="#" onClick={(e) => e.preventDefault()} style={{ 
-                 padding:'15px 28px', border:`1px solid rgba(255,153,51,0.3)`, 
-                 color:T.faint, fontFamily:'"Bebas Neue",sans-serif', 
-                 fontSize:'1rem', letterSpacing:'0.15em',
-                 textDecoration: 'none', background: 'rgba(255,153,51,0.05)',
-                 transition: 'all 0.2s', textTransform: 'uppercase'
-               }}
-               onMouseEnter={e => { e.currentTarget.style.color=T.saffron; e.currentTarget.style.borderColor=T.saffron; }}
-               onMouseLeave={e => { e.currentTarget.style.color=T.faint; e.currentTarget.style.borderColor='rgba(255,153,51,0.3)'; }}>
-                 {platform} (Coming Soon)
-               </a>
-             ))}
-          </div>
-        </FadeUp>
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────────
-   JOURNEY / TIMELINE
-───────────────────────────────────────────────────────────────── */
-function BehindScenes() {
-  return (
-    <section id="behind" style={{ padding:'120px 24px', background:T.black, position:'relative', overflow:'hidden' }}>
-      <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.saffron}44 50%, transparent 100%)` }} />
-      <div style={{ position:'absolute', top:'40%', right:'-80px', width:'350px', height:'350px', borderRadius:'50%', background:`radial-gradient(circle, rgba(255,153,51,0.06) 0%, transparent 60%)`, pointerEvents:'none' }} />
-
-      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
-        <FadeUp>
-          <SectionEyebrow label="History" />
-          <SectionTitle>
-            Journey of<br />
-            <span style={{ color:T.saffron }}>Dekh Le! India So Far</span>
-          </SectionTitle>
-          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'560px', margin:'0 auto 60px', lineHeight:1.75 }}>
-            2.5 years. 10 states. 110 hours of footage. One dream.
-          </p>
-        </FadeUp>
-
-        <div style={{ maxWidth:'800px', margin:'0 auto', position:'relative' }}>
-          <div style={{ position:'absolute', left:'24px', top:0, bottom:0, width:'1px', background:`linear-gradient(to bottom, ${T.accent}55, transparent)` }} />
-          <div style={{ display:'flex', flexDirection:'column', gap:'0' }}>
-            {[
-              { year:'2020–21', title:'Finding the Players',          body:'We crisscrossed ten states tracking down blind women cricketers — players whose families had never seen them play.' },
-              { year:'2022',    title:'Training Camps',               body:'Embedded in BCCI training camps, we witnessed the raw beauty of players learning to bowl and bat by sound and touch alone.' },
-              { year:'2023',    title:'The World Games — Birmingham', body:'Edgbaston. India vs Australia. Final. The world was not watching. We were. Every frame captured, every emotion preserved.' },
-              { year:'2025',    title:'The Film is Complete',         body:'2.5 years of filming, editing, colour grading, and music composition later — Dekh Le! India was ready for the world to finally see.' },
-              { year:'June 2026', title:'Releasing on Jio Hotstar',   body:'India finally sees its heroes — in English, Hindi, Kannada, Odia, Assamese, Telugu, Malayalam, and Santali.', highlight: true },
-            ].map((t, i) => (
-              <FadeUp key={t.year} delay={i * 120}>
-                <div style={{ display:'flex', gap:'32px', padding:'32px 0 32px 60px', borderBottom:`1px solid rgba(255,255,255,0.04)`, position:'relative' }}>
-                  <div style={{ position:'absolute', left:'17px', top:'36px', width:'16px', height:'16px', borderRadius:'50%',
-                    background: t.highlight ? T.saffron : i===2 ? T.saffron : T.accent,
-                    boxShadow: t.highlight ? `0 0 20px rgba(255,153,51,0.8)` : i===2 ? `0 0 16px rgba(255,153,51,0.6)` : `0 0 16px ${T.accentGlow}`,
-                  }} />
-                  <div style={{ minWidth:'80px', flexShrink:0 }}>
-                    <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.75rem', letterSpacing:'0.18em', color: t.highlight ? T.saffron : i===2 ? T.saffron : T.accent }}>{t.year}</span>
-                  </div>
-                  <div>
-                    <h3 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.3rem', letterSpacing:'0.06em', color: t.highlight ? T.saffron : T.white, marginBottom:'8px' }}>{t.title}</h3>
-                    <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.9rem', color:T.dim, lineHeight:1.7, margin:0 }}>{t.body}</p>
-                  </div>
-                </div>
-              </FadeUp>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────────
-   ACCOLADES / AWARDS
-───────────────────────────────────────────────────────────────── */
-function AwardsSection() {
-  return (
-    <section id="awards" style={{ padding:'120px 24px', background:`linear-gradient(180deg, ${T.black} 0%, ${T.navyDark} 100%)` }}>
-      <div style={{ position:'absolute', left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.accent}44 50%, transparent 100%)` }} />
-
-      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
-        <FadeUp>
-          <SectionEyebrow label="Accolades" />
-          <SectionTitle>
-            Awards &amp;<br />
-            <span style={{ color:T.accent }}>Festival Selections</span>
-          </SectionTitle>
-          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'520px', margin:'0 auto 40px', lineHeight:1.75 }}>
-            Recognised across <span style={{ color:T.accent }}>8+ countries</span> at prestigious international film festivals.
-          </p>
-        </FadeUp>
-
-        {/* VISUAL PLACEHOLDERS FOR PM / PRESIDENT / KBC */}
-        <div style={{ display:'flex', justifyContent:'center', gap:'24px', flexWrap:'wrap', marginBottom:'64px' }}>
-          {[
-            { title: 'Hon. Prime Minister', desc: 'Appreciation & Recognition' },
-            { title: 'Hon. President', desc: 'Special Screening' },
-            { title: 'Kaun Banega Crorepati', desc: 'Featured Episode' }
-          ].map(item => (
-            <FadeUp key={item.title}>
-              <div style={{ width: '280px', height: '220px', border: `1px dashed ${T.saffron}`, background: 'rgba(255,153,51,0.05)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '24px', transition: 'background 0.3s' }}
-                onMouseEnter={e => e.currentTarget.style.background='rgba(255,153,51,0.1)'}
-                onMouseLeave={e => e.currentTarget.style.background='rgba(255,153,51,0.05)'}>
-                <span style={{ fontSize: '2.5rem', marginBottom: '14px', opacity: 0.8 }}>📸</span>
-                <h4 style={{ fontFamily: '"Bebas Neue",sans-serif', fontWeight: 400, fontSize: '1.4rem', letterSpacing: '0.06em', color: T.saffron, margin: '0 0 6px', lineHeight: 1.2 }}>{item.title}</h4>
-                <p style={{ fontFamily: '"Inter",sans-serif', fontWeight: 300, fontSize: '0.85rem', color: T.dim, margin: 0, lineHeight: 1.5 }}>[ Visual Placeholder ]<br/>{item.desc}</p>
-              </div>
-            </FadeUp>
-          ))}
-        </div>
-
-        <div className="award-grid" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(310px,1fr))', gap:'1px', background:`rgba(0,191,255,0.1)` }}>
-          {AWARDS.map((a, i) => {
-            const acc = i%3===0 ? T.saffron : i%3===1 ? T.accent : `rgba(46,139,87,0.9)`;
-            return (
-              <FadeUp key={i} delay={(i%3)*80}>
-                <div style={{ padding:'26px 22px', background:T.navyDark, borderLeft:`4px solid ${acc}`, transition:'background 0.3s' }}
-                  onMouseEnter={e => e.currentTarget.style.background=T.navyMid}
-                  onMouseLeave={e => e.currentTarget.style.background=T.navyDark}>
-                  <span style={{ fontSize:'1.8rem', display:'block', marginBottom:'10px' }}>{a.icon}</span>
-                  <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.05rem', letterSpacing:'0.04em', color:T.white, marginBottom:'4px', lineHeight:1.2 }}>{a.name}</p>
-                  <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:500, fontSize:'0.82rem', color:acc, marginBottom:'3px' }}>{a.result}</p>
-                  <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.68rem', letterSpacing:'0.15em', color:T.faint }}>{a.year}</p>
-                </div>
-              </FadeUp>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────────
-   REACTIONS
-───────────────────────────────────────────────────────────────── */
-function ReactionsSection() {
-  return (
-    <section id="reactions" style={{ padding:'120px 24px', background:T.black, position:'relative', overflow:'hidden' }}>
-      <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.saffron}44 50%, transparent 100%)` }} />
-
-      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
-        <FadeUp>
-          <SectionEyebrow label="Audience Reactions" />
-          <SectionTitle>
-            What People Said<br />
-            <span style={{ color:T.saffron }}>When the Lights Came On</span>
-          </SectionTitle>
-        </FadeUp>
-
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))', gap:'1px', background:`rgba(0,191,255,0.08)`, marginTop:'48px', marginBottom:'48px' }}>
-          {TESTIMONIALS.map((t, i) => (
-            <FadeUp key={i} delay={i*80}>
-              <div style={{ padding:'28px 24px', background:T.navyDark, borderTop:`2px solid ${i%2===0?T.saffron:T.accent}`, height:'100%', transition:'background 0.3s' }}
-                onMouseEnter={e => e.currentTarget.style.background=T.navyMid}
-                onMouseLeave={e => e.currentTarget.style.background=T.navyDark}>
-                <p style={{ fontFamily:'"Georgia",serif', fontStyle:'italic', fontSize:'1.4rem', color:i%2===0?T.saffron:T.accent, lineHeight:1, marginBottom:'12px' }}>❝</p>
-                <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.9rem', color:T.dim, lineHeight:1.75, marginBottom:'16px', fontStyle:'italic' }}>{t.q}</p>
-                <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.7rem', letterSpacing:'0.14em', textTransform:'uppercase', color:T.faint }}>— {t.who}</p>
-              </div>
-            </FadeUp>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────────
-   BLOG SECTION
-───────────────────────────────────────────────────────────────── */
-function BlogSection() {
-  return (
-    <section id="blog" style={{ padding:'120px 24px', background:`linear-gradient(180deg, ${T.navyDark} 0%, ${T.black} 100%)`, position:'relative', overflow:'hidden' }}>
-      <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.green}44 50%, transparent 100%)` }} />
-
-      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
-        <FadeUp>
-          {/* UPDATED TO BE HIGHLY VISIBLE */}
-          <SectionTitle>
-            Blog — <span style={{ color:`rgba(46,139,87,0.9)` }}>The Journey So Far</span>
-          </SectionTitle>
-        </FadeUp>
-
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(320px,1fr))', gap:'1px', background:`rgba(46,139,87,0.15)`, marginTop:'48px' }}>
-          {BLOG_POSTS.map((post, i) => (
-            <FadeUp key={i} delay={i*100}>
-              <div style={{ background:T.navyDark, borderTop:`3px solid ${i===0?T.saffron:i===1?T.accent:'rgba(46,139,87,0.9)'}`, padding:'32px 28px', height:'100%', transition:'background 0.3s', cursor:'pointer' }}
-                onMouseEnter={e => e.currentTarget.style.background=T.navyMid}
-                onMouseLeave={e => e.currentTarget.style.background=T.navyDark}>
-                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'16px' }}>
-                  <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.65rem', letterSpacing:'0.22em', textTransform:'uppercase', color: i===0?T.saffron:i===1?T.accent:'rgba(46,139,87,0.9)' }}>
-                    {post.date}
-                  </span>
-                  <span style={{ fontFamily:'"Inter",sans-serif', fontSize:'0.72rem', color:T.faint, border:`1px solid ${T.ghost}`, padding:'3px 10px' }}>
-                    {post.readTime} read
-                  </span>
-                </div>
-                <h3 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.25rem', letterSpacing:'0.04em', color:T.white, lineHeight:1.15, marginBottom:'14px' }}>
-                  {post.title}
-                </h3>
-                <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.875rem', color:T.dim, lineHeight:1.75, marginBottom:'24px' }}>
-                  {post.excerpt}
-                </p>
-                <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.72rem', letterSpacing:'0.2em', textTransform:'uppercase', color: i===0?T.saffron:i===1?T.accent:'rgba(46,139,87,0.9)' }}>
-                  Read Story →
-                </span>
-              </div>
-            </FadeUp>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────────
-   IMPACT
-───────────────────────────────────────────────────────────────── */
-function ImpactSection() {
-  return (
-    <section id="impact" style={{ padding:'120px 24px', background:`linear-gradient(180deg, ${T.navyDark} 0%, ${T.black} 100%)` }}>
-      <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.green}55 50%, transparent 100%)` }} />
-
-      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
-        <FadeUp>
-          <SectionEyebrow label="Community Impact" />
-          <SectionTitle>
-            A Movement Across<br />
-            <span style={{ color:`rgba(46,139,87,0.9)` }}>India</span>
-          </SectionTitle>
-        </FadeUp>
-
-        <div className="stat-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'1px', background:`rgba(46,139,87,0.2)`, marginBottom:'1px', marginTop:'48px' }}>
-          {IMPACT_STATS.map((s, i) => (
-            <FadeUp key={s.label} delay={i*80}>
-              <div style={{ padding:'36px 20px', textAlign:'center', background:T.navyDark, borderTop:`3px solid ${i%3===0?T.saffron:i%3===1?T.accent:'rgba(46,139,87,0.9)'}` }}>
-                <div style={{ fontSize:'1.6rem', marginBottom:'8px' }}>{s.icon}</div>
-                <div style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'3rem', color:T.accent, letterSpacing:'-0.02em', lineHeight:1 }}>{s.value}</div>
-                <div style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.7rem', letterSpacing:'0.2em', textTransform:'uppercase', color:T.faint, marginTop:'5px' }}>{s.label}</div>
-              </div>
-            </FadeUp>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────────
    FINAL CTA
 ───────────────────────────────────────────────────────────────── */
 function FinalCTA() {
@@ -1005,15 +1003,17 @@ function FinalCTA() {
       <div style={{ maxWidth:'700px', margin:'0 auto', position:'relative' }}>
         <FadeUp>
           <div style={{ fontSize:'2.8rem', marginBottom:'24px' }}>🇮🇳</div>
-          <h2 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'clamp(2.2rem,6vw,4.5rem)', color:T.white, lineHeight:1.0, letterSpacing:'0.03em', marginBottom:'32px' }}>
+          <h2 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'clamp(2.2rem,6vw,4.5rem)', color:T.white, lineHeight:1.0, letterSpacing:'0.03em', marginBottom:'20px' }}>
             Bring This Film to Every<br />
             School &amp; Workplace<br />
             <span style={{ color:T.accent }}>in India.</span>
           </h2>
-          
-          {/* UPDATED TO BE HIGHLY PROMINENT */}
-          <div style={{ background:'rgba(255,153,51,0.15)', border:'2px solid rgba(255,153,51,0.5)', padding:'24px 32px', marginBottom:'40px', maxWidth:'600px', margin:'0 auto 40px', borderRadius:'8px' }}>
-            <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:500, fontSize:'1.2rem', color:T.white, lineHeight:1.6, margin:0 }}>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1rem', color:T.faint, lineHeight:1.75, marginBottom:'32px', maxWidth:'500px', margin:'0 auto 32px' }}>
+            Help us reach 1 million viewers. Every screening, every contribution, every share brings us closer to a more inclusive India.
+          </p>
+
+          <div style={{ background:'rgba(255,153,51,0.08)', border:'1px solid rgba(255,153,51,0.25)', padding:'18px 28px', marginBottom:'32px', maxWidth:'500px', margin:'0 auto 32px' }}>
+            <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:400, fontSize:'1rem', color:T.cream, lineHeight:1.7, fontStyle:'italic' }}>
               If you watched the film and loved it, you can do your bit and contribute here.
             </p>
           </div>
@@ -1036,6 +1036,10 @@ function FinalCTA() {
             </button>
             <Btn href="https://www.jiohotstar.com/" external primary={false}>▶ Watch the Film</Btn>
           </div>
+
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.72rem', color:T.faint, marginTop:'16px', letterSpacing:'0.04em' }}>
+            🔒 Secured by Razorpay · Pay any amount you wish
+          </p>
         </FadeUp>
       </div>
 
@@ -1064,7 +1068,7 @@ function Footer() {
 
           <div>
             <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.65rem', letterSpacing:'0.25em', textTransform:'uppercase', color:T.accent, marginBottom:'18px' }}>Navigate</p>
-            {[['#story','Story'],['#behind','Timeline'],['#awards','Accolades'],['#reactions','Reactions'],['#blog','Blog'],['#impact','Impact'],['#watch','Watch'],['contribute','Contribute']].map(([h,l]) => (
+            {[['#story','Story'],['#behind','Behind the Scenes'],['#awards','Accolades'],['#reactions','Reactions'],['#blog','Blog'],['#impact','Impact'],['#watch','Watch'],['contribute','Contribute']].map(([h,l]) => (
               <a key={h} href={h.startsWith('#')?h:`/${h}`}
                 style={{ display:'block', fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.875rem', color:'rgba(240,237,232,0.38)', textDecoration:'none', marginBottom:'8px', transition:'color 0.2s' }}
                 onMouseEnter={e => e.target.style.color=T.white}
@@ -1140,14 +1144,13 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
-        <WatchSection />
         <StorySection />
-        <RockSongSection />
         <BehindScenes />
         <AwardsSection />
         <ReactionsSection />
         <BlogSection />
         <ImpactSection />
+        <WatchSection />
         <FinalCTA />
       </main>
       <Footer />
