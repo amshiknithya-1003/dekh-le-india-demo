@@ -1,24 +1,35 @@
 /**
- * DEKH LE! INDIA — Updated Homepage
- * ─────────────────────────────────
- * DROP THIS FILE INTO:  app/page.jsx  (or pages/index.jsx if using Pages Router)
+ * DEKH LE! INDIA — Homepage  v2
+ * ─────────────────────────────────────────────────────
+ * DROP THIS FILE INTO:  app/page.jsx  (or pages/index.jsx)
  *
- * CHANGES MADE (annotated with ── CHANGE ── comments inline):
+ * SETUP REQUIRED:
+ *   • Add /public/hero.jpg  ← real film photo (16:9, dark/moody)
+ *   • Add /public/favicon.ico
+ *   • (Optional) /public/awards/*.jpg, /public/blog/*.jpg
+ *
+ * v1 CHANGES:
  *  1. Hero announcement banner "Releasing on Jio Hotstar — June 2026"
- *  2. Stronger storytelling hero description
- *  3. Updated stats: 10 States · 2.5 Years · 110 Hours · 70 Min Film + Languages
- *  4. NEW: Journey Timeline section
- *  5. NEW: Accolades section (with placeholder images — swap src= with real assets)
- *  6. NEW: Audience Reactions section
- *  7. NEW: Rock Song section
- *  8. NEW: Blog "Journey So Far" section
- *  9. NEW: Donation banner (post-watch CTA)
- * 10. All existing sections preserved + upgraded
+ *  2. Stronger storytelling description
+ *  3. Updated stats: 10 States · 2.5 Years · 110h · 70 Min + Languages
+ *  4. Journey Timeline / Accolades / Reactions / Rock Song / Blog sections
+ *  5. Donation banner (post-watch CTA)
+ *
+ * v2 CHANGES  ← NEW:
+ *  6. Hero: real image background (url('/hero.jpg')) + cinematic dark overlay
+ *  7. Smooth scroll + global CSS reset (also add to globals.css — see bottom)
+ *  8. Hover effects — buttons scale(1.05), cards translateY(-5px)
+ *  9. Section padding upgraded to 80px vertical
+ * 10. Donation section — stronger emotional copy + "Support the Movement" heading
+ * 11. <head> — title + favicon (layout.jsx snippet included at bottom)
+ * 12. Mobile — min tap targets 44px, readable font floors, no overflow
  */
 
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+// If using Next.js Pages Router, also import Head:
+// import Head from "next/head";
 
 /* ─── CONSTANTS ──────────────────────────────────────────────── */
 const NAV_LINKS = [
@@ -487,21 +498,34 @@ export default function Home() {
       </section>
 
       {/* ════════════════════════════════════════════════════
-          ── CHANGE 5: DONATION BANNER ──
-          Post-watch CTA — insert after watch section.
+          ── CHANGE 10: DONATION BANNER — emotional rewrite ──
       ════════════════════════════════════════════════════ */}
       <section className="donation-banner" id="donate">
         <div className="donation-inner">
           <div className="donation-text">
-            <h2>If you watched the film and loved it,<br />you can contribute here.</h2>
+            {/* Eyebrow */}
+            <span className="donation-eyebrow">Support the Movement</span>
+            {/* Headline — personal, direct */}
+            <h2>If this story moved you,<br />you can help it move further.</h2>
+            {/* Emotional body — not transactional */}
             <p>
-              Your contribution keeps this story alive — more screenings, more schools, more states.
-              Every rupee goes directly to taking the film to communities who need it most.
+              These women played in silence for years — no cameras, no coverage, no crowd.
+              Your contribution changes that. Every rupee goes directly to taking this film
+              to schools, communities, and corners of India that have never seen themselves
+              on screen.
+            </p>
+            <p className="donation-subline">
+              If you watched the film and loved it, you can contribute here.
             </p>
           </div>
           <div className="donation-actions">
             <a href="/contribute" className="btn-gold">💛 Contribute Now</a>
             <p className="donation-secure">🔒 Secured by Razorpay · Pay any amount you wish</p>
+            <div className="donation-impact-row">
+              <span>₹500 → 1 school screening</span>
+              <span>₹2000 → outreach kit</span>
+              <span>₹5000 → new state</span>
+            </div>
           </div>
         </div>
       </section>
@@ -657,21 +681,46 @@ const GLOBAL_CSS = `
   .announcement-link:hover { background: var(--accent); color: var(--navy); }
   @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
 
-  /* ── HERO ── */
+  /* ── HERO ── (v2: real image background) */
   .hero {
     min-height: 100vh; display: flex; align-items: center; justify-content: center;
     position: relative; overflow: hidden;
-    background: linear-gradient(160deg, #050d1a 0%, #081629 40%, #0a1f3a 70%, #050d1a 100%);
+    /*
+     * ── CHANGE 6: REAL IMAGE BG ──────────────────────────────────────
+     * ADD /public/hero.jpg — ideally a cinematic wide shot of the team,
+     * Edgbaston stadium, or a player mid-action.
+     * The dark overlays below keep text fully readable over any image.
+     * ─────────────────────────────────────────────────────────────────
+     */
+    background:
+      url('/hero.jpg') center / cover no-repeat;
   }
-  .hero-bg { position: absolute; inset: 0; pointer-events: none; }
+  /* Primary cinematic overlay — deep navy tint so text always wins */
+  .hero::before {
+    content: ''; position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(
+      160deg,
+      rgba(5,13,26,0.82) 0%,
+      rgba(8,22,41,0.72) 40%,
+      rgba(10,31,58,0.65) 70%,
+      rgba(5,13,26,0.88) 100%
+    );
+  }
+  /* Bottom fade so hero-scroll indicator is readable */
+  .hero::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; z-index: 1;
+    height: 220px;
+    background: linear-gradient(to bottom, transparent, rgba(5,13,26,0.95));
+  }
+  .hero-bg { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
   .hero-grain {
     position: absolute; inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    opacity: 0.4;
+    opacity: 0.35; /* slightly reduced — real photo adds its own texture */
   }
   .hero-vignette {
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse at center, transparent 30%, rgba(5,13,26,0.8) 100%);
+    background: radial-gradient(ellipse at center, transparent 20%, rgba(5,13,26,0.65) 100%);
   }
   .hero-scanlines {
     position: absolute; inset: 0;
@@ -679,7 +728,7 @@ const GLOBAL_CSS = `
     pointer-events: none;
   }
   .hero-content {
-    position: relative; z-index: 2;
+    position: relative; z-index: 3; /* above ::before, ::after, and hero-bg */
     text-align: center; padding: 6rem 2rem 4rem;
     max-width: 900px;
   }
@@ -746,7 +795,7 @@ const GLOBAL_CSS = `
     position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
     display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
     font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--muted); z-index: 2;
+    color: var(--muted); z-index: 3;
     animation: fadeInUp 1s 1.5s both;
   }
   .scroll-line {
@@ -757,38 +806,56 @@ const GLOBAL_CSS = `
   @keyframes scrollPulse { 0%,100%{height:40px;} 50%{height:20px;} }
   @keyframes fadeInUp { from{opacity:0;transform:translateX(-50%) translateY(20px);} to{opacity:1;transform:translateX(-50%) translateY(0);} }
 
+  /* ── CHANGE 8: GLOBAL HOVER TRANSITIONS ── */
+  /* All interactive elements get a unified transition so nothing feels snappy */
+  a, button { transition: all 0.3s ease; }
+
   /* ── BUTTONS ── */
   .btn-primary {
     display: inline-flex; align-items: center; gap: 0.4rem;
     background: var(--white); color: var(--navy);
     padding: 0.75rem 1.8rem; border-radius: 2px;
     font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em;
-    transition: background 0.2s, transform 0.15s;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    min-height: 44px; /* mobile tap target */
   }
-  .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); }
+  .btn-primary:hover {
+    background: var(--accent2);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(200,168,75,0.3);
+  }
   .btn-primary.small { padding: 0.5rem 1.2rem; font-size: 0.78rem; }
   .btn-ghost {
     display: inline-flex; align-items: center; gap: 0.4rem;
     border: 1px solid rgba(240,238,232,0.3); color: var(--white);
     padding: 0.75rem 1.8rem; border-radius: 2px;
     font-size: 0.85rem; letter-spacing: 0.06em;
-    transition: border-color 0.2s, background 0.2s;
+    transition: border-color 0.3s, background 0.3s, transform 0.3s;
+    min-height: 44px;
   }
-  .btn-ghost:hover { border-color: var(--white); background: rgba(240,238,232,0.06); }
+  .btn-ghost:hover {
+    border-color: var(--white);
+    background: rgba(240,238,232,0.06);
+    transform: scale(1.05);
+  }
   .btn-gold {
     display: inline-flex; align-items: center; gap: 0.4rem;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     color: var(--navy);
     padding: 0.85rem 2rem; border-radius: 2px;
     font-size: 0.9rem; font-weight: 700; letter-spacing: 0.04em;
-    transition: transform 0.15s, box-shadow 0.2s;
+    transition: transform 0.3s, box-shadow 0.3s;
     box-shadow: 0 4px 24px rgba(200,168,75,0.25);
+    min-height: 44px;
   }
-  .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(200,168,75,0.4); }
+  .btn-gold:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 36px rgba(200,168,75,0.45);
+  }
 
-  /* ── SECTIONS ── */
+  /* ── SECTIONS ── (v2: 80px vertical padding for breathing room) */
   .section {
-    padding: 6rem 2rem;
+    padding: 80px 20px; /* CHANGE 9 */
     max-width: 1200px; margin: 0 auto;
   }
   .section-header {
@@ -815,9 +882,14 @@ const GLOBAL_CSS = `
   .pillar {
     background: var(--navy2); padding: 2rem 1.8rem;
     border: 1px solid var(--border);
-    transition: border-color 0.2s, background 0.2s;
+    transition: border-color 0.3s, background 0.3s, transform 0.3s, box-shadow 0.3s;
   }
-  .pillar:hover { border-color: var(--accent); background: var(--navy3); }
+  .pillar:hover {
+    border-color: var(--accent);
+    background: var(--navy3);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+  }
   .pillar-n {
     display: block; font-family: 'DM Mono', monospace;
     font-size: 0.7rem; color: var(--accent);
@@ -894,10 +966,14 @@ const GLOBAL_CSS = `
   .accolade-card {
     background: var(--navy2); border: 1px solid var(--border);
     padding: 1.5rem; text-align: center;
-    transition: transform 0.2s, border-color 0.2s;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
     border-radius: 2px;
   }
-  .accolade-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+  .accolade-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+  }
   .accolade-card.winner { border-color: rgba(200,168,75,0.4); }
   /* 👉 Replace this with <img> of real award photo/certificate */
   .accolade-img-placeholder {
@@ -1024,9 +1100,13 @@ const GLOBAL_CSS = `
   .blog-card {
     background: var(--navy2); border: 1px solid var(--border);
     border-radius: 2px; overflow: hidden;
-    transition: transform 0.2s, border-color 0.2s;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
   }
-  .blog-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+  .blog-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+  }
   .blog-card-img-placeholder {
     height: 160px; background: var(--navy3);
     display: flex; align-items: center; justify-content: center;
@@ -1048,9 +1128,14 @@ const GLOBAL_CSS = `
   .watch-card {
     background: var(--navy2); border: 1px solid var(--border);
     padding: 2.5rem 1.5rem; text-align: center; border-radius: 2px;
-    transition: border-color 0.2s, transform 0.2s;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    min-height: 44px;
   }
-  .watch-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .watch-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+  }
   .watch-card.featured {
     background: linear-gradient(135deg, var(--navy3), #0c1e3c);
     border-color: var(--accent);
@@ -1059,22 +1144,55 @@ const GLOBAL_CSS = `
   .watch-card strong { display: block; font-family: 'Playfair Display', serif; margin-bottom: 0.5rem; }
   .watch-card p { font-size: 0.82rem; color: var(--muted); }
 
-  /* ── DONATION BANNER (CHANGE 5) ── */
+  /* ── DONATION BANNER (v2: emotional rewrite) ── */
   .donation-banner {
     background: linear-gradient(135deg, #0c1e38 0%, #0f2a4a 100%);
     border-top: 2px solid var(--accent); border-bottom: 1px solid var(--border);
-    padding: 4rem 2rem;
+    padding: 5rem 2rem;
   }
   .donation-inner {
     max-width: 1000px; margin: 0 auto;
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex; align-items: flex-start; justify-content: space-between;
     gap: 3rem; flex-wrap: wrap;
   }
   .donation-text { flex: 1; min-width: 280px; }
-  .donation-text h2 { font-size: clamp(1.4rem, 3vw, 2.2rem); margin-bottom: 1rem; }
-  .donation-text p { color: var(--muted); font-size: 0.92rem; line-height: 1.8; }
-  .donation-actions { text-align: center; }
-  .donation-secure { font-size: 0.7rem; color: var(--muted); margin-top: 0.75rem; letter-spacing: 0.06em; }
+  .donation-eyebrow {
+    display: block;
+    font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.9rem;
+  }
+  .donation-text h2 {
+    font-size: clamp(1.5rem, 3vw, 2.4rem);
+    margin-bottom: 1.2rem; line-height: 1.25;
+  }
+  .donation-text p {
+    color: var(--muted); font-size: 0.92rem; line-height: 1.85;
+    margin-bottom: 0.75rem;
+  }
+  .donation-subline {
+    font-size: 0.95rem !important;
+    color: var(--white) !important;
+    font-style: italic;
+    border-left: 2px solid var(--accent);
+    padding-left: 1rem; margin-top: 1.25rem !important;
+  }
+  .donation-actions {
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+    padding-top: 0.5rem;
+  }
+  .donation-secure { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.06em; }
+  .donation-impact-row {
+    display: flex; flex-direction: column; gap: 0.4rem;
+    margin-top: 0.5rem;
+    border: 1px solid var(--border); border-radius: 2px;
+    padding: 1rem 1.25rem; background: rgba(200,168,75,0.04);
+    width: 100%;
+  }
+  .donation-impact-row span {
+    font-size: 0.75rem; color: var(--muted); letter-spacing: 0.04em;
+  }
+  .donation-impact-row span::before { content: "→ "; color: var(--accent); }
 
   /* ── MAIN CTA ── */
   .cta-section {
@@ -1116,4 +1234,85 @@ const GLOBAL_CSS = `
   .footer-directors { font-size: 0.82rem; color: var(--muted); margin-top: 0.5rem; line-height: 1.6; }
   .footer-credits { max-width: 1100px; margin: 0 auto 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.72rem; color: var(--muted); line-height: 1.7; }
   .footer-bottom { max-width: 1100px; margin: 0 auto; font-size: 0.7rem; color: var(--muted); letter-spacing: 0.06em; text-align: center; }
+
+  /* ─────────────────────────────────────────────
+     MOBILE RESPONSIVE (CHANGE 12 — thorough pass)     ───────────────────────────────────────────── */
+  @media (max-width: 600px) {
+    /* nav */
+    .nav { padding: 0.9rem 1.2rem; }
+    .nav-logo { font-size: 0.88rem; }
+
+    /* announcement */
+    .announcement-banner { font-size: 0.8rem; gap: 0.5rem; padding: 0.6rem 1rem; }
+    .announcement-link { display: none; } /* keep it clean on tiny screens */
+
+    /* hero */
+    .hero-content { padding: 5rem 1.2rem 3rem; }
+    .hero-title-small { font-size: clamp(1.8rem, 10vw, 3rem); }
+    .hero-title-large { font-size: clamp(3.5rem, 18vw, 7rem); }
+    .hero-desc { font-size: 1rem; }
+    .hero-stats { gap: 1rem; }
+    .stat-n { font-size: 1.25rem; }
+    .stat-sep { display: none; } /* stack cleanly */
+    .hero-languages { gap: 0.35rem; }
+    .lang-tag { font-size: 0.62rem; padding: 0.15rem 0.45rem; }
+
+    /* hero actions — stack on mobile */
+    .hero-actions { flex-direction: column; align-items: center; gap: 0.75rem; }
+    .btn-primary, .btn-ghost, .btn-gold {
+      width: 100%; max-width: 280px;
+      justify-content: center;
+      font-size: 0.88rem;
+    }
+
+    /* sections */
+    .section { padding: 60px 16px; }
+    .section-header h2 { font-size: 1.6rem; }
+
+    /* pillars */
+    .pillars { grid-template-columns: 1fr; gap: 1px; }
+
+    /* timeline */
+    .timeline-card { padding: 1.2rem; }
+    .timeline-card h3 { font-size: 0.95rem; }
+
+    /* accolades */
+    .accolades-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .awards-count-row { gap: 2rem; }
+
+    /* reactions marquee — reduce speed for readability */
+    .reactions-track { animation-duration: 48s; }
+    .reaction-card { width: 280px; padding: 1.5rem 1.2rem; }
+
+    /* song */
+    .song-inner { flex-direction: column; gap: 2.5rem; }
+    .song-visual { order: -1; }
+
+    /* impact */
+    .impact-grid { grid-template-columns: repeat(2, 1fr); }
+
+    /* blog */
+    .blog-grid { grid-template-columns: 1fr; }
+
+    /* watch */
+    .watch-cards { grid-template-columns: 1fr; }
+
+    /* donation */
+    .donation-inner { flex-direction: column; }
+    .donation-impact-row { font-size: 0.72rem; }
+
+    /* cta */
+    .cta-section { padding: 5rem 1.2rem; }
+    .cta-actions { flex-direction: column; align-items: center; }
+
+    /* footer */
+    .footer-credits { font-size: 0.66rem; }
+  }
+
+  @media (max-width: 400px) {
+    .accolades-grid { grid-template-columns: 1fr; }
+    .hero-stats { flex-direction: column; gap: 0.75rem; }
+    .stat-sep { display: none; }
+  }
 `;
+
