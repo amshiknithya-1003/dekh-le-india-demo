@@ -301,9 +301,13 @@ function DonationModal({ onClose }) {
           <h3 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'2rem', letterSpacing:'0.04em', color:'#FFFFFF', lineHeight:1.1, marginBottom:'8px' }}>
             Contribute to<br />Dekh Le! India 🇮🇳
           </h3>
-          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.85rem', color:'rgba(240,237,232,0.7)', lineHeight:1.65, fontStyle:'italic', borderLeft:'2px solid #FF9933', paddingLeft:'12px', marginBottom:'10px' }}>
-            If you watched the film and loved it, you can do your bit and contribute here.
-          </p>
+          
+          <div style={{ background:'rgba(255,153,51,0.15)', borderLeft:'3px solid #FF9933', padding:'12px 16px', marginBottom:'14px', borderRadius:'4px' }}>
+            <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:500, fontSize:'0.9rem', color:T.white, lineHeight:1.6, margin:0 }}>
+              If you watched the film and loved it, you can do your bit and contribute here.
+            </p>
+          </div>
+          
           <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.82rem', color:'rgba(240,237,232,0.45)', lineHeight:1.65 }}>
             Every rupee funds skill training so these champions can build a livelihood from the game they love.
           </p>
@@ -398,7 +402,7 @@ function Navbar() {
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
-  const links = [['#story','Story'],['#behind','Behind Scenes'],['#awards','Accolades'],['#reactions','Reactions'],['#blog','Blog'],['#impact','Impact'],['#watch','Watch']];
+  const links = [['#story','Story'],['#behind','Timeline'],['#awards','Accolades'],['#reactions','Reactions'],['#blog','Blog'],['#impact','Impact'],['#watch','Watch']];
 
   return (
     <nav style={{
@@ -508,16 +512,19 @@ function Hero() {
         background:`linear-gradient(to top, ${T.black} 0%, transparent 100%)` }} />
 
       <div style={{ position:'relative', zIndex:10, textAlign:'center', padding:'120px 24px 80px', maxWidth:'1100px', width:'100%' }}>
-        <div style={{ ...anim(100), marginBottom:'20px' }}>
+        
+        {/* BIG HERO ANNOUNCEMENT */}
+        <div style={{ ...anim(100), marginBottom:'24px' }}>
           <div style={{
-            display:'inline-flex', alignItems:'center', gap:'10px',
-            background:'rgba(255,153,51,0.12)',
-            border:'1px solid rgba(255,153,51,0.45)',
-            padding:'8px 22px',
-            marginBottom:'4px',
+            display:'inline-flex', alignItems:'center', gap:'14px',
+            background:'rgba(255,153,51,0.18)',
+            border:'2px solid rgba(255,153,51,0.8)',
+            padding:'14px 36px',
+            borderRadius:'6px',
+            boxShadow:'0 0 30px rgba(255,153,51,0.3)',
           }}>
-            <span style={{ width:'7px', height:'7px', borderRadius:'50%', background:T.saffron, display:'inline-block', animation:'heroPulse 1.6s ease-in-out infinite', flexShrink:0 }} />
-            <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.88rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.saffron }}>
+            <span style={{ width:'10px', height:'10px', borderRadius:'50%', background:T.saffron, display:'inline-block', animation:'heroPulse 1.6s ease-in-out infinite', flexShrink:0 }} />
+            <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.4rem', letterSpacing:'0.2em', textTransform:'uppercase', color:T.saffron }}>
               <strong>Releasing on Jio Hotstar — June 2026</strong>
             </span>
           </div>
@@ -589,10 +596,6 @@ function Hero() {
             🤍 Contribute
           </button>
         </div>
-
-        <p style={{ ...anim(1200), fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.68rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.saffron }}>
-          🎬 Releasing on Jio Hotstar — June 2026
-        </p>
 
         {showDonate && <DonationModal onClose={() => setShowDonate(false)} />}
       </div>
@@ -736,13 +739,17 @@ function RockSongSection() {
           </p>
           <div style={{ display:'flex', justifyContent:'center', gap:'20px', flexWrap:'wrap', marginTop:'32px' }}>
              {['Spotify','Amazon Music','YouTube Music','Apple Music'].map(platform => (
-               <div key={platform} style={{ 
-                 padding:'15px 25px', border:`1px solid ${T.ghost}`, 
+               <a key={platform} href="#" onClick={(e) => e.preventDefault()} style={{ 
+                 padding:'15px 28px', border:`1px solid rgba(255,153,51,0.3)`, 
                  color:T.faint, fontFamily:'"Bebas Neue",sans-serif', 
-                 fontSize:'0.9rem', letterSpacing:'0.1em' 
-               }}>
+                 fontSize:'1rem', letterSpacing:'0.15em',
+                 textDecoration: 'none', background: 'rgba(255,153,51,0.05)',
+                 transition: 'all 0.2s', textTransform: 'uppercase'
+               }}
+               onMouseEnter={e => { e.currentTarget.style.color=T.saffron; e.currentTarget.style.borderColor=T.saffron; }}
+               onMouseLeave={e => { e.currentTarget.style.color=T.faint; e.currentTarget.style.borderColor='rgba(255,153,51,0.3)'; }}>
                  {platform} (Coming Soon)
-               </div>
+               </a>
              ))}
           </div>
         </FadeUp>
@@ -820,13 +827,29 @@ function AwardsSection() {
             Awards &amp;<br />
             <span style={{ color:T.accent }}>Festival Selections</span>
           </SectionTitle>
-          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'520px', margin:'0 auto 36px', lineHeight:1.75 }}>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'520px', margin:'0 auto 40px', lineHeight:1.75 }}>
             Recognised across <span style={{ color:T.accent }}>8+ countries</span> at prestigious international film festivals.
           </p>
-          <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'1.1rem', color:T.saffron, textAlign:'center', marginBottom:'56px', letterSpacing:'0.1em' }}>
-            Appreciated by the Prime Minister &amp; President of India
-          </p>
         </FadeUp>
+
+        {/* VISUAL PLACEHOLDERS FOR PM / PRESIDENT / KBC */}
+        <div style={{ display:'flex', justifyContent:'center', gap:'24px', flexWrap:'wrap', marginBottom:'64px' }}>
+          {[
+            { title: 'Hon. Prime Minister', desc: 'Appreciation & Recognition' },
+            { title: 'Hon. President', desc: 'Special Screening' },
+            { title: 'Kaun Banega Crorepati', desc: 'Featured Episode' }
+          ].map(item => (
+            <FadeUp key={item.title}>
+              <div style={{ width: '280px', height: '220px', border: `1px dashed ${T.saffron}`, background: 'rgba(255,153,51,0.05)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '24px', transition: 'background 0.3s' }}
+                onMouseEnter={e => e.currentTarget.style.background='rgba(255,153,51,0.1)'}
+                onMouseLeave={e => e.currentTarget.style.background='rgba(255,153,51,0.05)'}>
+                <span style={{ fontSize: '2.5rem', marginBottom: '14px', opacity: 0.8 }}>📸</span>
+                <h4 style={{ fontFamily: '"Bebas Neue",sans-serif', fontWeight: 400, fontSize: '1.4rem', letterSpacing: '0.06em', color: T.saffron, margin: '0 0 6px', lineHeight: 1.2 }}>{item.title}</h4>
+                <p style={{ fontFamily: '"Inter",sans-serif', fontWeight: 300, fontSize: '0.85rem', color: T.dim, margin: 0, lineHeight: 1.5 }}>[ Visual Placeholder ]<br/>{item.desc}</p>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
 
         <div className="award-grid" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(310px,1fr))', gap:'1px', background:`rgba(0,191,255,0.1)` }}>
           {AWARDS.map((a, i) => {
@@ -867,7 +890,7 @@ function ReactionsSection() {
           </SectionTitle>
         </FadeUp>
 
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))', gap:'1px', background:`rgba(0,191,255,0.08)`, marginBottom:'48px' }}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))', gap:'1px', background:`rgba(0,191,255,0.08)`, marginTop:'48px', marginBottom:'48px' }}>
           {TESTIMONIALS.map((t, i) => (
             <FadeUp key={i} delay={i*80}>
               <div style={{ padding:'28px 24px', background:T.navyDark, borderTop:`2px solid ${i%2===0?T.saffron:T.accent}`, height:'100%', transition:'background 0.3s' }}
@@ -895,14 +918,13 @@ function BlogSection() {
 
       <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
         <FadeUp>
-          <SectionEyebrow label="Blog — The Journey So Far" />
+          {/* UPDATED TO BE HIGHLY VISIBLE */}
           <SectionTitle>
-            Behind the<br />
-            <span style={{ color:`rgba(46,139,87,0.9)` }}>Camera</span>
+            Blog — <span style={{ color:`rgba(46,139,87,0.9)` }}>The Journey So Far</span>
           </SectionTitle>
         </FadeUp>
 
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(320px,1fr))', gap:'1px', background:`rgba(46,139,87,0.15)` }}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(320px,1fr))', gap:'1px', background:`rgba(46,139,87,0.15)`, marginTop:'48px' }}>
           {BLOG_POSTS.map((post, i) => (
             <FadeUp key={i} delay={i*100}>
               <div style={{ background:T.navyDark, borderTop:`3px solid ${i===0?T.saffron:i===1?T.accent:'rgba(46,139,87,0.9)'}`, padding:'32px 28px', height:'100%', transition:'background 0.3s', cursor:'pointer' }}
@@ -951,7 +973,7 @@ function ImpactSection() {
           </SectionTitle>
         </FadeUp>
 
-        <div className="stat-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'1px', background:`rgba(46,139,87,0.2)`, marginBottom:'1px' }}>
+        <div className="stat-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'1px', background:`rgba(46,139,87,0.2)`, marginBottom:'1px', marginTop:'48px' }}>
           {IMPACT_STATS.map((s, i) => (
             <FadeUp key={s.label} delay={i*80}>
               <div style={{ padding:'36px 20px', textAlign:'center', background:T.navyDark, borderTop:`3px solid ${i%3===0?T.saffron:i%3===1?T.accent:'rgba(46,139,87,0.9)'}` }}>
@@ -983,14 +1005,15 @@ function FinalCTA() {
       <div style={{ maxWidth:'700px', margin:'0 auto', position:'relative' }}>
         <FadeUp>
           <div style={{ fontSize:'2.8rem', marginBottom:'24px' }}>🇮🇳</div>
-          <h2 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'clamp(2.2rem,6vw,4.5rem)', color:T.white, lineHeight:1.0, letterSpacing:'0.03em', marginBottom:'20px' }}>
+          <h2 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'clamp(2.2rem,6vw,4.5rem)', color:T.white, lineHeight:1.0, letterSpacing:'0.03em', marginBottom:'32px' }}>
             Bring This Film to Every<br />
             School &amp; Workplace<br />
             <span style={{ color:T.accent }}>in India.</span>
           </h2>
           
-          <div style={{ background:'rgba(255,153,51,0.08)', border:'1px solid rgba(255,153,51,0.25)', padding:'18px 28px', marginBottom:'32px', maxWidth:'500px', margin:'0 auto 32px' }}>
-            <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:400, fontSize:'1rem', color:T.cream, lineHeight:1.7, fontStyle:'italic' }}>
+          {/* UPDATED TO BE HIGHLY PROMINENT */}
+          <div style={{ background:'rgba(255,153,51,0.15)', border:'2px solid rgba(255,153,51,0.5)', padding:'24px 32px', marginBottom:'40px', maxWidth:'600px', margin:'0 auto 40px', borderRadius:'8px' }}>
+            <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:500, fontSize:'1.2rem', color:T.white, lineHeight:1.6, margin:0 }}>
               If you watched the film and loved it, you can do your bit and contribute here.
             </p>
           </div>
@@ -1041,7 +1064,7 @@ function Footer() {
 
           <div>
             <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.65rem', letterSpacing:'0.25em', textTransform:'uppercase', color:T.accent, marginBottom:'18px' }}>Navigate</p>
-            {[['#story','Story'],['#behind','Behind the Scenes'],['#awards','Accolades'],['#reactions','Reactions'],['#blog','Blog'],['#impact','Impact'],['#watch','Watch'],['contribute','Contribute']].map(([h,l]) => (
+            {[['#story','Story'],['#behind','Timeline'],['#awards','Accolades'],['#reactions','Reactions'],['#blog','Blog'],['#impact','Impact'],['#watch','Watch'],['contribute','Contribute']].map(([h,l]) => (
               <a key={h} href={h.startsWith('#')?h:`/${h}`}
                 style={{ display:'block', fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.875rem', color:'rgba(240,237,232,0.38)', textDecoration:'none', marginBottom:'8px', transition:'color 0.2s' }}
                 onMouseEnter={e => e.target.style.color=T.white}
