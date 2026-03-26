@@ -1,7 +1,7 @@
 // pages/index.jsx
 // Dekh Le! India — Premium Cinematic Redesign
 // Netflix / NatGeo inspired · Bebas Neue · Dark blue cricket jersey theme
-// Sections: Hero · Sizzle · Story · Behind the Scenes · Awards · Impact · CTA
+// Sections: Hero · Sizzle · Story · Behind the Scenes · Accolades · Reactions · Blog · Impact · CTA
 
 import Head from 'next/head';
 import Link from 'next/link';
@@ -19,7 +19,7 @@ const T = {
   black:     '#030810',
 
   // Accents
-  accent:    '#00BFFF',      // deep sky blue — electric highlight
+  accent:    '#00BFFF',
   accentDim: 'rgba(0,191,255,0.18)',
   accentGlow:'rgba(0,191,255,0.35)',
   saffron:   '#FF9933',
@@ -36,6 +36,8 @@ const T = {
 /* ─────────────────────────────────────────────────────────────────
    DATA
 ───────────────────────────────────────────────────────────────── */
+
+// DATA CHANGES: festival name fixed, one entry removed
 const AWARDS = [
   { icon:'🏆', name:'CLEF Music Awards',             result:'Winner — Best Lyrics',         year:'2025' },
   { icon:'🎸', name:'CLEF Music Awards',             result:'Winner — Best Rock Guitarist',  year:'2025' },
@@ -44,32 +46,55 @@ const AWARDS = [
   { icon:'🎭', name:'17th IDSFFK Kerala',            result:'Official Selection',            year:'2025' },
   { icon:'🌏', name:'IIFFB Boston',                  result:'Official Selection',            year:'2025' },
   { icon:'🌍', name:'LIFF Lulea, Sweden',            result:'Finalist',                     year:'2025' },
-  { icon:'🎞️', name:'MLOFF Manchester',              result:'Official Selection',            year:'2026' },
-  { icon:'🎪', name:'Kriti Film Club Delhi',         result:'Delhi Premiere',               year:'2026' },
+  { icon:'🎞️', name:'MLIFF Manchester',              result:'Official Selection',            year:'2026' },
   { icon:'🌺', name:'Istanbul Women Film Festival',  result:'Semi Finalist',                year:'2026' },
 ];
 
+// CHANGE: 6 States → 10 States, 500 Days → 2.5 Years, updated bodies
 const BEHIND_SCENES = [
-  { n:'01', title:'6 States,\nOne Dream',        body:'We travelled across Odisha, Maharashtra, Karnataka, Kerala, Jharkhand, and Uttar Pradesh — seeking players whose families had never seen them play.' },
-  { n:'02', title:'500 Days\nof Filming',         body:'18 months embedded with the team. On trains, in hostels, on dusty grounds. Every moment captured with two cameras and relentless dedication.' },
-  { n:'03', title:'Edgbaston,\nBirmingham',        body:"The World Games. 60,000 seat stadium. India's blind women took the field. We were there for every ball bowled, every wicket taken, every tear shed." },
-  { n:'04', title:'A Story\nWorld Missed',         body:'They won. Against all odds. India barely noticed. This film is the witness the world should have been.' },
+  { n:'01', title:'10 States,\nOne Dream',       body:'Odisha, Maharashtra, Karnataka, Kerala, Andhra Pradesh, Telangana, Assam, Madhya Pradesh, Delhi and Gujarat — seeking players whose families had never seen them play.' },
+  { n:'02', title:'2.5 Years of\nFilmmaking',    body:'110 hours of footage captured across 10 states — on trains, in hostels, on dusty grounds — edited to 70 minutes of inspiration.' },
+  { n:'03', title:'Edgbaston,\nBirmingham',       body:"The World Games. 60,000 seat stadium. India's blind women took the field. We were there for every ball bowled, every wicket taken, every tear shed." },
+  { n:'04', title:'A Story\nWorld Missed',        body:'They won. Against all odds. India barely noticed. This film is the witness the world should have been.' },
 ];
 
+// CHANGE: Added more reactions for dedicated section
 const TESTIMONIALS = [
   { q:'Every student must watch this. It rewired how I see disability.',           who:'Principal, Delhi Public School, Bangalore'  },
   { q:'We screened it for 500 employees. Not a dry eye in the auditorium.',        who:'HR Director, TechCorp India'               },
   { q:'I stood up and cried. This is the India I want to believe in.',             who:'Student, IIT Bombay'                       },
   { q:'The most important documentary made in India in the last 10 years.',        who:'Film Critic, The Hindu'                    },
+  { q:'Nothing prepared me for how it would end. I watched it twice in a row.',   who:'Viewer, Mumbai Screening'                  },
+  { q:'My daughters will grow up knowing this film exists. That matters.',         who:'Parent, Kendriya Vidyalaya, Jaipur'        },
 ];
 
+// CHANGE: States covered 6 → 10
 const IMPACT_STATS = [
   { value:'10K+', label:'People Reached',    icon:'👥' },
   { value:'50+',  label:'School Screenings', icon:'🏫' },
   { value:'10+',  label:'Companies',         icon:'🏢' },
   { value:'10+',  label:'Awards Won',        icon:'🏆' },
   { value:'8+',   label:'Countries',         icon:'🌍' },
-  { value:'6',    label:'States Covered',    icon:'🗺️' },
+  { value:'10',   label:'States Covered',    icon:'🗺️' }, // CHANGE: 6 → 10
+];
+
+// NEW: Blog posts data
+const BLOG_POSTS = [
+  {
+    date:'March 2026', readTime:'6 min',
+    title:'Why It Took 2.5 Years to Make a 70-Minute Film',
+    excerpt:"We didn't plan for a feature. We planned for a short film. Then the women kept winning, kept defying, kept living stories too big for any runtime we'd budgeted.",
+  },
+  {
+    date:'January 2026', readTime:'4 min',
+    title:'The Night We Almost Lost All the Birmingham Footage',
+    excerpt:'A hard drive. A monsoon. A 14-hour layover in Dubai. The story of how the most important footage in the film nearly disappeared forever.',
+  },
+  {
+    date:'November 2025', readTime:'8 min',
+    title:'What 10 States Taught Us About Invisible India',
+    excerpt:'From a paddy field in Odisha to a terrace in Kerala — the players we found were not waiting to be rescued. They were waiting to be seen.',
+  },
 ];
 
 /* ─────────────────────────────────────────────────────────────────
@@ -165,7 +190,6 @@ function Btn({ href, children, primary = true, external = false }) {
 
 /* ─────────────────────────────────────────────────────────────────
    RAZORPAY SCRIPT LOADER
-   Loads the Razorpay checkout SDK once, on demand.
 ───────────────────────────────────────────────────────────────── */
 function loadRazorpay() {
   return new Promise((resolve) => {
@@ -179,9 +203,7 @@ function loadRazorpay() {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   DONATION MODAL
-   Dark-blue cinematic modal with amount presets + custom input.
-   Opens Razorpay checkout on confirm.
+   DONATION MODAL — Razorpay (UNCHANGED)
 ───────────────────────────────────────────────────────────────── */
 const PRESETS = [50, 100, 200, 500, 1000];
 
@@ -191,7 +213,6 @@ function DonationModal({ onClose }) {
   const [loading,   setLoading]   = useState(false);
   const [error,     setError]     = useState('');
 
-  // Final amount: custom overrides preset
   const finalAmount = custom ? parseInt(custom) : selected;
 
   const handlePay = async () => {
@@ -200,24 +221,19 @@ function DonationModal({ onClose }) {
       setError('Please enter a valid amount (minimum ₹1).');
       return;
     }
-
     setLoading(true);
-
-    // 1 — Load Razorpay SDK
     const ok = await loadRazorpay();
     if (!ok) {
       setError('Could not load payment system. Check your internet and try again.');
       setLoading(false);
       return;
     }
-
-    // 2 — Create order on our server
     let order;
     try {
       const res = await fetch('/api/create-order', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ amount: finalAmount * 100 }), // convert ₹ → paise
+        body:    JSON.stringify({ amount: finalAmount * 100 }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Order creation failed');
@@ -227,8 +243,6 @@ function DonationModal({ onClose }) {
       setLoading(false);
       return;
     }
-
-    // 3 — Open Razorpay checkout
     const options = {
       key:         order.keyId,
       amount:      order.amount,
@@ -237,21 +251,13 @@ function DonationModal({ onClose }) {
       description: 'Support the film movement',
       order_id:    order.orderId,
       theme:       { color: '#00BFFF' },
-
-      // Prefill — leave blank so user fills their details
       prefill: { name: '', email: '', contact: '' },
-
       handler(response) {
-        // Payment successful
         onClose();
         setTimeout(() => alert(`🙏 Thank you! Your contribution of ₹${finalAmount} has been received.\n\nPayment ID: ${response.razorpay_payment_id}`), 100);
       },
-
-      modal: {
-        ondismiss() { setLoading(false); },
-      },
+      modal: { ondismiss() { setLoading(false); } },
     };
-
     const rz = new window.Razorpay(options);
     rz.on('payment.failed', (resp) => {
       setError(`Payment failed: ${resp.error.description}`);
@@ -261,10 +267,7 @@ function DonationModal({ onClose }) {
     setLoading(false);
   };
 
-  // Close on backdrop click
-  const handleBackdrop = (e) => {
-    if (e.target === e.currentTarget) onClose();
-  };
+  const handleBackdrop = (e) => { if (e.target === e.currentTarget) onClose(); };
 
   return (
     <div
@@ -288,15 +291,11 @@ function DonationModal({ onClose }) {
         position:'relative',
         animation:'slideUp 0.3s ease',
       }}>
-
-        {/* Close button */}
         <button onClick={onClose} style={{ position:'absolute', top:'16px', right:'18px', background:'none', border:'none', color:'rgba(240,237,232,0.4)', cursor:'pointer', fontSize:'1.1rem', lineHeight:1, transition:'color 0.2s' }}
           onMouseEnter={e => e.target.style.color='#fff'}
           onMouseLeave={e => e.target.style.color='rgba(240,237,232,0.4)'}>
           ✕
         </button>
-
-        {/* Header */}
         <div style={{ marginBottom:'24px' }}>
           <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'6px' }}>
             <div style={{ height:'1px', width:'28px', background:'#00BFFF', opacity:0.7 }} />
@@ -307,12 +306,14 @@ function DonationModal({ onClose }) {
           <h3 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'2rem', letterSpacing:'0.04em', color:'#FFFFFF', lineHeight:1.1, marginBottom:'8px' }}>
             Contribute to<br />Dekh Le! India 🇮🇳
           </h3>
-          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.85rem', color:'rgba(240,237,232,0.5)', lineHeight:1.65 }}>
+          {/* CHANGE: Donation banner text */}
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.85rem', color:'rgba(240,237,232,0.7)', lineHeight:1.65, fontStyle:'italic', borderLeft:'2px solid #FF9933', paddingLeft:'12px', marginBottom:'10px' }}>
+            If you watched the film and loved it, you can do your bit and contribute here.
+          </p>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.82rem', color:'rgba(240,237,232,0.45)', lineHeight:1.65 }}>
             Every rupee funds skill training so these champions can build a livelihood from the game they love.
           </p>
         </div>
-
-        {/* Amount presets */}
         <div style={{ marginBottom:'12px' }}>
           <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.62rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(240,237,232,0.35)', marginBottom:'10px' }}>
             Choose Amount (₹)
@@ -333,8 +334,6 @@ function DonationModal({ onClose }) {
             ))}
           </div>
         </div>
-
-        {/* Custom amount */}
         <div style={{ marginBottom:'24px' }}>
           <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.62rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(240,237,232,0.35)', marginBottom:'8px' }}>
             Or Enter Custom Amount
@@ -360,15 +359,11 @@ function DonationModal({ onClose }) {
             />
           </div>
         </div>
-
-        {/* Error */}
         {error && (
           <p style={{ fontFamily:'"Inter",sans-serif', fontSize:'0.8rem', color:'#FF6B6B', marginBottom:'14px', lineHeight:1.5 }}>
             ⚠ {error}
           </p>
         )}
-
-        {/* Pay button */}
         <button onClick={handlePay} disabled={loading}
           style={{
             width:'100%', padding:'15px 24px',
@@ -384,13 +379,10 @@ function DonationModal({ onClose }) {
           onMouseLeave={e => { if(!loading) e.currentTarget.style.boxShadow='0 0 28px rgba(255,153,51,0.5)'; }}>
           {loading ? '⏳ Opening Payment...' : `💛 Donate ₹${finalAmount || '—'} Now`}
         </button>
-
-        {/* Trust line */}
         <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.72rem', color:'rgba(240,237,232,0.28)', textAlign:'center', marginTop:'14px' }}>
           🔒 Secured by Razorpay · UPI · Cards · Net Banking
         </p>
       </div>
-
       <style>{`
         @keyframes fadeIn  { from{opacity:0} to{opacity:1} }
         @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
@@ -399,7 +391,9 @@ function DonationModal({ onClose }) {
   );
 }
 
-
+/* ─────────────────────────────────────────────────────────────────
+   NAVBAR
+───────────────────────────────────────────────────────────────── */
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open,     setOpen]     = useState(false);
@@ -410,7 +404,7 @@ function Navbar() {
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
-  const links = [['#story','Story'],['#behind','Behind Scenes'],['#awards','Awards'],['#impact','Impact'],['#watch','Watch']];
+  const links = [['#story','Story'],['#behind','Behind Scenes'],['#awards','Accolades'],['#reactions','Reactions'],['#blog','Blog'],['#impact','Impact'],['#watch','Watch']];
 
   return (
     <nav style={{
@@ -420,21 +414,17 @@ function Navbar() {
       backdropFilter: scrolled ? 'blur(20px)' : 'none',
       borderBottom: scrolled ? '1px solid rgba(0,191,255,0.12)' : 'none',
     }}>
-      {/* Tricolor strip */}
       <div style={{ height:'2px', background:`linear-gradient(90deg, ${T.saffron} 33.33%, rgba(255,255,255,0.12) 33.33% 66.66%, ${T.green} 66.66%)` }} />
-
       <div style={{ maxWidth:'1280px', margin:'0 auto', padding:'0 32px', height:'68px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
-        {/* Logo */}
         <a href="#" style={{ textDecoration:'none' }}>
           <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.4rem', letterSpacing:'0.08em', color:T.white, display:'block', lineHeight:1 }}>
             Dekh Le! India
           </span>
+          {/* CHANGE: removed 2024 */}
           <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.55rem', letterSpacing:'0.3em', color:T.accent, display:'block', marginTop:'2px' }}>
-            Documentary Film · 2024
+            Documentary Film · 2026
           </span>
         </a>
-
-        {/* Desktop */}
         <div className="d-nav" style={{ display:'flex', gap:'32px', alignItems:'center' }}>
           {links.map(([h,l]) => (
             <a key={h} href={h} style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.85rem', letterSpacing:'0.18em', textTransform:'uppercase', color:T.dim, textDecoration:'none', transition:'color 0.2s' }}
@@ -443,15 +433,11 @@ function Navbar() {
           ))}
           <Btn href="https://www.jiohotstar.com/" external>▶ Watch Now</Btn>
         </div>
-
-        {/* Hamburger */}
         <button className="m-ham" onClick={() => setOpen(!open)}
           style={{ display:'none', background:'none', border:`1px solid ${T.ghost}`, color:T.white, width:'40px', height:'40px', cursor:'pointer', fontSize:'1rem' }}>
           {open ? '✕' : '☰'}
         </button>
       </div>
-
-      {/* Mobile drawer */}
       {open && (
         <div style={{ background:'rgba(6,15,34,0.99)', borderTop:`1px solid ${T.accentDim}`, padding:'20px 32px 28px' }}>
           {links.map(([h,l]) => (
@@ -466,7 +452,6 @@ function Navbar() {
           </div>
         </div>
       )}
-
       <style>{`
         @media(max-width:960px){.d-nav{display:none!important}.m-ham{display:flex!important;align-items:center;justify-content:center}}
         @media(max-width:480px){.award-grid{grid-template-columns:1fr!important}.stat-grid{grid-template-columns:repeat(2,1fr)!important}}
@@ -476,11 +461,11 @@ function Navbar() {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   HERO — full cinematic
+   HERO
 ───────────────────────────────────────────────────────────────── */
 function Hero() {
   const [in_, setIn_] = useState(false);
-  const [showDonate, setShowDonate] = useState(false);   // ← modal state
+  const [showDonate, setShowDonate] = useState(false);
 
   useEffect(() => { const t = setTimeout(() => setIn_(true), 120); return () => clearTimeout(t); }, []);
 
@@ -496,69 +481,58 @@ function Hero() {
       minHeight:'100vh',
       display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center',
       overflow:'hidden',
-      background:T.black,                     /* fallback while video loads */
+      background:T.black,
     }}>
-
-      {/* ── BACKGROUND VIDEO (YouTube autoplay, muted, looped) ────────
-           Uses the sizzle reel as the hero background.
-           Scaled 2× and centered so it fills the viewport like object-fit:cover.
-           pointer-events:none ensures it never intercepts clicks.
-      ─────────────────────────────────────────────────────────────── */}
-      <div style={{
-        position:'absolute', inset:0, zIndex:0,
-        overflow:'hidden', pointerEvents:'none',
-      }}>
+      {/* Background video */}
+      <div style={{ position:'absolute', inset:0, zIndex:0, overflow:'hidden', pointerEvents:'none' }}>
         <iframe
           src="https://www.youtube.com/embed/h_JVTDhF6RY?autoplay=1&mute=1&loop=1&playlist=h_JVTDhF6RY&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0"
           title="Hero background video"
           allow="autoplay; encrypted-media"
           style={{
             position:'absolute',
-            /* over-scale so the 16:9 frame covers any viewport aspect ratio */
             top:'50%', left:'50%',
             transform:'translate(-50%, -50%)',
-            width:'calc(100vw + 400px)',        /* wider than viewport */
-            height:'calc(100vw * 0.5625 + 225px)', /* maintain 16:9 + extra */
-            minWidth:'100%',
-            minHeight:'100%',
-            border:'none',
-            opacity:0.35,                       /* subtle — content stays readable */
-            pointerEvents:'none',
+            width:'calc(100vw + 400px)',
+            height:'calc(100vw * 0.5625 + 225px)',
+            minWidth:'100%', minHeight:'100%',
+            border:'none', opacity:0.35, pointerEvents:'none',
           }}
         />
       </div>
 
-      {/* ── CINEMATIC OVERLAYS (stacked, darkening + color grading) ── */}
-
-      {/* Base dark veil — tones down the video brightness */}
+      {/* Overlays */}
+      <div style={{ position:'absolute', inset:0, zIndex:1, pointerEvents:'none', background:'rgba(3,8,16,0.62)' }} />
       <div style={{ position:'absolute', inset:0, zIndex:1, pointerEvents:'none',
-        background:'rgba(3,8,16,0.62)' }} />
-
-      {/* Navy color grade — shifts video toward cricket-jersey blue */}
-      <div style={{ position:'absolute', inset:0, zIndex:1, pointerEvents:'none',
-        background:`linear-gradient(175deg, rgba(10,31,68,0.75) 0%, rgba(6,15,34,0.6) 50%, rgba(3,8,16,0.85) 100%)`
-      }} />
-
-      {/* Vignette — darkens edges, keeps center bright */}
+        background:`linear-gradient(175deg, rgba(10,31,68,0.75) 0%, rgba(6,15,34,0.6) 50%, rgba(3,8,16,0.85) 100%)` }} />
       <div style={{ position:'absolute', inset:0, zIndex:2, pointerEvents:'none',
-        background:'radial-gradient(ellipse at 50% 40%, transparent 30%, rgba(3,8,16,0.7) 100%)'
-      }} />
-
-      {/* Film grain texture */}
+        background:'radial-gradient(ellipse at 50% 40%, transparent 30%, rgba(3,8,16,0.7) 100%)' }} />
       <div style={{ position:'absolute', inset:0, zIndex:3, pointerEvents:'none', opacity:0.06,
         backgroundImage:`url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
       }} />
-
-      {/* Top fade — blends into navbar */}
       <div style={{ position:'absolute', top:0, left:0, right:0, height:'160px', zIndex:4, pointerEvents:'none',
         background:`linear-gradient(to bottom, ${T.black} 0%, transparent 100%)` }} />
-
-      {/* Bottom fade — blends into next section */}
       <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'200px', zIndex:4, pointerEvents:'none',
         background:`linear-gradient(to top, ${T.black} 0%, transparent 100%)` }} />
 
-      {/* ── CONTENT ── */}
+      {/* Content */}
       <div style={{ position:'relative', zIndex:10, textAlign:'center', padding:'120px 24px 80px', maxWidth:'1100px', width:'100%' }}>
+
+        {/* CHANGE: Hero announcement banner */}
+        <div style={{ ...anim(100), marginBottom:'20px' }}>
+          <div style={{
+            display:'inline-flex', alignItems:'center', gap:'10px',
+            background:'rgba(255,153,51,0.12)',
+            border:'1px solid rgba(255,153,51,0.45)',
+            padding:'8px 22px',
+            marginBottom:'4px',
+          }}>
+            <span style={{ width:'7px', height:'7px', borderRadius:'50%', background:T.saffron, display:'inline-block', animation:'heroPulse 1.6s ease-in-out infinite', flexShrink:0 }} />
+            <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.88rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.saffron }}>
+              <strong>Releasing on Jio Hotstar — June 2026</strong>
+            </span>
+          </div>
+        </div>
 
         {/* Pre-line */}
         <div style={{ ...anim(200), display:'flex', alignItems:'center', justifyContent:'center', gap:'14px', marginBottom:'24px' }}>
@@ -569,7 +543,7 @@ function Hero() {
           <div style={{ height:'1px', width:'48px', background:T.accent }} />
         </div>
 
-        {/* MAIN TITLE */}
+        {/* Title */}
         <div style={{ ...anim(400), marginBottom:'4px' }}>
           <h1 style={{
             fontFamily:'"Bebas Neue",sans-serif', fontWeight:400,
@@ -582,9 +556,7 @@ function Hero() {
           </h1>
         </div>
 
-        {/* INDIA — accent color */}
         <div style={{ ...anim(560), marginBottom:'4px', position:'relative', display:'inline-block' }}>
-          {/* Flag brush stroke */}
           <div style={{ position:'absolute', bottom:'10%', left:'-2%', right:'-2%', height:'28%',
             background:`linear-gradient(90deg, ${T.saffron}22, rgba(255,255,255,0.05), ${T.green}22)`,
             pointerEvents:'none', zIndex:0 }} />
@@ -599,26 +571,22 @@ function Hero() {
           </h1>
         </div>
 
-        {/* Flag emoji — outside any clip context */}
         <div style={{ ...anim(680), fontSize:'clamp(2rem,5vw,3.5rem)', marginBottom:'28px', marginTop:'8px' }}>🇮🇳</div>
 
-        {/* ── NEW SUBTITLE — emotional, cinematic ── */}
         <p style={{ ...anim(800), fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'clamp(1rem,2.2vw,1.25rem)', color:T.dim, maxWidth:'580px', margin:'0 auto 16px', lineHeight:1.7, letterSpacing:'0.02em' }}>
           A story India never saw.<br />
           <strong style={{ color:T.white, fontWeight:400, fontStyle:'italic' }}>A team that refused to be unseen.</strong>
         </p>
 
-        {/* ── Tagline ── */}
         <div style={{ ...anim(950), marginBottom:'48px' }}>
           <p style={{ fontFamily:'"Georgia",serif', fontStyle:'italic', fontWeight:400, fontSize:'clamp(0.85rem,1.6vw,1rem)', color:T.faint, letterSpacing:'0.06em', margin:0 }}>
             "No Pity &nbsp;·&nbsp; No Sympathy &nbsp;·&nbsp; Just Give Us an Opportunity"
           </p>
         </div>
 
-        {/* ── CTAs ── */}
+        {/* CTAs */}
         <div style={{ ...anim(1100), display:'flex', gap:'14px', justifyContent:'center', flexWrap:'wrap', marginBottom:'12px' }}>
           <Btn href="https://www.jiohotstar.com/" external>▶ Watch Now</Btn>
-          {/* Donate button — opens modal */}
           <button
             onClick={() => setShowDonate(true)}
             style={{
@@ -635,22 +603,24 @@ function Hero() {
             🤍 Contribute
           </button>
         </div>
-        <p style={{ ...anim(1200), fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.62rem', letterSpacing:'0.2em', textTransform:'uppercase', color:T.faint }}>
-          Streaming on JioHotstar
-        </p>
-        {/* Stats block removed — keep hero clean and focused */}
 
-        {/* Donation modal */}
+        {/* CHANGE: Replaced "Streaming on JioHotstar" with bold announcement */}
+        <p style={{ ...anim(1200), fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.68rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.saffron }}>
+          🎬 Releasing on Jio Hotstar — June 2026
+        </p>
+
         {showDonate && <DonationModal onClose={() => setShowDonate(false)} />}
       </div>
 
-      {/* Scroll pulse */}
       <div style={{ ...anim(1500), position:'absolute', bottom:'28px', left:'50%', transform:'translateX(-50%)', zIndex:10, display:'flex', flexDirection:'column', alignItems:'center', gap:'6px' }}>
         <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.55rem', letterSpacing:'0.3em', textTransform:'uppercase', color:T.faint }}>Scroll</span>
         <div style={{ width:'1px', height:'40px', background:`linear-gradient(to bottom, ${T.accent}88, transparent)`, animation:'scrollPulse 2s ease-in-out infinite' }} />
       </div>
 
-      <style>{`@keyframes scrollPulse{0%,100%{opacity:0.3}50%{opacity:1}}`}</style>
+      <style>{`
+        @keyframes scrollPulse{0%,100%{opacity:0.3}50%{opacity:1}}
+        @keyframes heroPulse{0%,100%{opacity:1}50%{opacity:0.3}}
+      `}</style>
     </section>
   );
 }
@@ -671,12 +641,13 @@ function StorySection() {
             They Played With Courage.<br />
             <span style={{ color:T.accent }}>We Filmed With Love.</span>
           </SectionTitle>
+          {/* CHANGE: Updated description — different states, Edgbaston UK */}
           <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'600px', margin:'0 auto 60px', lineHeight:1.75 }}>
-            Dekh Le! India chronicles the extraordinary journey of India's first blind women's national cricket team — from remote villages across six states to the World Games at Edgbaston, Birmingham.
+            Dekh Le! India chronicles the extraordinary journey of India&#39;s first blind women&#39;s national cricket team — from remote villages across different states of India to the World Games at Edgbaston, UK.
           </p>
         </FadeUp>
 
-        {/* Story cards */}
+        {/* Story cards — uses updated BEHIND_SCENES data */}
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))', gap:'1px', background:`rgba(0,191,255,0.1)` }}>
           {BEHIND_SCENES.map((item, i) => (
             <FadeUp key={item.n} delay={i * 100}>
@@ -691,10 +662,10 @@ function StorySection() {
           ))}
         </div>
 
-        {/* Tags */}
+        {/* CHANGE: Updated tags — removed 2024, 60→70 mins, new language string */}
         <FadeUp delay={300}>
           <div style={{ display:'flex', gap:'8px', justifyContent:'center', flexWrap:'wrap', marginTop:'44px' }}>
-            {['Documentary','60 Minutes','Hindi & English','2024','India'].map(tag => (
+            {['Documentary','70 Minutes','English, Hindi, Odia, Assamese and Multiple Indian Languages','India'].map(tag => (
               <span key={tag} style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.75rem', letterSpacing:'0.18em', textTransform:'uppercase', padding:'7px 18px', color:T.accent, border:`1px solid rgba(0,191,255,0.3)` }}>
                 {tag}
               </span>
@@ -722,32 +693,33 @@ function BehindScenes() {
             Inside the<br />
             <span style={{ color:T.saffron }}>Making of the Film</span>
           </SectionTitle>
+          {/* CHANGE: 18 months / 6 states → 2.5 years / 10 states */}
           <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'560px', margin:'0 auto 60px', lineHeight:1.75 }}>
-            18 months. 6 states. One crew. One team. And a story the world needed to hear.
+            2.5 years. 10 states. One crew. One team. And a story the world needed to hear.
           </p>
         </FadeUp>
 
-        {/* Timeline */}
         <div style={{ maxWidth:'800px', margin:'0 auto', position:'relative' }}>
-          {/* Vertical line */}
           <div style={{ position:'absolute', left:'24px', top:0, bottom:0, width:'1px', background:`linear-gradient(to bottom, ${T.accent}55, transparent)` }} />
-
           <div style={{ display:'flex', flexDirection:'column', gap:'0' }}>
             {[
-              { year:'2020–21', title:'Finding the Players',       body:'We crisscrossed six states tracking down blind women cricketers — players whose families had never seen them play.' },
-              { year:'2022',    title:'Training Camps',            body:'Embedded in BCCI training camps, we witnessed the raw beauty of players learning to bowl and bat by sound and touch alone.' },
+              { year:'2020–21', title:'Finding the Players',          body:'We crisscrossed ten states tracking down blind women cricketers — players whose families had never seen them play.' },
+              { year:'2022',    title:'Training Camps',               body:'Embedded in BCCI training camps, we witnessed the raw beauty of players learning to bowl and bat by sound and touch alone.' },
               { year:'2023',    title:'The World Games — Birmingham', body:'Edgbaston. India vs Australia. Final. The world was not watching. We were. Every frame captured, every emotion preserved.' },
-              { year:'2024',    title:'The Film is Complete',      body:'18 months of editing, colour grading, and music composition later — Dekh Le! India was ready for the world to finally see.' },
+              { year:'2025',    title:'The Film is Complete',         body:'2.5 years of filming, editing, colour grading, and music composition later — Dekh Le! India was ready for the world to finally see.' },
+              { year:'June 2026', title:'Releasing on Jio Hotstar',   body:'India finally sees its heroes — in English, Hindi, Odia, Assamese and Multiple Indian Languages.', highlight: true },
             ].map((t, i) => (
               <FadeUp key={t.year} delay={i * 120}>
                 <div style={{ display:'flex', gap:'32px', padding:'32px 0 32px 60px', borderBottom:`1px solid rgba(255,255,255,0.04)`, position:'relative' }}>
-                  {/* Dot */}
-                  <div style={{ position:'absolute', left:'17px', top:'36px', width:'16px', height:'16px', borderRadius:'50%', background:i===2?T.saffron:T.accent, boxShadow:i===2?`0 0 16px rgba(255,153,51,0.6)`:`0 0 16px ${T.accentGlow}` }} />
+                  <div style={{ position:'absolute', left:'17px', top:'36px', width:'16px', height:'16px', borderRadius:'50%',
+                    background: t.highlight ? T.saffron : i===2 ? T.saffron : T.accent,
+                    boxShadow: t.highlight ? `0 0 20px rgba(255,153,51,0.8)` : i===2 ? `0 0 16px rgba(255,153,51,0.6)` : `0 0 16px ${T.accentGlow}`,
+                  }} />
                   <div style={{ minWidth:'80px', flexShrink:0 }}>
-                    <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.75rem', letterSpacing:'0.18em', color:i===2?T.saffron:T.accent }}>{t.year}</span>
+                    <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.75rem', letterSpacing:'0.18em', color: t.highlight ? T.saffron : i===2 ? T.saffron : T.accent }}>{t.year}</span>
                   </div>
                   <div>
-                    <h3 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.3rem', letterSpacing:'0.06em', color:T.white, marginBottom:'8px' }}>{t.title}</h3>
+                    <h3 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.3rem', letterSpacing:'0.06em', color: t.highlight ? T.saffron : T.white, marginBottom:'8px' }}>{t.title}</h3>
                     <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.9rem', color:T.dim, lineHeight:1.7, margin:0 }}>{t.body}</p>
                   </div>
                 </div>
@@ -760,8 +732,8 @@ function BehindScenes() {
         <FadeUp delay={300}>
           <div style={{ marginTop:'56px', display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))', gap:'1px', background:`rgba(0,191,255,0.1)` }}>
             {[
-              { icon:'🎬', title:'Sizzle Reel',     desc:'The cinematic sizzle reel', href:'https://www.youtube.com/watch?v=h_JVTDhF6RY' },
-              { icon:'🎵', title:'The Film Song',   desc:'Official song by Lokesh Bakshi', href:'https://www.youtube.com/watch?v=mgFde16-J7c' },
+              { icon:'🎬', title:'Sizzle Reel',    desc:'The cinematic sizzle reel', href:'https://www.youtube.com/watch?v=h_JVTDhF6RY' },
+              { icon:'🎵', title:'The Film Song',  desc:'Official song by Lokesh Bakshi', href:'https://www.youtube.com/watch?v=mgFde16-J7c' },
             ].map(v => (
               <a key={v.title} href={v.href} target="_blank" rel="noopener noreferrer"
                 style={{ padding:'28px', background:T.navyDark, display:'flex', gap:'18px', alignItems:'center', textDecoration:'none', transition:'background 0.3s', borderTop:`3px solid ${T.accent}` }}
@@ -782,7 +754,7 @@ function BehindScenes() {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   AWARDS
+   ACCOLADES — full dedicated section (replaces inline awards)
 ───────────────────────────────────────────────────────────────── */
 function AwardsSection() {
   return (
@@ -791,7 +763,7 @@ function AwardsSection() {
 
       <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
         <FadeUp>
-          <SectionEyebrow label="Recognition" />
+          <SectionEyebrow label="Accolades" />
           <SectionTitle>
             Awards &amp;<br />
             <span style={{ color:T.accent }}>Festival Selections</span>
@@ -799,6 +771,18 @@ function AwardsSection() {
           <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'520px', margin:'0 auto 56px', lineHeight:1.75 }}>
             Recognised across <span style={{ color:T.accent }}>8+ countries</span> at prestigious international film festivals.
           </p>
+        </FadeUp>
+
+        {/* Award count summary */}
+        <FadeUp delay={100}>
+          <div style={{ display:'flex', justifyContent:'center', gap:'48px', flexWrap:'wrap', marginBottom:'56px', padding:'28px', border:`1px solid rgba(0,191,255,0.15)`, background:'rgba(0,191,255,0.04)' }}>
+            {[{ n:'4', l:'Wins' }, { n:'9', l:'Selections' }, { n:'8+', l:'Countries' }, { n:'5', l:'Continents' }].map(s => (
+              <div key={s.l} style={{ textAlign:'center' }}>
+                <div style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'2.8rem', color:T.saffron, lineHeight:1 }}>{s.n}</div>
+                <div style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.68rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.faint, marginTop:'4px' }}>{s.l}</div>
+              </div>
+            ))}
+          </div>
         </FadeUp>
 
         <div className="award-grid" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(310px,1fr))', gap:'1px', background:`rgba(0,191,255,0.1)` }}>
@@ -817,6 +801,111 @@ function AwardsSection() {
               </FadeUp>
             );
           })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   AUDIENCE REACTIONS — dedicated section
+───────────────────────────────────────────────────────────────── */
+function ReactionsSection() {
+  return (
+    <section id="reactions" style={{ padding:'120px 24px', background:T.black, position:'relative', overflow:'hidden' }}>
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.saffron}44 50%, transparent 100%)` }} />
+
+      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+        <FadeUp>
+          <SectionEyebrow label="Audience Reactions" />
+          <SectionTitle>
+            What People Said<br />
+            <span style={{ color:T.saffron }}>When the Lights Came On</span>
+          </SectionTitle>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'560px', margin:'0 auto 56px', lineHeight:1.75 }}>
+            From classrooms to boardrooms — the film is changing how India sees itself.
+          </p>
+        </FadeUp>
+
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))', gap:'1px', background:`rgba(0,191,255,0.08)`, marginBottom:'48px' }}>
+          {TESTIMONIALS.map((t, i) => (
+            <FadeUp key={i} delay={i*80}>
+              <div style={{ padding:'28px 24px', background:T.navyDark, borderTop:`2px solid ${i%2===0?T.saffron:T.accent}`, height:'100%', transition:'background 0.3s' }}
+                onMouseEnter={e => e.currentTarget.style.background=T.navyMid}
+                onMouseLeave={e => e.currentTarget.style.background=T.navyDark}>
+                <p style={{ fontFamily:'"Georgia",serif', fontStyle:'italic', fontSize:'1.4rem', color:i%2===0?T.saffron:T.accent, lineHeight:1, marginBottom:'12px' }}>❝</p>
+                <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.9rem', color:T.dim, lineHeight:1.75, marginBottom:'16px', fontStyle:'italic' }}>{t.q}</p>
+                <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.7rem', letterSpacing:'0.14em', textTransform:'uppercase', color:T.faint }}>— {t.who}</p>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
+
+        {/* Notable screenings */}
+        <FadeUp delay={200}>
+          <div style={{ padding:'28px', background:T.navyDark, border:`1px solid rgba(0,191,255,0.15)` }}>
+            <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.72rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.faint, textAlign:'center', marginBottom:'18px' }}>Notable Screenings</p>
+            <div style={{ display:'flex', flexWrap:'wrap', gap:'8px', justifyContent:'center' }}>
+              {['IIT Bombay','DPS Bengaluru','Infosys Campus, Pune','TISS Mumbai','Kendriya Vidyalaya, Jaipur','Jain University'].map(v => (
+                <span key={v} style={{ fontFamily:'"Inter",sans-serif', fontWeight:400, fontSize:'0.78rem', padding:'6px 14px', background:T.accentDim, color:T.cream, border:`1px solid rgba(0,191,255,0.2)` }}>
+                  📍 {v}
+                </span>
+              ))}
+            </div>
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   BLOG SECTION — new
+───────────────────────────────────────────────────────────────── */
+function BlogSection() {
+  return (
+    <section id="blog" style={{ padding:'120px 24px', background:`linear-gradient(180deg, ${T.navyDark} 0%, ${T.black} 100%)`, position:'relative', overflow:'hidden' }}>
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.green}44 50%, transparent 100%)` }} />
+
+      <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+        <FadeUp>
+          <SectionEyebrow label="Journey So Far" />
+          <SectionTitle>
+            Behind the<br />
+            <span style={{ color:`rgba(46,139,87,0.9)` }}>Camera</span>
+          </SectionTitle>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'560px', margin:'0 auto 56px', lineHeight:1.75 }}>
+            The film is 70 minutes. The story of making it is a novel.
+          </p>
+        </FadeUp>
+
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(320px,1fr))', gap:'1px', background:`rgba(46,139,87,0.15)` }}>
+          {BLOG_POSTS.map((post, i) => (
+            <FadeUp key={i} delay={i*100}>
+              <div style={{ background:T.navyDark, borderTop:`3px solid ${i===0?T.saffron:i===1?T.accent:'rgba(46,139,87,0.9)'}`, padding:'32px 28px', height:'100%', transition:'background 0.3s', cursor:'pointer' }}
+                onMouseEnter={e => e.currentTarget.style.background=T.navyMid}
+                onMouseLeave={e => e.currentTarget.style.background=T.navyDark}>
+                {/* Meta row */}
+                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'16px' }}>
+                  <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.65rem', letterSpacing:'0.22em', textTransform:'uppercase', color: i===0?T.saffron:i===1?T.accent:'rgba(46,139,87,0.9)' }}>
+                    {post.date}
+                  </span>
+                  <span style={{ fontFamily:'"Inter",sans-serif', fontSize:'0.72rem', color:T.faint, border:`1px solid ${T.ghost}`, padding:'3px 10px' }}>
+                    {post.readTime} read
+                  </span>
+                </div>
+                <h3 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.25rem', letterSpacing:'0.04em', color:T.white, lineHeight:1.15, marginBottom:'14px' }}>
+                  {post.title}
+                </h3>
+                <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.875rem', color:T.dim, lineHeight:1.75, marginBottom:'24px' }}>
+                  {post.excerpt}
+                </p>
+                <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.72rem', letterSpacing:'0.2em', textTransform:'uppercase', color: i===0?T.saffron:i===1?T.accent:'rgba(46,139,87,0.9)' }}>
+                  Read Story →
+                </span>
+              </div>
+            </FadeUp>
+          ))}
         </div>
       </div>
     </section>
@@ -843,7 +932,7 @@ function ImpactSection() {
           </p>
         </FadeUp>
 
-        {/* Stats */}
+        {/* Stats — uses updated IMPACT_STATS (10 states) */}
         <div className="stat-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'1px', background:`rgba(46,139,87,0.2)`, marginBottom:'1px' }}>
           {IMPACT_STATS.map((s, i) => (
             <FadeUp key={s.label} delay={i*80}>
@@ -855,42 +944,13 @@ function ImpactSection() {
             </FadeUp>
           ))}
         </div>
-
-        {/* Testimonials */}
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))', gap:'1px', background:`rgba(0,191,255,0.08)`, marginBottom:'48px' }}>
-          {TESTIMONIALS.map((t, i) => (
-            <FadeUp key={i} delay={i*80}>
-              <div style={{ padding:'28px 24px', background:T.navyDark, borderTop:`2px solid ${i%2===0?T.saffron:T.accent}`, height:'100%', transition:'background 0.3s' }}
-                onMouseEnter={e => e.currentTarget.style.background=T.navyMid}
-                onMouseLeave={e => e.currentTarget.style.background=T.navyDark}>
-                <p style={{ fontFamily:'"Georgia",serif', fontStyle:'italic', fontSize:'1.4rem', color:i%2===0?T.saffron:T.accent, lineHeight:1, marginBottom:'12px' }}>❝</p>
-                <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.9rem', color:T.dim, lineHeight:1.75, marginBottom:'16px', fontStyle:'italic' }}>{t.q}</p>
-                <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.7rem', letterSpacing:'0.14em', textTransform:'uppercase', color:T.faint }}>— {t.who}</p>
-              </div>
-            </FadeUp>
-          ))}
-        </div>
-
-        {/* Notable venues */}
-        <FadeUp delay={200}>
-          <div style={{ padding:'28px', background:T.navyDark, border:`1px solid rgba(0,191,255,0.15)` }}>
-            <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.72rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.faint, textAlign:'center', marginBottom:'18px' }}>Notable Screenings</p>
-            <div style={{ display:'flex', flexWrap:'wrap', gap:'8px', justifyContent:'center' }}>
-              {['Kriti Film Club · Delhi Premiere','IIT Bombay','DPS Bengaluru','Infosys Campus, Pune','TISS Mumbai','Kendriya Vidyalaya, Jaipur','Jain University'].map(v => (
-                <span key={v} style={{ fontFamily:'"Inter",sans-serif', fontWeight:400, fontSize:'0.78rem', padding:'6px 14px', background:T.accentDim, color:T.cream, border:`1px solid rgba(0,191,255,0.2)` }}>
-                  📍 {v}
-                </span>
-              ))}
-            </div>
-          </div>
-        </FadeUp>
       </div>
     </section>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   VIDEO SECTION
+   VIDEO / WATCH SECTION
 ───────────────────────────────────────────────────────────────── */
 function WatchSection() {
   const [active, setActive] = useState('sizzle');
@@ -908,8 +968,6 @@ function WatchSection() {
           <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1rem', color:T.dim, textAlign:'center', marginBottom:'32px' }}>
             Experience the incredible journey
           </p>
-
-          {/* Switcher */}
           <div style={{ display:'flex', justifyContent:'center', gap:'1px', background:`rgba(0,191,255,0.15)`, border:`1px solid rgba(0,191,255,0.2)`, width:'fit-content', margin:'0 auto 14px' }}>
             {Object.entries(vids).map(([k,v]) => (
               <button key={k} onClick={() => setActive(k)}
@@ -954,7 +1012,7 @@ function WatchSection() {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   FINAL CTA
+   FINAL CTA + DONATION BANNER
 ───────────────────────────────────────────────────────────────── */
 function FinalCTA() {
   const [showDonate, setShowDonate] = useState(false);
@@ -974,12 +1032,18 @@ function FinalCTA() {
             School &amp; Workplace<br />
             <span style={{ color:T.accent }}>in India.</span>
           </h2>
-          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1rem', color:T.faint, lineHeight:1.75, marginBottom:'44px', maxWidth:'500px', margin:'0 auto 44px' }}>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1rem', color:T.faint, lineHeight:1.75, marginBottom:'32px', maxWidth:'500px', margin:'0 auto 32px' }}>
             Help us reach 1 million viewers. Every screening, every contribution, every share brings us closer to a more inclusive India.
           </p>
 
+          {/* CHANGE: Donation banner text — emotional line above button */}
+          <div style={{ background:'rgba(255,153,51,0.08)', border:'1px solid rgba(255,153,51,0.25)', padding:'18px 28px', marginBottom:'32px', maxWidth:'500px', margin:'0 auto 32px' }}>
+            <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:400, fontSize:'1rem', color:T.cream, lineHeight:1.7, fontStyle:'italic' }}>
+              If you watched the film and loved it, you can do your bit and contribute here.
+            </p>
+          </div>
+
           <div style={{ display:'flex', gap:'14px', justifyContent:'center', flexWrap:'wrap' }}>
-            {/* PRIMARY — opens Razorpay modal */}
             <button
               onClick={() => setShowDonate(true)}
               style={{
@@ -995,7 +1059,6 @@ function FinalCTA() {
               onMouseLeave={e => e.currentTarget.style.boxShadow='0 0 28px rgba(255,153,51,0.5)'}>
               💛 Donate Now
             </button>
-
             <Btn href="https://www.jiohotstar.com/" external primary={false}>▶ Watch the Film</Btn>
           </div>
 
@@ -1005,7 +1068,6 @@ function FinalCTA() {
         </FadeUp>
       </div>
 
-      {/* Donation modal */}
       {showDonate && <DonationModal onClose={() => setShowDonate(false)} />}
     </section>
   );
@@ -1023,15 +1085,16 @@ function Footer() {
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))', gap:'40px', marginBottom:'52px' }}>
           <div>
             <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.2rem', letterSpacing:'0.1em', color:T.white, marginBottom:'4px' }}>Dekh Le! India</p>
-            <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.58rem', letterSpacing:'0.28em', color:T.accent, marginBottom:'16px', textTransform:'uppercase' }}>Documentary Film · 2024</p>
+            {/* CHANGE: removed 2024, updated to 2026 */}
+            <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.58rem', letterSpacing:'0.28em', color:T.accent, marginBottom:'16px', textTransform:'uppercase' }}>Documentary Film · 2026</p>
             <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.84rem', color:'rgba(240,237,232,0.35)', lineHeight:1.7 }}>
-              The story of India's first blind women's cricket team and their extraordinary journey to the World Games.
+              The story of India&#39;s first blind women&#39;s cricket team and their extraordinary journey to the World Games.
             </p>
           </div>
 
           <div>
             <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.65rem', letterSpacing:'0.25em', textTransform:'uppercase', color:T.accent, marginBottom:'18px' }}>Navigate</p>
-            {[['#story','Story'],['#behind','Behind the Scenes'],['#awards','Awards'],['#impact','Impact'],['#watch','Watch'],['contribute','Contribute']].map(([h,l]) => (
+            {[['#story','Story'],['#behind','Behind the Scenes'],['#awards','Accolades'],['#reactions','Reactions'],['#blog','Blog'],['#impact','Impact'],['#watch','Watch'],['contribute','Contribute']].map(([h,l]) => (
               <a key={h} href={h.startsWith('#')?h:`/${h}`}
                 style={{ display:'block', fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.875rem', color:'rgba(240,237,232,0.38)', textDecoration:'none', marginBottom:'8px', transition:'color 0.2s' }}
                 onMouseEnter={e => e.target.style.color=T.white}
@@ -1085,7 +1148,6 @@ export default function Home() {
         <meta property="og:title" content="Dekh Le! India 🇮🇳" />
         <meta property="og:description" content="No Pity. No Sympathy. Just Give Us an Opportunity." />
 
-        {/* Google Fonts — Bebas Neue + Inter */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -1111,6 +1173,8 @@ export default function Home() {
         <StorySection />
         <BehindScenes />
         <AwardsSection />
+        <ReactionsSection />
+        <BlogSection />
         <ImpactSection />
         <WatchSection />
         <FinalCTA />
