@@ -709,7 +709,7 @@ function StorySection() {
 
         <FadeUp delay={300}>
           <div style={{ display:'flex', gap:'8px', justifyContent:'center', flexWrap:'wrap', marginTop:'44px' }}>
-            {['Documentary','70 Minutes','English, Hindi and Multiple Indian Languages','India'].map(tag => (
+            {['Documentary','70 Minutes','English, Hindi, Kannada, Odia, Assamese, Telugu, Malayalam, Santali','India'].map(tag => (
               <span key={tag} style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.75rem', letterSpacing:'0.18em', textTransform:'uppercase', padding:'7px 18px', color:T.accent, border:`1px solid rgba(0,191,255,0.3)` }}>
                 {tag}
               </span>
@@ -780,7 +780,7 @@ function BehindScenes() {
               { year:'2022',    title:'Training Camps',               body:'Embedded in BCCI training camps, we witnessed the raw beauty of players learning to bowl and bat by sound and touch alone.' },
               { year:'2023',    title:'The World Games — Birmingham', body:'Edgbaston. India vs Australia. Final. The world was not watching. We were. Every frame captured, every emotion preserved.' },
               { year:'2025',    title:'The Film is Complete',         body:'2.5 years of filming, editing, colour grading, and music composition later — Dekh Le! India was ready for the world to finally see.' },
-              { year:'June 2026', title:'Releasing on Jio Hotstar',   body:'India finally sees its heroes — in English, Hindi, and Multiple Indian Languages.', highlight: true },
+              { year:'June 2026', title:'Releasing on Jio Hotstar',   body:'India finally sees its heroes — in English, Hindi, Kannada, Odia, Assamese, Telugu, Malayalam, and Santali.', highlight: true },
             ].map((t, i) => (
               <FadeUp key={t.year} delay={i * 120}>
                 <div style={{ display:'flex', gap:'32px', padding:'32px 0 32px 60px', borderBottom:`1px solid rgba(255,255,255,0.04)`, position:'relative' }}>
