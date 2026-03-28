@@ -112,20 +112,20 @@ const BLOG_POSTS = [
    ✅ ACTION — put these 6 files inside your project at:
         public/images/
    Use EXACTLY these filenames:
-        pm.jpg
-        trophy.jpg
-        president.jpg
-        bcci.jpg
-        t20.jpg
-        reliance.jpg
+        pm.jpeg
+        trophy.jpeg
+        president.jpeg
+        bcci.jpeg
+        t20.jpeg
+        reliance.png
 ───────────────────────────────────────────────────────────────── */
 const GALLERY_ITEMS = [
-  { src:'/images/pm.jpg',        caption:'Honored by the Prime Minister',          alt:'Team honored by the Prime Minister of India'           },
-  { src:'/images/trophy.jpg',    caption:'World Cup Victory Celebration',          alt:'World Cup victory celebration'                         },
-  { src:'/images/president.jpg', caption:'Meeting with the President of India',    alt:'Team meeting with the President of India'              },
-  { src:'/images/bcci.jpg',      caption:'BCCI Announces Major Support',           alt:'BCCI announces major support for Indian Blind Cricket' },
-  { src:'/images/t20.jpg',       caption:"India Wins First Blind T20 Women's World Cup", alt:"India wins the first Blind T20 Women's World Cup" },
-  { src:'/images/reliance.jpg',  caption:'Recognized by Reliance Foundation',     alt:"Team at Reliance Foundation's United in Triumph event" },
+  { src:'/images/pm.jpeg',        caption:'Honored by the Prime Minister',          alt:'Team honored by the Prime Minister of India'           },
+  { src:'/images/trophy.jpeg',    caption:'World Cup Victory Celebration',          alt:'World Cup victory celebration'                         },
+  { src:'/images/president.jpeg', caption:'Meeting with the President of India',    alt:'Team meeting with the President of India'              },
+  { src:'/images/bcci.jpeg',      caption:'BCCI Announces Major Support',           alt:'BCCI announces major support for Indian Blind Cricket' },
+  { src:'/images/t20.jpeg',       caption:"India Wins First Blind T20 Women's World Cup", alt:"India wins the first Blind T20 Women's World Cup" },
+  { src:'/images/reliance.png',  caption:'Recognized by Reliance Foundation',     alt:"Team at Reliance Foundation's United in Triumph event" },
 ];
 
 /* ─────────────────────────────────────────────────────────────────
