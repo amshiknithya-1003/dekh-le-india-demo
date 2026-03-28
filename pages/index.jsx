@@ -231,7 +231,7 @@ function loadRazorpay() {
 /* ─────────────────────────────────────────────────────────────────
    DONATION MODAL
 ───────────────────────────────────────────────────────────────── */
-const PRESETS = [49, 99, 149, 199];
+const PRESETS = [49, 99, 149, 199, 249];
 
 function DonationModal({ onClose }) {
   const [selected, setSelected] = useState(100);
