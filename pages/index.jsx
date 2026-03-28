@@ -109,21 +109,23 @@ const BLOG_POSTS = [
 
 /* ─────────────────────────────────────────────────────────────────
    GALLERY_ITEMS
-   Place images in /public/gallery/ with these filenames:
-     1774635533823_image.png   → pm-honored.png
-     1774635539099_image.png   → world-cup-celebration.png
-     1774635543945_image.png   → president-meeting.png
-     1774635554595_image.png   → bcci-support.png
-     1774635559500_image.png   → t20-world-cup-win.png
-     Screenshot_2026-…_.png   → reliance-foundation.png
+   ACTION: Copy your 6 images into your Next.js project at:
+     public/gallery/
+   Use EXACTLY these filenames (no renaming needed):
+     public/gallery/1774635533823_image.png
+     public/gallery/1774635539099_image.png
+     public/gallery/1774635543945_image.png
+     public/gallery/1774635554595_image.png
+     public/gallery/1774635559500_image.png
+     public/gallery/Screenshot_2026-03-27_234444.png
 ───────────────────────────────────────────────────────────────── */
 const GALLERY_ITEMS = [
-  { src:'/gallery/pm-honored.png',            caption:'Honored by the Prime Minister',            alt:"Team honored by the Prime Minister of India"             },
-  { src:'/gallery/world-cup-celebration.png', caption:'World Cup Victory Celebration',            alt:'World Cup victory celebration'                           },
-  { src:'/gallery/president-meeting.png',     caption:'Meeting with the President of India',      alt:'Team meeting with the President of India'                },
-  { src:'/gallery/bcci-support.png',          caption:'BCCI Announces Major Support',             alt:'BCCI announces major support for Indian Blind Cricket'   },
-  { src:'/gallery/t20-world-cup-win.png',     caption:"India Wins First Blind T20 Women's World Cup", alt:"India wins the first Blind T20 Women's World Cup" },
-  { src:'/gallery/reliance-foundation.png',   caption:'Recognized by Reliance Foundation',        alt:"Team at Reliance Foundation's United in Triumph event"   },
+  { src:'/gallery/1774635533823_image.png',             caption:'Honored by the Prime Minister',          alt:"Team honored by the Prime Minister of India"           },
+  { src:'/gallery/1774635539099_image.png',             caption:'World Cup Victory Celebration',          alt:'World Cup victory celebration'                         },
+  { src:'/gallery/1774635543945_image.png',             caption:'Meeting with the President of India',    alt:'Team meeting with the President of India'              },
+  { src:'/gallery/1774635554595_image.png',             caption:'BCCI Announces Major Support',           alt:'BCCI announces major support for Indian Blind Cricket' },
+  { src:'/gallery/1774635559500_image.png',             caption:"India Wins First Blind T20 Women's World Cup", alt:"India wins the first Blind T20 Women's World Cup" },
+  { src:'/gallery/Screenshot_2026-03-27_234444.png',   caption:'Recognized by Reliance Foundation',      alt:"Team at Reliance Foundation's United in Triumph event" },
 ];
 
 /* ─────────────────────────────────────────────────────────────────
@@ -808,10 +810,20 @@ function GallerySection() {
                       src={item.src}
                       alt={item.alt}
                       loading="lazy"
-                      style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.55s ease' }}
+                      style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.55s ease', display:'block' }}
                       onMouseEnter={e => e.currentTarget.style.transform='scale(1.05)'}
                       onMouseLeave={e => e.currentTarget.style.transform='scale(1)'}
+                      onError={e => {
+                        e.currentTarget.style.display = 'none';
+                        const ph = e.currentTarget.parentNode.querySelector('.img-placeholder');
+                        if (ph) ph.style.display = 'flex';
+                      }}
                     />
+                    {/* Placeholder shown when image fails to load */}
+                    <div className="img-placeholder" style={{ display:'none', position:'absolute', inset:0, alignItems:'center', justifyContent:'center', flexDirection:'column', gap:'8px', background:'rgba(10,31,68,0.6)' }}>
+                      <span style={{ fontSize:'2.4rem', opacity:0.4 }}>🖼️</span>
+                      <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.65rem', letterSpacing:'0.18em', color:'rgba(240,237,232,0.25)', textTransform:'uppercase' }}>Image not found</span>
+                    </div>
                     <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'55%', background:'linear-gradient(to top, rgba(3,8,16,0.82) 0%, transparent 100%)', pointerEvents:'none' }} />
                   </div>
                   {/* Caption */}
