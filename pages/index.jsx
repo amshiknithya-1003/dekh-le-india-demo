@@ -83,6 +83,10 @@ const IMPACT_STATS = [
   { value:'10+',  label:'Awards Won',        icon:'🏆' },
   { value:'8+',   label:'Countries',         icon:'🌍' },
   { value:'10',   label:'States Covered',    icon:'🗺️' },
+  // ── Cricket team statistics ─────────────────────────
+  { value:'100+', label:'Matches Played',    icon:'🏏' },
+  { value:'10+',  label:'Tournaments Won',   icon:'🥇' },
+  { value:'1',    label:'World Cup Win',      icon:'🏆' },
 ];
 
 const BLOG_POSTS = [
@@ -101,6 +105,25 @@ const BLOG_POSTS = [
     title:'What 10 States Taught Us About Invisible India',
     excerpt:'From a paddy field in Odisha to a terrace in Kerala — the players we found were not waiting to be rescued. They were waiting to be seen.',
   },
+];
+
+/* ─────────────────────────────────────────────────────────────────
+   GALLERY_ITEMS
+   Place images in /public/gallery/ with these filenames:
+     1774635533823_image.png   → pm-honored.png
+     1774635539099_image.png   → world-cup-celebration.png
+     1774635543945_image.png   → president-meeting.png
+     1774635554595_image.png   → bcci-support.png
+     1774635559500_image.png   → t20-world-cup-win.png
+     Screenshot_2026-…_.png   → reliance-foundation.png
+───────────────────────────────────────────────────────────────── */
+const GALLERY_ITEMS = [
+  { src:'/gallery/pm-honored.png',            caption:'Honored by the Prime Minister',            alt:"Team honored by the Prime Minister of India"             },
+  { src:'/gallery/world-cup-celebration.png', caption:'World Cup Victory Celebration',            alt:'World Cup victory celebration'                           },
+  { src:'/gallery/president-meeting.png',     caption:'Meeting with the President of India',      alt:'Team meeting with the President of India'                },
+  { src:'/gallery/bcci-support.png',          caption:'BCCI Announces Major Support',             alt:'BCCI announces major support for Indian Blind Cricket'   },
+  { src:'/gallery/t20-world-cup-win.png',     caption:"India Wins First Blind T20 Women's World Cup", alt:"India wins the first Blind T20 Women's World Cup" },
+  { src:'/gallery/reliance-foundation.png',   caption:'Recognized by Reliance Foundation',        alt:"Team at Reliance Foundation's United in Triumph event"   },
 ];
 
 /* ─────────────────────────────────────────────────────────────────
@@ -313,7 +336,7 @@ function Navbar() {
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
-  const links = [['#story','Story'],['#behind','Behind Scenes'],['#awards','Accolades'],['#reactions','Reactions'],['#blog','Blog'],['#impact','Impact'],['#watch','Watch']];
+  const links = [['#story','Story'],['#behind','Behind Scenes'],['#awards','Accolades'],['#gallery','Gallery'],['#reactions','Reactions'],['#blog','Blog'],['#impact','Impact'],['#watch','Watch']];
 
   return (
     <nav style={{ position:'fixed', top:0, left:0, right:0, zIndex:1000, transition:'all 0.4s', background: scrolled ? 'rgba(6,15,34,0.97)' : 'transparent', backdropFilter: scrolled ? 'blur(20px)' : 'none', borderBottom: scrolled ? '1px solid rgba(0,191,255,0.12)' : 'none' }}>
@@ -746,6 +769,69 @@ function BlogSection() {
 }
 
 /* ─────────────────────────────────────────────────────────────────
+   GALLERY SECTION — new
+───────────────────────────────────────────────────────────────── */
+function GallerySection() {
+  return (
+    <section id="gallery" style={{ padding:'120px 24px', background:T.black, position:'relative', overflow:'hidden' }}>
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.saffron}44 50%, transparent 100%)` }} />
+      <div style={{ position:'absolute', top:'40%', left:'50%', transform:'translateX(-50%)', width:'700px', height:'700px', borderRadius:'50%', background:`radial-gradient(circle, rgba(255,153,51,0.03) 0%, transparent 65%)`, pointerEvents:'none' }} />
+
+      <div style={{ maxWidth:'1200px', margin:'0 auto', position:'relative' }}>
+        <FadeUp>
+          <SectionEyebrow label="In the Spotlight" />
+          <SectionTitle>
+            Moments That<br />
+            <span style={{ color:T.saffron }}>Made History</span>
+          </SectionTitle>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'540px', margin:'0 auto 56px', lineHeight:1.75 }}>
+            From dusty village grounds to the highest offices in the land — the women the world finally saw.
+          </p>
+        </FadeUp>
+
+        <div
+          className="gallery-grid"
+          style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'16px' }}
+        >
+          {GALLERY_ITEMS.map((item, i) => {
+            const accentColor = i % 3 === 0 ? T.saffron : i % 3 === 1 ? T.accent : 'rgba(46,139,87,0.9)';
+            return (
+              <FadeUp key={i} delay={Math.min(i, 5) * 90}>
+                <div
+                  style={{ position:'relative', background:T.navyDark, border:`1px solid rgba(255,255,255,0.05)`, borderTop:`3px solid ${accentColor}`, overflow:'hidden', transition:'transform 0.3s ease, box-shadow 0.3s ease' }}
+                  onMouseEnter={e => { e.currentTarget.style.transform='translateY(-5px)'; e.currentTarget.style.boxShadow='0 16px 48px rgba(0,0,0,0.55)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform='translateY(0)';    e.currentTarget.style.boxShadow='none'; }}
+                >
+                  {/* 3:2 image container */}
+                  <div style={{ position:'relative', paddingBottom:'66.67%', overflow:'hidden' }}>
+                    <img
+                      src={item.src}
+                      alt={item.alt}
+                      loading="lazy"
+                      style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.55s ease' }}
+                      onMouseEnter={e => e.currentTarget.style.transform='scale(1.05)'}
+                      onMouseLeave={e => e.currentTarget.style.transform='scale(1)'}
+                    />
+                    <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'55%', background:'linear-gradient(to top, rgba(3,8,16,0.82) 0%, transparent 100%)', pointerEvents:'none' }} />
+                  </div>
+                  {/* Caption */}
+                  <div style={{ padding:'14px 18px 16px', display:'flex', alignItems:'center', gap:'10px' }}>
+                    <div style={{ width:'14px', height:'1px', background:accentColor, opacity:0.75, flexShrink:0 }} />
+                    <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.9rem', letterSpacing:'0.08em', textTransform:'uppercase', color:T.cream, margin:0, lineHeight:1.25 }}>
+                      {item.caption}
+                    </p>
+                  </div>
+                </div>
+              </FadeUp>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
    IMPACT
 ───────────────────────────────────────────────────────────────── */
 function ImpactSection() {
@@ -827,7 +913,7 @@ function Footer() {
           </div>
           <div>
             <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.65rem', letterSpacing:'0.25em', textTransform:'uppercase', color:T.accent, marginBottom:'18px' }}>Navigate</p>
-            {[['#story','Story'],['#behind','Behind the Scenes'],['#awards','Accolades'],['#reactions','Reactions'],['#blog','Blog'],['#impact','Impact'],['#watch','Watch'],['contribute','Contribute']].map(([h,l]) => (
+            {[['#story','Story'],['#behind','Behind the Scenes'],['#awards','Accolades'],['#gallery','Gallery'],['#reactions','Reactions'],['#blog','Blog'],['#impact','Impact'],['#watch','Watch'],['contribute','Contribute']].map(([h,l]) => (
               <a key={h} href={h.startsWith('#')?h:`/${h}`}
                 style={{ display:'block', fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.875rem', color:'rgba(240,237,232,0.38)', textDecoration:'none', marginBottom:'8px', transition:'color 0.2s' }}
                 onMouseEnter={e => e.target.style.color=T.white} onMouseLeave={e => e.target.style.color='rgba(240,237,232,0.38)'}>
@@ -887,9 +973,13 @@ export default function Home() {
           ::-webkit-scrollbar { width:4px; }
           ::-webkit-scrollbar-track { background:#030810; }
           ::-webkit-scrollbar-thumb { background:#123A73; }
+          @media(max-width:768px){
+            .gallery-grid { grid-template-columns:repeat(2,1fr)!important; }
+          }
           @media(max-width:480px){
-            .stat-grid { grid-template-columns:repeat(2,1fr)!important; }
-            .award-grid { grid-template-columns:1fr!important; }
+            .stat-grid    { grid-template-columns:repeat(2,1fr)!important; }
+            .award-grid   { grid-template-columns:1fr!important; }
+            .gallery-grid { grid-template-columns:1fr!important; }
           }
         `}} />
       </Head>
@@ -902,6 +992,8 @@ export default function Home() {
         <RockSongSection />
         <BehindScenes />
         <AwardsSection />
+        {/* CHANGE 4: Gallery inserted here */}
+        <GallerySection />
         <ReactionsSection />
         <BlogSection />
         <ImpactSection />
