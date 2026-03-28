@@ -1,7 +1,7 @@
 // pages/index.jsx
 // Dekh Le! India — Premium Cinematic Redesign
 // Netflix / NatGeo inspired · Bebas Neue · Dark blue cricket jersey theme
-// Sections: Hero · Gallery · Story · Accolades · Reactions · Blog · Impact · CTA
+// Sections: Hero · Gallery · Watch · Story · Accolades · Reactions · Blog · Impact
 
 import Head from 'next/head';
 import Link from 'next/link';
@@ -32,18 +32,6 @@ const T = {
 /* ─────────────────────────────────────────────────────────────────
    DATA
 ───────────────────────────────────────────────────────────────── */
-const AWARDS = [
-  { icon:'🏆', name:'CLEF Music Awards',             result:'Winner — Best Lyrics',         year:'2025' },
-  { icon:'🎸', name:'CLEF Music Awards',             result:'Winner — Best Rock Guitarist',  year:'2025' },
-  { icon:'🎬', name:'NCIFF Nepal',                   result:'Winner — Best Director',        year:'2026' },
-  { icon:'🥇', name:'KISFF Kenya',                   result:"Chairman's Award",              year:'2025' },
-  { icon:'🎭', name:'17th IDSFFK Kerala',            result:'Official Selection',            year:'2025' },
-  { icon:'🌏', name:'IIFFB Boston',                  result:'Official Selection',            year:'2025' },
-  { icon:'🌍', name:'LIFF Lulea, Sweden',            result:'Finalist',                     year:'2025' },
-  { icon:'🎞️', name:'MLIFF Manchester',              result:'Official Selection',            year:'2026' },
-  { icon:'🌺', name:'Istanbul Women Film Festival',  result:'Semi Finalist',                year:'2026' },
-];
-
 const IMPACT_STATS = [
   { value:'10K+',  label:'People Reached',    icon:'👥' },
   { value:'50+',   label:'School Screenings', icon:'🏫' },
@@ -51,7 +39,6 @@ const IMPACT_STATS = [
   { value:'10+',   label:'Awards Won',        icon:'🏆' },
   { value:'8+',    label:'Countries',         icon:'🌍' },
   { value:'10',    label:'States Covered',    icon:'🗺️' },
-  // Updated Cricket team statistics
   { value:'100+',  label:'Matches Played',    icon:'🏏' },
   { value:'10+',   label:'Tournaments Won',   icon:'🥇' },
   { value:'1',     label:'World Cup Win',      icon:'🏆' },
@@ -67,7 +54,7 @@ const GALLERY_ITEMS = [
 ];
 
 /* ─────────────────────────────────────────────────────────────────
-   SCROLL FADE HOOK & REUSABLE COMPONENTS
+   HOOKS & REUSABLE COMPONENTS
 ───────────────────────────────────────────────────────────────── */
 function useFade(threshold = 0.15) {
   const ref = useRef(null);
@@ -122,7 +109,7 @@ function SectionTitle({ children, light = false }) {
   );
 }
 
-function Btn({ href, children, primary = true, external = false }) {
+function Btn({ href, children, primary = true, external = false, onClick }) {
   const base = {
     fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.9rem',
     letterSpacing:'0.22em', textTransform:'uppercase',
@@ -133,25 +120,88 @@ function Btn({ href, children, primary = true, external = false }) {
     ? { ...base, background:T.saffron, color:T.navyDark, boxShadow:`0 0 28px rgba(255,153,51,0.5)` }
     : { ...base, background:'transparent', color:T.white, border:`1px solid rgba(240,237,232,0.3)` };
 
-  if (external) return (
-    <a href={href} target="_blank" rel="noopener noreferrer" style={style}
+  if (onClick) return (
+    <button onClick={onClick} style={style}
       onMouseEnter={e => primary ? e.currentTarget.style.boxShadow='0 0 42px rgba(255,153,51,0.7)' : e.currentTarget.style.borderColor='rgba(240,237,232,0.7)'}
       onMouseLeave={e => primary ? e.currentTarget.style.boxShadow='0 0 28px rgba(255,153,51,0.5)' : e.currentTarget.style.borderColor='rgba(240,237,232,0.3)'}>
+      {children}
+    </button>
+  );
+
+  if (external) return (
+    <a href={href} target="_blank" rel="noopener noreferrer" style={style}>
       {children}
     </a>
   );
   return (
-    <Link href={href} style={style}
-      onMouseEnter={e => primary ? e.currentTarget.style.boxShadow='0 0 42px rgba(255,153,51,0.7)' : e.currentTarget.style.borderColor='rgba(240,237,232,0.7)'}
-      onMouseLeave={e => primary ? e.currentTarget.style.boxShadow='0 0 28px rgba(255,153,51,0.5)' : e.currentTarget.style.borderColor='rgba(240,237,232,0.3)'}>
-      {children}
-    </Link>
+    <Link href={href} style={style}>{children}</Link>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   GALLERY SECTION
+   MODAL & LOGIC
 ───────────────────────────────────────────────────────────────── */
+function DonationModal({ onClose }) {
+  return (
+    <div onClick={(e) => e.target === e.currentTarget && onClose()} style={{ position:'fixed', inset:0, zIndex:9999, background:'rgba(3,8,16,0.9)', backdropFilter:'blur(10px)', display:'flex', alignItems:'center', justifyContent:'center', padding:'20px' }}>
+      <div style={{ background:T.navyDark, border:`1px solid ${T.accentDim}`, padding:'40px', maxWidth:'440px', width:'100%', position:'relative', borderRadius:'4px' }}>
+        <button onClick={onClose} style={{ position:'absolute', top:'15px', right:'15px', background:'none', border:'none', color:T.dim, cursor:'pointer' }}>✕</button>
+        <SectionEyebrow label="Support" />
+        <h3 style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'2rem', color:T.white, textAlign:'center', marginBottom:'15px' }}>Back the Movement</h3>
+        <p style={{ color:T.dim, fontSize:'0.9rem', textAlign:'center', lineHeight:1.6, marginBottom:'25px' }}>Your contribution helps us provide equipment and training for blind cricketers across India.</p>
+        <Btn href="#" primary style={{ width:'100%', justifyContent:'center' }}>Proceed to Donate</Btn>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   SECTIONS
+───────────────────────────────────────────────────────────────── */
+function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', fn);
+    return () => window.removeEventListener('scroll', fn);
+  }, []);
+
+  return (
+    <nav style={{ position:'fixed', top:0, width:'100%', zIndex:1000, transition:'0.3s', padding: scrolled ? '15px 40px' : '25px 40px', background: scrolled ? 'rgba(3,8,16,0.95)' : 'transparent', borderBottom: scrolled ? `1px solid ${T.ghost}` : 'none' }}>
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', maxWidth:'1280px', margin:'0 auto' }}>
+        <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'1.5rem', color:T.white, letterSpacing:'2px' }}>DEKH LE! INDIA</span>
+        <div style={{ display:'flex', gap:'30px', alignItems:'center' }}>
+          <a href="#gallery" style={{ color:T.dim, textDecoration:'none', fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.9rem', letterSpacing:'1px' }}>Gallery</a>
+          <a href="#impact" style={{ color:T.dim, textDecoration:'none', fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.9rem', letterSpacing:'1px' }}>Impact</a>
+          <Btn href="#watch" primary={false}>Watch Trailer</Btn>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+function Hero({ onDonate }) {
+  return (
+    <section style={{ position:'relative', height:'100vh', display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden', background:T.black }}>
+      <div style={{ position:'absolute', inset:0, zIndex:1, background:'radial-gradient(circle, transparent 20%, rgba(3,8,16,0.8) 100%)' }} />
+      <div style={{ position:'absolute', inset:0, zIndex:0 }}>
+         <iframe src="https://www.youtube.com/embed/h_JVTDhF6RY?autoplay=1&mute=1&loop=1&playlist=h_JVTDhF6RY&controls=0&showinfo=0" style={{ width:'100vw', height:'56.25vw', minHeight:'100vh', minWidth:'177.77vh', position:'absolute', top:'50%', left:'50%', transform:'translate(-50%, -50%)', opacity:0.4 }} />
+      </div>
+      <div style={{ position:'relative', zIndex:10, textAlign:'center' }}>
+        <FadeUp>
+          <SectionEyebrow label="A Film By Mukund Moorthy" />
+          <h1 style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'clamp(5rem, 15vw, 12rem)', color:T.white, lineHeight:0.9, marginBottom:'20px' }}>DEKH LE! INDIA</h1>
+          <p style={{ fontFamily:'"Inter",sans-serif', color:T.dim, fontSize:'1.2rem', maxWidth:'600px', margin:'0 auto 40px' }}>The untold story of India's Blind Women's Cricket Team. Resilience, redefined.</p>
+          <div style={{ display:'flex', gap:'15px', justifyContent:'center' }}>
+            <Btn href="https://www.jiohotstar.com/" external>▶ Watch Film</Btn>
+            <Btn onClick={onDonate} primary={false}>🤍 Contribute</Btn>
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
 function Gallery() {
   return (
     <section id="gallery" style={{ padding: '100px 24px', background: T.black }}>
@@ -159,25 +209,10 @@ function Gallery() {
         <FadeUp>
           <SectionEyebrow label="Gallery" />
           <SectionTitle>Moments of Pride</SectionTitle>
-          <div className="gallery-grid" style={{ 
-            display: 'grid', 
-            gap: '20px', 
-            marginTop: '50px'
-          }}>
+          <div className="gallery-grid">
             {GALLERY_ITEMS.map((item, idx) => (
-              <div key={idx} className="gallery-item" style={{ 
-                position: 'relative', 
-                overflow: 'hidden', 
-                borderRadius: '8px',
-                aspectRatio: '4/3',
-                background: T.navyDark,
-                border: `1px solid ${T.ghost}`
-              }}>
-                <div className="img-wrapper" style={{ 
-                  width: '100%', 
-                  height: '100%', 
-                  transition: 'transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)'
-                }}>
+              <div key={idx} className="gallery-item">
+                <div className="img-wrapper">
                   <Image 
                     src={item.src} 
                     alt={item.alt}
@@ -187,25 +222,8 @@ function Gallery() {
                     loading="lazy"
                   />
                 </div>
-                <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(to top, rgba(3,8,16,0.95) 0%, transparent 40%)',
-                  display: 'flex',
-                  alignItems: 'flex-end',
-                  padding: '20px',
-                  pointerEvents: 'none'
-                }}>
-                  <p style={{ 
-                    fontFamily: '"Inter", sans-serif', 
-                    fontSize: '0.9rem', 
-                    color: T.white, 
-                    fontWeight: 500,
-                    lineHeight: 1.4,
-                    textShadow: '0 2px 4px rgba(0,0,0,0.5)'
-                  }}>
-                    {item.caption}
-                  </p>
+                <div className="overlay">
+                  <p>{item.caption}</p>
                 </div>
               </div>
             ))}
@@ -214,55 +232,95 @@ function Gallery() {
       </div>
       <style jsx>{`
         .gallery-grid {
+          display: grid;
+          gap: 20px;
+          margin-top: 50px;
           grid-template-columns: repeat(2, 1fr);
         }
-        @media (min-width: 768px) {
-          .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+        @media (min-width: 768px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 1024px) { .gallery-grid { grid-template-columns: repeat(4, 1fr); } }
+        
+        .gallery-item {
+          position: relative;
+          overflow: hidden;
+          border-radius: 8px;
+          aspect-ratio: 4/3;
+          background: ${T.navyDark};
+          border: 1px solid ${T.ghost};
         }
-        @media (min-width: 1024px) {
-          .gallery-grid { grid-template-columns: repeat(4, 1fr); }
+        .img-wrapper {
+          width: 100%;
+          height: 100%;
+          transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
-        .gallery-item:hover .img-wrapper {
-          transform: scale(1.1);
+        .gallery-item:hover .img-wrapper { transform: scale(1.1); }
+        .overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(to top, rgba(3,8,16,0.95) 0%, transparent 50%);
+          display: flex;
+          align-items: flex-end;
+          padding: 20px;
+          pointer-events: none;
+        }
+        .overlay p {
+          font-family: "Inter", sans-serif;
+          font-size: 0.9rem;
+          color: white;
+          font-weight: 500;
         }
       `}</style>
     </section>
   );
 }
 
+function WatchSection() {
+  return (
+    <section id="watch" style={{ padding:'100px 24px', background:T.black }}>
+      <div style={{ maxWidth:'1000px', margin:'0 auto' }}>
+        <FadeUp>
+          <SectionEyebrow label="Trailer" />
+          <SectionTitle>Watch the Sizzle</SectionTitle>
+          <div style={{ position:'relative', paddingBottom:'56.25%', height:0, marginTop:'40px', border:`1px solid ${T.accentDim}` }}>
+            <iframe src="https://www.youtube.com/embed/h_JVTDhF6RY" style={{ position:'absolute', inset:0, width:'100%', height:'100%', border:'none' }} allowFullScreen />
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
 /* ─────────────────────────────────────────────────────────────────
-   MAIN PAGE COMPONENT
+   PAGE
 ───────────────────────────────────────────────────────────────── */
 export default function LandingPage() {
+  const [showDonate, setShowDonate] = useState(false);
+
   return (
     <>
       <Head>
         <title>Dekh Le! India — Documentary Film</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
         <style dangerouslySetInnerHTML={{ __html:`
           *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
           html { scroll-behavior:smooth; }
-          body { background:#030810; color:#F0EDE8; font-family: 'Inter', sans-serif; }
-          ::selection { background:rgba(0,191,255,0.3); color:#fff; }
+          body { background:#030810; color:#F0EDE8; font-family: 'Inter', sans-serif; overflow-x:hidden; }
           .stat-grid { display: grid; gap: 20px; grid-template-columns: repeat(3, 1fr); }
-          @media(max-width:480px){
-            .stat-grid { grid-template-columns:repeat(2,1fr)!important; }
-          }
+          @media(max-width:480px){ .stat-grid { grid-template-columns:repeat(2,1fr)!important; } }
         `}} />
       </Head>
 
+      <Navbar />
+      
       <main>
-        {/* Hero Section Placeholder */}
-        <section style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: T.navyDark }}>
-          <SectionTitle>DEKH LE! INDIA</SectionTitle>
-        </section>
-
+        <Hero onDonate={() => setShowDonate(true)} />
+        
         <Gallery />
+        
+        <WatchSection />
 
-        {/* Stats Section */}
         <section id="impact" style={{ padding: '100px 24px', background: T.black }}>
           <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <FadeUp>
@@ -281,6 +339,12 @@ export default function LandingPage() {
           </div>
         </section>
       </main>
+
+      {showDonate && <DonationModal onClose={() => setShowDonate(false)} />}
+      
+      <footer style={{ padding:'60px 24px', background:T.navyDark, textAlign:'center', borderTop:`1px solid ${T.ghost}` }}>
+        <p style={{ color:T.faint, fontSize:'0.8rem', letterSpacing:'2px' }}>© 2026 DEKH LE! INDIA · ALL RIGHTS RESERVED</p>
+      </footer>
     </>
   );
 }
