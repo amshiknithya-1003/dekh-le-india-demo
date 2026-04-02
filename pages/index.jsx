@@ -38,9 +38,9 @@ const AWARDS = [
   { icon:'🥇', name:'KISFF Kenya',                   result:"Chairman's Award",              year:'2025' },
   { icon:'🎭', name:'17th IDSFFK Kerala',            result:'Official Selection',            year:'2025' },
   { icon:'🌏', name:'IIFFB Boston',                  result:'Official Selection',            year:'2025' },
-  { icon:'🌍', name:'LIFF Lulea, Sweden',            result:'Finalist',                     year:'2025' },
+  { icon:'🌍', name:'LIFF Lulea, Sweden',            result:'Finalist',                      year:'2025' },
   { icon:'🎞️', name:'MLIFF Manchester',              result:'Official Selection',            year:'2026' },
-  { icon:'🌺', name:'Istanbul Women Film Festival',  result:'Semi Finalist',                year:'2026' },
+  { icon:'🌺', name:'Istanbul Women Film Festival',  result:'Semi Finalist',                 year:'2026' },
 ];
 
 const BEHIND_SCENES = [
@@ -50,30 +50,18 @@ const BEHIND_SCENES = [
   { n:'04', title:'A Story\nWorld Missed',        body:'They won. Against all odds. India barely noticed. This film is the witness the world should have been.' },
 ];
 
-/* ── Exact viewer quotes — do not modify text ── */
 const TESTIMONIALS = [
-  { q: 'This is moving story of resilience',
-    who: 'Viewer' },
-  { q: 'Very very inspirational. Confirming the saying, that "Nothing is impossible". Very well made Mukund. Thanks for sharing with us.',
-    who: 'Viewer' },
-  { q: 'So much inspiring Mukund. I am so overwhelmed by this story.',
-    who: 'Viewer' },
-  { q: 'Absolutely endorsing that disability does not mean inability.',
-    who: 'Viewer' },
-  { q: 'This powerful documentary is sure to inspire and uplift many.',
-    who: 'Viewer' },
-  { q: 'Well done Mukund! Zabardast.. lot of goosebumps..',
-    who: 'Viewer' },
-  { q: 'A story that needs to be told. Kudos to the entire team.',
-    who: 'Viewer' },
-  { q: 'What an inspiring story! Excellent storytelling, full of emotions.',
-    who: 'Viewer' },
-  { q: 'Dekh Le India! Perfect name. Words are not enough to express gratitude.',
-    who: 'Viewer' },
-  { q: 'Thanks for making a movie on blind cricket. This creates awareness.',
-    who: 'Viewer' },
-  { q: 'Watched the movie with my family. Very moving and inspiring.',
-    who: 'Viewer' },
+  { q:'This is moving story of resilience', who:'Viewer' },
+  { q:'Very very inspirational. Confirming the saying, that "Nothing is impossible". Very well made Mukund. Thanks for sharing with us.', who:'Viewer' },
+  { q:'So much inspiring Mukund. I am so overwhelmed by this story.', who:'Viewer' },
+  { q:'Absolutely endorsing that disability does not mean inability.', who:'Viewer' },
+  { q:'This powerful documentary is sure to inspire and uplift many.', who:'Viewer' },
+  { q:'Well done Mukund! Zabardast.. lot of goosebumps..', who:'Viewer' },
+  { q:'A story that needs to be told. Kudos to the entire team.', who:'Viewer' },
+  { q:'What an inspiring story! Excellent storytelling, full of emotions.', who:'Viewer' },
+  { q:'Dekh Le India! Perfect name. Words are not enough to express gratitude.', who:'Viewer' },
+  { q:'Thanks for making a movie on blind cricket. This creates awareness.', who:'Viewer' },
+  { q:'Watched the movie with my family. Very moving and inspiring.', who:'Viewer' },
 ];
 
 const IMPACT_STATS = [
@@ -83,7 +71,6 @@ const IMPACT_STATS = [
   { value:'10+',  label:'Awards Won',        icon:'🏆' },
   { value:'8+',   label:'Countries',         icon:'🌍' },
   { value:'10',   label:'States Covered',    icon:'🗺️' },
-  // ── Cricket team statistics ─────────────────────────
   { value:'100+', label:'Matches Played',    icon:'🏏' },
   { value:'10+',  label:'Tournaments Won',   icon:'🥇' },
   { value:'1',    label:'World Cup Win',      icon:'🏆' },
@@ -107,34 +94,15 @@ const BLOG_POSTS = [
   },
 ];
 
-/* ─────────────────────────────────────────────────────────────────
-   GALLERY_ITEMS
-   ✅ ACTION — put these 6 files inside your project at:
-        public/images/
-   Use EXACTLY these filenames:
-        pm.jpg
-        trophy.jpg
-        president.jpg
-        bcci.jpg
-        t20.jpg
-        reliance.jpg
-───────────────────────────────────────────────────────────────── */
 const GALLERY_ITEMS = [
-  { src:'/images/pm.jpg',        caption:'Honored by the Prime Minister',          alt:'Team honored by the Prime Minister of India'           },
-  { src:'/images/trophy.jpg',    caption:'World Cup Victory Celebration',          alt:'World Cup victory celebration'                         },
-  { src:'/images/president.jpg', caption:'Meeting with the President of India',    alt:'Team meeting with the President of India'              },
-  { src:'/images/bcci.jpg',      caption:'BCCI Announces Major Support',           alt:'BCCI announces major support for Indian Blind Cricket' },
-  { src:'/images/t20.jpg',       caption:"India Wins First Blind T20 Women's World Cup", alt:"India wins the first Blind T20 Women's World Cup" },
-  { src:'/images/reliance.jpg',  caption:'Recognized by Reliance Foundation',     alt:"Team at Reliance Foundation's United in Triumph event" },
+  { src:'/images/pm.jpeg',        caption:'Honored by the Prime Minister',               alt:'Team honored by the Prime Minister of India'           },
+  { src:'/images/trophy.jpeg',    caption:'World Cup Victory Celebration',               alt:'World Cup victory celebration'                         },
+  { src:'/images/president.jpeg', caption:'Meeting with the President of India',         alt:'Team meeting with the President of India'              },
+  { src:'/images/bcci.jpeg',      caption:'BCCI Announces Major Support',                alt:'BCCI announces major support for Indian Blind Cricket' },
+  { src:'/images/t20.jpeg',       caption:"India Wins First Blind T20 Women's World Cup", alt:"India wins the first Blind T20 Women's World Cup"     },
+  { src:'/images/reliance.png',   caption:'Recognized by Reliance Foundation',           alt:"Team at Reliance Foundation's United in Triumph event" },
 ];
 
-/* ─────────────────────────────────────────────────────────────────
-   TEAM DATA
-   Images: add to public/images/
-     shanthi.jpg  — Director / DOP photo
-     mukund.jpg   — Director / Producer photo
-   If images are unavailable the initials avatar renders instead.
-───────────────────────────────────────────────────────────────── */
 const TEAM_MEMBERS = [
   {
     name:    'Shanthi Mohan',
@@ -148,76 +116,15 @@ const TEAM_MEMBERS = [
     role:    'Director & Producer',
     img:     '/images/mukund.jpg',
     initials:'MM',
-   bio: 'Mukund Moorthy drove the vision and mission of Dekh Le! India. A storyteller at heart, he co-directed the film and ensured the voices of India\'s blind women cricketers reached the world stage.',
+    bio:     `Mukund Moorthy drove the vision and mission of Dekh Le! India. A storyteller at heart, he co-directed the film and ensured the voices of India's blind women cricketers reached the world stage.`,
   },
 ];
 
-/* ─────────────────────────────────────────────────────────────────
-   PRODUCTION PARTNERS
-───────────────────────────────────────────────────────────────── */
-function PartnerLogo({ p }) {
-  const [imgFailed, setImgFailed] = useState(false);
-  return (
-    <div style={{ height:'52px', display:'flex', alignItems:'center', justifyContent:'center', marginBottom:'12px' }}>
-      {!imgFailed ? (
-        <img
-          src={p.logo}
-          alt={p.name}
-          style={{ maxHeight:'52px', maxWidth:'160px', objectFit:'contain', opacity:0.8, transition:'opacity 0.2s' }}
-          onMouseEnter={e => e.currentTarget.style.opacity='1'}
-          onMouseLeave={e => e.currentTarget.style.opacity='0.8'}
-          onError={() => setImgFailed(true)}
-        />
-      ) : (
-        <span style={{
-          fontFamily:'"Bebas Neue",sans-serif',
-          fontSize:'1.4rem',
-          letterSpacing:'0.06em',
-          color:T.white,
-          opacity:0.75,
-        }}>
-          {p.name}
-        </span>
-      )}
-    </div>
-  );
-}
-
-function ProductionPartners() {
-  return (
-    <section id="partners" style={{ padding:'80px 24px', background:T.navyDark, borderTop:`1px solid rgba(0,191,255,0.08)`, borderBottom:`1px solid rgba(0,191,255,0.08)` }}>
-      <div style={{ maxWidth:'1100px', margin:'0 auto' }}>
-        <FadeUp>
-          <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.68rem', letterSpacing:'0.28em', textTransform:'uppercase', color:T.faint, textAlign:'center', marginBottom:'40px' }}>
-            A joint production by
-          </p>
-        </FadeUp>
-
-        <FadeUp delay={80}>
-          <div className="partners-row" style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:'0', flexWrap:'wrap' }}>
-            {PRODUCTION_PARTNERS.map((p, i) => (
-              <div key={p.name} style={{ display:'flex', alignItems:'center' }}>
-                <div
-                  style={{ padding:'28px 44px', textAlign:'center', transition:'background 0.25s' }}
-                  onMouseEnter={e => e.currentTarget.style.background='rgba(0,191,255,0.05)'}
-                  onMouseLeave={e => e.currentTarget.style.background='transparent'}
-                >
-                  <PartnerLogo p={p} />
-                  <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.6rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.faint, margin:0 }}>
-                    {p.role}
-                  </p>
-                </div>
-                {i < PRODUCTION_PARTNERS.length - 1 && (
-                  <div style={{ width:'1px', height:'48px', background:'rgba(255,255,255,0.08)', flexShrink:0 }} />
-                )}
-              </div>
-            ))}
-          </div>
-        </FadeUp>
-      </div>
-    </section>
-  );
-}
+const PRODUCTION_PARTNERS = [
+  { name:'The Loose Canon', logo:'/images/logo-loose-canon.png', role:'Production House' },
+  { name:'DejaVu Arts',     logo:'/images/logo-dejavu.png',      role:'Co-Production'   },
+  { name:'Sol Production',  logo:'/images/logo-sol.png',         role:'Production'      },
+];
 
 /* ─────────────────────────────────────────────────────────────────
    SCROLL FADE HOOK
@@ -516,7 +423,7 @@ function Hero() {
         </p>
         <div style={{ ...anim(950), marginBottom:'48px' }}>
           <p style={{ fontFamily:'"Georgia",serif', fontStyle:'italic', fontWeight:400, fontSize:'clamp(0.85rem,1.6vw,1rem)', color:T.faint, letterSpacing:'0.06em', margin:0 }}>
-            "No Pity &nbsp;·&nbsp; No Sympathy &nbsp;·&nbsp; Just Give Us an Opportunity"
+            &quot;No Pity &nbsp;·&nbsp; No Sympathy &nbsp;·&nbsp; Just Give Us an Opportunity&quot;
           </p>
         </div>
         <div style={{ ...anim(1100), display:'flex', gap:'14px', justifyContent:'center', flexWrap:'wrap', marginBottom:'12px' }}>
@@ -747,31 +654,72 @@ function AwardsSection() {
 }
 
 /* ─────────────────────────────────────────────────────────────────
+   GALLERY SECTION
+───────────────────────────────────────────────────────────────── */
+function GallerySection() {
+  return (
+    <section id="gallery" style={{ padding:'120px 24px', background:T.black, position:'relative', overflow:'hidden' }}>
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.saffron}44 50%, transparent 100%)` }} />
+      <div style={{ maxWidth:'1200px', margin:'0 auto', position:'relative' }}>
+        <FadeUp>
+          <SectionEyebrow label="In the Spotlight" />
+          <SectionTitle>Moments That<br /><span style={{ color:T.saffron }}>Made History</span></SectionTitle>
+          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'540px', margin:'0 auto 56px', lineHeight:1.75 }}>
+            From dusty village grounds to the highest offices in the land — the women the world finally saw.
+          </p>
+        </FadeUp>
+        <div className="gallery-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'16px' }}>
+          {GALLERY_ITEMS.map((item, i) => {
+            const accentColor = i % 3 === 0 ? T.saffron : i % 3 === 1 ? T.accent : 'rgba(46,139,87,0.9)';
+            return (
+              <FadeUp key={i} delay={Math.min(i, 5) * 90}>
+                <div
+                  style={{ position:'relative', background:T.navyDark, border:`1px solid rgba(255,255,255,0.05)`, borderTop:`3px solid ${accentColor}`, overflow:'hidden', transition:'transform 0.3s ease, box-shadow 0.3s ease' }}
+                  onMouseEnter={e => { e.currentTarget.style.transform='translateY(-5px)'; e.currentTarget.style.boxShadow='0 16px 48px rgba(0,0,0,0.55)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform='translateY(0)';    e.currentTarget.style.boxShadow='none'; }}
+                >
+                  <div style={{ position:'relative', paddingBottom:'66.67%', overflow:'hidden' }}>
+                    <img
+                      src={item.src}
+                      alt={item.alt}
+                      loading="lazy"
+                      style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.55s ease', display:'block' }}
+                      onMouseEnter={e => e.currentTarget.style.transform='scale(1.05)'}
+                      onMouseLeave={e => e.currentTarget.style.transform='scale(1)'}
+                    />
+                    <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'55%', background:'linear-gradient(to top, rgba(3,8,16,0.82) 0%, transparent 100%)', pointerEvents:'none' }} />
+                  </div>
+                  <div style={{ padding:'14px 18px 16px', display:'flex', alignItems:'center', gap:'10px' }}>
+                    <div style={{ width:'14px', height:'1px', background:accentColor, opacity:0.75, flexShrink:0 }} />
+                    <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.9rem', letterSpacing:'0.08em', textTransform:'uppercase', color:T.cream, margin:0, lineHeight:1.25 }}>
+                      {item.caption}
+                    </p>
+                  </div>
+                </div>
+              </FadeUp>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
    AUDIENCE REACTIONS
-   11 exact viewer quotes in a responsive card grid.
 ───────────────────────────────────────────────────────────────── */
 function ReactionsSection() {
   return (
     <section id="reactions" style={{ padding:'120px 24px', background:T.black, position:'relative', overflow:'hidden' }}>
-      {/* Decorative rules */}
       <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.saffron}44 50%, transparent 100%)` }} />
-      <div style={{ position:'absolute', top:'30%', left:'50%', transform:'translateX(-50%)', width:'600px', height:'600px', borderRadius:'50%', background:`radial-gradient(circle, rgba(255,153,51,0.04) 0%, transparent 65%)`, pointerEvents:'none' }} />
-
       <div style={{ maxWidth:'1200px', margin:'0 auto', position:'relative' }}>
-
-        {/* Header */}
         <FadeUp>
           <SectionEyebrow label="Audience Reactions" />
-          <SectionTitle>
-            Audience Reactions<br />
-            <span style={{ color:T.saffron }}>What Viewers Said</span>
-          </SectionTitle>
+          <SectionTitle>Audience Reactions<br /><span style={{ color:T.saffron }}>What Viewers Said</span></SectionTitle>
           <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'540px', margin:'0 auto 48px', lineHeight:1.75 }}>
             Real words from real viewers — unedited, unfiltered.
           </p>
         </FadeUp>
-
-        {/* Viewer count badge */}
         <FadeUp delay={80}>
           <div style={{ display:'flex', justifyContent:'center', marginBottom:'48px' }}>
             <div style={{ display:'inline-flex', alignItems:'center', gap:'10px', padding:'10px 24px', border:`1px solid rgba(255,153,51,0.3)`, background:'rgba(255,153,51,0.06)' }}>
@@ -780,27 +728,20 @@ function ReactionsSection() {
             </div>
           </div>
         </FadeUp>
-
-        {/* Quote cards — 11 cards, 3-column grid on desktop */}
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))', gap:'1px', background:`rgba(0,191,255,0.08)`, marginBottom:'48px' }}>
           {TESTIMONIALS.map((t, i) => {
             const accentColor = i % 3 === 0 ? T.saffron : i % 3 === 1 ? T.accent : 'rgba(46,139,87,0.9)';
             return (
               <FadeUp key={i} delay={Math.min(i, 5) * 70}>
                 <div
-                  style={{ padding:'28px 24px', background:T.navyDark, borderTop:`2px solid ${accentColor}`, height:'100%', transition:'background 0.3s', position:'relative' }}
+                  style={{ padding:'28px 24px', background:T.navyDark, borderTop:`2px solid ${accentColor}`, height:'100%', transition:'background 0.3s' }}
                   onMouseEnter={e => e.currentTarget.style.background=T.navyMid}
                   onMouseLeave={e => e.currentTarget.style.background=T.navyDark}
                 >
-                  {/* Opening quotation mark */}
-                  <p style={{ fontFamily:'"Georgia",serif', fontStyle:'italic', fontSize:'2rem', color:accentColor, lineHeight:1, marginBottom:'10px', opacity:0.7 }}>❝</p>
-
-                  {/* Exact quote — do not modify */}
+                  <p style={{ fontFamily:'"Georgia",serif', fontStyle:'italic', fontSize:'2rem', color:accentColor, lineHeight:1, marginBottom:'10px', opacity:0.7 }}>&#10077;</p>
                   <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.925rem', color:T.dim, lineHeight:1.78, marginBottom:'20px', fontStyle:'italic' }}>
                     {t.q}
                   </p>
-
-                  {/* Attribution */}
                   <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
                     <div style={{ width:'18px', height:'1px', background:accentColor, opacity:0.6 }} />
                     <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.68rem', letterSpacing:'0.16em', textTransform:'uppercase', color:T.faint, margin:0 }}>
@@ -812,8 +753,6 @@ function ReactionsSection() {
             );
           })}
         </div>
-
-        {/* CTA */}
         <FadeUp delay={200}>
           <div style={{ textAlign:'center' }}>
             <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'0.95rem', color:T.dim, marginBottom:'24px', lineHeight:1.7 }}>
@@ -862,70 +801,6 @@ function BlogSection() {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   GALLERY SECTION — new
-───────────────────────────────────────────────────────────────── */
-function GallerySection() {
-  return (
-    <section id="gallery" style={{ padding:'120px 24px', background:T.black, position:'relative', overflow:'hidden' }}>
-      <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.saffron}44 50%, transparent 100%)` }} />
-      <div style={{ position:'absolute', top:'40%', left:'50%', transform:'translateX(-50%)', width:'700px', height:'700px', borderRadius:'50%', background:`radial-gradient(circle, rgba(255,153,51,0.03) 0%, transparent 65%)`, pointerEvents:'none' }} />
-
-      <div style={{ maxWidth:'1200px', margin:'0 auto', position:'relative' }}>
-        <FadeUp>
-          <SectionEyebrow label="In the Spotlight" />
-          <SectionTitle>
-            Moments That<br />
-            <span style={{ color:T.saffron }}>Made History</span>
-          </SectionTitle>
-          <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'540px', margin:'0 auto 56px', lineHeight:1.75 }}>
-            From dusty village grounds to the highest offices in the land — the women the world finally saw.
-          </p>
-        </FadeUp>
-
-        <div
-          className="gallery-grid"
-          style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'16px' }}
-        >
-          {GALLERY_ITEMS.map((item, i) => {
-            const accentColor = i % 3 === 0 ? T.saffron : i % 3 === 1 ? T.accent : 'rgba(46,139,87,0.9)';
-            return (
-              <FadeUp key={i} delay={Math.min(i, 5) * 90}>
-                <div
-                  style={{ position:'relative', background:T.navyDark, border:`1px solid rgba(255,255,255,0.05)`, borderTop:`3px solid ${accentColor}`, overflow:'hidden', transition:'transform 0.3s ease, box-shadow 0.3s ease' }}
-                  onMouseEnter={e => { e.currentTarget.style.transform='translateY(-5px)'; e.currentTarget.style.boxShadow='0 16px 48px rgba(0,0,0,0.55)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.transform='translateY(0)';    e.currentTarget.style.boxShadow='none'; }}
-                >
-                  {/* 3:2 image container */}
-                  <div style={{ position:'relative', paddingBottom:'66.67%', overflow:'hidden' }}>
-                    <img
-                      src={item.src}
-                      alt={item.alt}
-                      loading="lazy"
-                      style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.55s ease', display:'block' }}
-                      onMouseEnter={e => e.currentTarget.style.transform='scale(1.05)'}
-                      onMouseLeave={e => e.currentTarget.style.transform='scale(1)'}
-                      onError={e => { e.currentTarget.onerror=null; e.currentTarget.src='/images/fallback.jpg'; }}
-                    />
-                    <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'55%', background:'linear-gradient(to top, rgba(3,8,16,0.82) 0%, transparent 100%)', pointerEvents:'none' }} />
-                  </div>
-                  {/* Caption */}
-                  <div style={{ padding:'14px 18px 16px', display:'flex', alignItems:'center', gap:'10px' }}>
-                    <div style={{ width:'14px', height:'1px', background:accentColor, opacity:0.75, flexShrink:0 }} />
-                    <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.9rem', letterSpacing:'0.08em', textTransform:'uppercase', color:T.cream, margin:0, lineHeight:1.25 }}>
-                      {item.caption}
-                    </p>
-                  </div>
-                </div>
-              </FadeUp>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────────
    IMPACT
 ───────────────────────────────────────────────────────────────── */
 function ImpactSection() {
@@ -961,19 +836,14 @@ function MeetTheTeam() {
     <section id="team" style={{ padding:'120px 24px', background:`linear-gradient(180deg, ${T.black} 0%, ${T.navyDark} 100%)`, position:'relative', overflow:'hidden' }}>
       <div style={{ position:'absolute', top:0, left:0, right:0, height:'1px', background:`linear-gradient(90deg, transparent 0%, ${T.accent}44 50%, transparent 100%)` }} />
       <div style={{ position:'absolute', top:'50%', right:'-100px', transform:'translateY(-50%)', width:'400px', height:'400px', borderRadius:'50%', background:`radial-gradient(circle, ${T.accentDim} 0%, transparent 60%)`, pointerEvents:'none' }} />
-
       <div style={{ maxWidth:'1100px', margin:'0 auto', position:'relative' }}>
         <FadeUp>
           <SectionEyebrow label="The Filmmakers" />
-          <SectionTitle>
-            Meet the<br />
-            <span style={{ color:T.accent }}>Team</span>
-          </SectionTitle>
+          <SectionTitle>Meet the<br /><span style={{ color:T.accent }}>Team</span></SectionTitle>
           <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'520px', margin:'0 auto 64px', lineHeight:1.75 }}>
             Two filmmakers. One mission. 2.5 years on the road.
           </p>
         </FadeUp>
-
         <div className="team-grid" style={{ display:'grid', gridTemplateColumns:'repeat(2,1fr)', gap:'24px' }}>
           {TEAM_MEMBERS.map((member, i) => {
             const accentColor = i === 0 ? T.saffron : T.accent;
@@ -984,7 +854,6 @@ function MeetTheTeam() {
                   onMouseEnter={e => { e.currentTarget.style.transform='translateY(-6px)'; e.currentTarget.style.boxShadow='0 20px 56px rgba(0,0,0,0.5)'; }}
                   onMouseLeave={e => { e.currentTarget.style.transform='translateY(0)';    e.currentTarget.style.boxShadow='none'; }}
                 >
-                  {/* Photo */}
                   <div style={{ position:'relative', paddingBottom:'75%', overflow:'hidden', background:'rgba(10,31,68,0.6)' }}>
                     <img
                       src={member.img}
@@ -999,21 +868,13 @@ function MeetTheTeam() {
                         if (av) av.style.display = 'flex';
                       }}
                     />
-                    {/* Initials fallback — hidden by default, shown on img error */}
-                    <div className="team-avatar" style={{
-                      display:'none', position:'absolute', inset:0,
-                      alignItems:'center', justifyContent:'center',
-                      background:`linear-gradient(135deg, ${T.navyMid} 0%, ${T.navy} 100%)`,
-                    }}>
+                    <div className="team-avatar" style={{ display:'none', position:'absolute', inset:0, alignItems:'center', justifyContent:'center', background:`linear-gradient(135deg, ${T.navyMid} 0%, ${T.navy} 100%)` }}>
                       <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'5rem', color:accentColor, letterSpacing:'0.04em', opacity:0.6 }}>
                         {member.initials}
                       </span>
                     </div>
-                    {/* Bottom fade */}
                     <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'50%', background:'linear-gradient(to top, rgba(6,15,34,0.9) 0%, transparent 100%)', pointerEvents:'none' }} />
                   </div>
-
-                  {/* Info */}
                   <div style={{ padding:'28px 32px 32px' }}>
                     <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'6px' }}>
                       <div style={{ width:'20px', height:'2px', background:accentColor }} />
@@ -1041,6 +902,28 @@ function MeetTheTeam() {
 /* ─────────────────────────────────────────────────────────────────
    PRODUCTION PARTNERS
 ───────────────────────────────────────────────────────────────── */
+function PartnerLogo({ p }) {
+  const [imgFailed, setImgFailed] = useState(false);
+  return (
+    <div style={{ height:'52px', display:'flex', alignItems:'center', justifyContent:'center', marginBottom:'12px' }}>
+      {!imgFailed ? (
+        <img
+          src={p.logo}
+          alt={p.name}
+          style={{ maxHeight:'52px', maxWidth:'160px', objectFit:'contain', opacity:0.8, transition:'opacity 0.2s' }}
+          onMouseEnter={e => e.currentTarget.style.opacity='1'}
+          onMouseLeave={e => e.currentTarget.style.opacity='0.8'}
+          onError={() => setImgFailed(true)}
+        />
+      ) : (
+        <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'1.4rem', letterSpacing:'0.06em', color:T.white, opacity:0.75 }}>
+          {p.name}
+        </span>
+      )}
+    </div>
+  );
+}
+
 function ProductionPartners() {
   return (
     <section id="partners" style={{ padding:'80px 24px', background:T.navyDark, borderTop:`1px solid rgba(0,191,255,0.08)`, borderBottom:`1px solid rgba(0,191,255,0.08)` }}>
@@ -1050,49 +933,20 @@ function ProductionPartners() {
             A joint production by
           </p>
         </FadeUp>
-
         <FadeUp delay={80}>
           <div className="partners-row" style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:'0', flexWrap:'wrap' }}>
             {PRODUCTION_PARTNERS.map((p, i) => (
               <div key={p.name} style={{ display:'flex', alignItems:'center' }}>
-                {/* Partner card */}
                 <div
                   style={{ padding:'28px 44px', textAlign:'center', transition:'background 0.25s' }}
                   onMouseEnter={e => e.currentTarget.style.background='rgba(0,191,255,0.05)'}
                   onMouseLeave={e => e.currentTarget.style.background='transparent'}
                 >
-                  {/* Logo image — falls back to styled text if missing */}
-                  <div style={{ height:'52px', display:'flex', alignItems:'center', justifyContent:'center', marginBottom:'12px' }}>
-                    <img
-                      src={p.logo}
-                      alt={p.name}
-                      style={{ maxHeight:'52px', maxWidth:'160px', objectFit:'contain', opacity:0.8, transition:'opacity 0.2s' }}
-                      onMouseEnter={e => e.currentTarget.style.opacity='1'}
-                      onMouseLeave={e => e.currentTarget.style.opacity='0.8'}
-                      onError={e => {
-                        e.currentTarget.style.display = 'none';
-                        const txt = e.currentTarget.parentNode.querySelector('.partner-text');
-                        if (txt) txt.style.display = 'block';
-                      }}
-                    />
-                    {/* Text fallback */}
-                    <span className="partner-text" style={{
-                      display:'none',
-                      fontFamily:'"Bebas Neue",sans-serif',
-                      fontSize:'1.4rem',
-                      letterSpacing:'0.06em',
-                      color:T.white,
-                      opacity:0.75,
-                    }}>
-                      {p.name}
-                    </span>
-                  </div>
+                  <PartnerLogo p={p} />
                   <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.6rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.faint, margin:0 }}>
                     {p.role}
                   </p>
                 </div>
-
-                {/* Divider between partners (not after last) */}
                 {i < PRODUCTION_PARTNERS.length - 1 && (
                   <div style={{ width:'1px', height:'48px', background:'rgba(255,255,255,0.08)', flexShrink:0 }} />
                 )}
@@ -1240,7 +1094,6 @@ export default function Home() {
         <RockSongSection />
         <BehindScenes />
         <AwardsSection />
-        {/* CHANGE 4: Gallery inserted here */}
         <GallerySection />
         <ReactionsSection />
         <BlogSection />
