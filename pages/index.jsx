@@ -156,13 +156,13 @@ const TEAM_MEMBERS = [
    PRODUCTION PARTNERS DATA
    Logo images: add to public/images/
      logo-loose-canon.jpeg
-     logo-deja-vu.jpeg
+     logo-dejavu.jpeg
      logo-sol.jpeg
    Text fallbacks render automatically if images are missing.
 ───────────────────────────────────────────────────────────────── */
 const PRODUCTION_PARTNERS = [
   { name:'The Loose Canon', logo:'/images/logo-loose-canon.jpeg', role:'Production House' },
-  { name:'DejaVu Arts',     logo:'/images/logo-deja-vu.jpeg',     role:'Co-Production'   },
+  { name:'DejaVu Arts',     logo:'/images/logo-dejavu.jpeg',     role:'Co-Production'   },
   { name:'Sol Production',  logo:'/images/logo-sol.jpeg',         role:'Production'      },
 ];
 
