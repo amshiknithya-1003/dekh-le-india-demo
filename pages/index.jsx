@@ -148,7 +148,7 @@ const TEAM_MEMBERS = [
     role:    'Director & Producer',
     img:     '/images/mukund.jpg',
     initials:'MM',
-    bio:     'Mukund Moorthy drove the vision and mission of Dekh Le! India. A storyteller at heart, he co-directed the film and ensured the voices of India's blind women cricketers reached the world stage.',
+    bio: `Mukund Moorthy drove the vision and mission of Dekh Le! India. A storyteller at heart, he co-directed the film and brought the journey to life.`,
   },
 ];
 
