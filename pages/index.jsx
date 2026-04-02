@@ -153,18 +153,71 @@ const TEAM_MEMBERS = [
 ];
 
 /* ─────────────────────────────────────────────────────────────────
-   PRODUCTION PARTNERS DATA
-   Logo images: add to public/images/
-     logo-loose-canon.png
-     logo-dejavu.png
-     logo-sol.png
-   Text fallbacks render automatically if images are missing.
+   PRODUCTION PARTNERS
 ───────────────────────────────────────────────────────────────── */
-const PRODUCTION_PARTNERS = [
-  { name:'The Loose Canon', logo:'/images/logo-loose-canon.png', role:'Production House' },
-  { name:'DejaVu Arts',     logo:'/images/logo-dejavu.png',     role:'Co-Production'   },
-  { name:'Sol Production',  logo:'/images/logo-sol.png',         role:'Production'      },
-];
+function PartnerLogo({ p }) {
+  const [imgFailed, setImgFailed] = useState(false);
+  return (
+    <div style={{ height:'52px', display:'flex', alignItems:'center', justifyContent:'center', marginBottom:'12px' }}>
+      {!imgFailed ? (
+        <img
+          src={p.logo}
+          alt={p.name}
+          style={{ maxHeight:'52px', maxWidth:'160px', objectFit:'contain', opacity:0.8, transition:'opacity 0.2s' }}
+          onMouseEnter={e => e.currentTarget.style.opacity='1'}
+          onMouseLeave={e => e.currentTarget.style.opacity='0.8'}
+          onError={() => setImgFailed(true)}
+        />
+      ) : (
+        <span style={{
+          fontFamily:'"Bebas Neue",sans-serif',
+          fontSize:'1.4rem',
+          letterSpacing:'0.06em',
+          color:T.white,
+          opacity:0.75,
+        }}>
+          {p.name}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function ProductionPartners() {
+  return (
+    <section id="partners" style={{ padding:'80px 24px', background:T.navyDark, borderTop:`1px solid rgba(0,191,255,0.08)`, borderBottom:`1px solid rgba(0,191,255,0.08)` }}>
+      <div style={{ maxWidth:'1100px', margin:'0 auto' }}>
+        <FadeUp>
+          <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.68rem', letterSpacing:'0.28em', textTransform:'uppercase', color:T.faint, textAlign:'center', marginBottom:'40px' }}>
+            A joint production by
+          </p>
+        </FadeUp>
+
+        <FadeUp delay={80}>
+          <div className="partners-row" style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:'0', flexWrap:'wrap' }}>
+            {PRODUCTION_PARTNERS.map((p, i) => (
+              <div key={p.name} style={{ display:'flex', alignItems:'center' }}>
+                <div
+                  style={{ padding:'28px 44px', textAlign:'center', transition:'background 0.25s' }}
+                  onMouseEnter={e => e.currentTarget.style.background='rgba(0,191,255,0.05)'}
+                  onMouseLeave={e => e.currentTarget.style.background='transparent'}
+                >
+                  <PartnerLogo p={p} />
+                  <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.6rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.faint, margin:0 }}>
+                    {p.role}
+                  </p>
+                </div>
+                {i < PRODUCTION_PARTNERS.length - 1 && (
+                  <div style={{ width:'1px', height:'48px', background:'rgba(255,255,255,0.08)', flexShrink:0 }} />
+                )}
+              </div>
+            ))}
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
 
 /* ─────────────────────────────────────────────────────────────────
    SCROLL FADE HOOK
