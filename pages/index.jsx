@@ -570,7 +570,7 @@ function StorySection() {
         </div>
         <FadeUp delay={300}>
           <div style={{ display:'flex', gap:'8px', justifyContent:'center', flexWrap:'wrap', marginTop:'44px' }}>
-            {['Documentary','70 Minutes','English, Hindi & Multiple Indian Languages','India'].map(tag => (
+            {['Documentary','70 Minutes','English, Hindi, Kannada, Odia, Assamese, Telugu, Malayalam, Santali','India'].map(tag => (
               <span key={tag} style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.75rem', letterSpacing:'0.18em', textTransform:'uppercase', padding:'7px 18px', color:T.accent, border:`1px solid rgba(0,191,255,0.3)` }}>{tag}</span>
             ))}
           </div>
