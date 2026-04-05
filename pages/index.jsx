@@ -98,7 +98,7 @@ const GALLERY_ITEMS = [
   { src:'/images/pm.jpeg',        caption:'Honored by the Prime Minister',               alt:'Team honored by the Prime Minister of India'           },
   { src:'/images/trophy.jpeg',    caption:'World Cup Victory Celebration',               alt:'World Cup victory celebration'                         },
   { src:'/images/president.jpeg', caption:'Meeting with the President of India',         alt:'Team meeting with the President of India'              },
-  { src:'/images/bcci.jpeg',      caption:'BCCI Announces Major Support',                alt:'BCCI announces major support for Indian Blind Cricket' },
+  { src:'/images/bcci.jpeg',      caption:'Recognized by BCCI',                          alt:'Team recognized by BCCI'                               },
   { src:'/images/t20.jpeg',       caption:"India Wins First Blind T20 Women's World Cup", alt:"India wins the first Blind T20 Women's World Cup"     },
   { src:'/images/reliance.png',   caption:'Recognized by Reliance Foundation',           alt:"Team at Reliance Foundation's United in Triumph event" },
 ];
