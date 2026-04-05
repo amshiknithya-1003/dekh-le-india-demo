@@ -44,9 +44,9 @@ const AWARDS = [
 ];
 
 const BEHIND_SCENES = [
-  { n:'01', title:'10 States,\nOne Dream',       body:'Odisha, Maharashtra, Karnataka, Kerala, Andhra Pradesh, Telangana, Assam, Madhya Pradesh, Delhi and Gujarat — seeking players whose families had never seen them play.' },
-  { n:'02', title:'2.5 Years of\nFilmmaking',    body:'110 hours of footage captured across 10 states — on trains, in hostels, on dusty grounds — edited to 70 minutes of inspiration.' },
-  { n:'03', title:'Edgbaston,\nBirmingham',       body:"The World Games. 60,000 seat stadium. India's blind women took the field. We were there for every ball bowled, every wicket taken, every tear shed." },
+  { n:'01', title:'10 States,\nOne Dream',    body:'Odisha, Maharashtra, Karnataka, Kerala, Andhra Pradesh, Telangana, Assam, Madhya Pradesh, Delhi and Gujarat — the crew became part of the extended team, travelling and experiencing the joy and sorrows of each player.' },
+  { n:'02', title:'2.5 Years of\nFilmmaking', body:'110 hours of footage captured across different states — on trains, in hostels, on dusty grounds — edited to 70 minutes of inspiration. The crew stayed, travelled and lived every moment with the team.' },
+  { n:'03', title:'Edgbaston,\nBirmingham',   body:"The IBSA World Blind Games. India's blind women took the field. We were there for every ball bowled, every wicket taken, every tear shed." },
   { n:'04', title:'A Story\nWorld Missed',        body:'They won. Against all odds. India barely noticed. This film is the witness the world should have been.' },
 ];
 
@@ -56,12 +56,12 @@ const TESTIMONIALS = [
   { q:'So much inspiring Mukund. I am so overwhelmed by this story.', who:'Viewer' },
   { q:'Absolutely endorsing that disability does not mean inability.', who:'Viewer' },
   { q:'This powerful documentary is sure to inspire and uplift many.', who:'Viewer' },
-  { q:'Well done Mukund! Zabardast.. lot of goosebumps..', who:'Viewer' },
-  { q:'A story that needs to be told. Kudos to the entire team.', who:'Viewer' },
-  { q:'What an inspiring story! Excellent storytelling, full of emotions.', who:'Viewer' },
-  { q:'Dekh Le India! Perfect name. Words are not enough to express gratitude.', who:'Viewer' },
-  { q:'Thanks for making a movie on blind cricket. This creates awareness.', who:'Viewer' },
-  { q:'Watched the movie with my family. Very moving and inspiring.', who:'Viewer' },
+  { q:'Well done Mukund! Zabardast.. 👏 lot of goosebumps..', who:'Viewer' },
+  { q:'A story that needs to be told. And thx Mukund for the dream you had which fructified. Kudos to the entire team. Am sure it will win in the film festivals too.', who:'Viewer' },
+  { q:'What an inspiring story! Thank you. Excellent storytelling, full of emotions 👍🏻', who:'Viewer' },
+  { q:'Dekh Le India! Perfect Name. The words are not enough to present the gratitude 🙏', who:'Viewer' },
+  { q:'Thanks for making a movie on the blind cricket. Hardly anyone knows about it. Thru your movie, many people will be made aware of this. Kudos to you!', who:'Viewer' },
+  { q:'Watched the movie with my MIL. A very moving Matinee show! Absolutely inspiring.', who:'Viewer' },
 ];
 
 const IMPACT_STATS = [
@@ -552,7 +552,7 @@ function StorySection() {
           <SectionEyebrow label="The Film" />
           <SectionTitle>They Played With Courage.<br /><span style={{ color:T.accent }}>We Filmed With Love.</span></SectionTitle>
           <p style={{ fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'1.05rem', color:T.dim, textAlign:'center', maxWidth:'600px', margin:'0 auto 60px', lineHeight:1.75 }}>
-            Dekh Le! India chronicles the extraordinary journey of India&#39;s first blind women&#39;s national cricket team — from remote villages across Odisha, Maharashtra, Karnataka, Kerala, Andhra Pradesh, Telangana, Assam, Madhya Pradesh, Delhi and Gujarat to the World Games at Edgbaston, UK.
+            Dekh Le! India chronicles the extraordinary journey of India&#39;s first blind women&#39;s national cricket team — from remote villages across different states of India to the World Games at Edgbaston, UK.
           </p>
         </FadeUp>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))', gap:'1px', background:`rgba(0,191,255,0.1)` }}>
@@ -570,7 +570,7 @@ function StorySection() {
         </div>
         <FadeUp delay={300}>
           <div style={{ display:'flex', gap:'8px', justifyContent:'center', flexWrap:'wrap', marginTop:'44px' }}>
-            {['Documentary','70 Minutes','English, Hindi, Kannada, Odia, Assamese, Telugu, Malayalam, Santali','India'].map(tag => (
+            {['Documentary','70 Minutes','English, Hindi & Multiple Indian Languages','India'].map(tag => (
               <span key={tag} style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.75rem', letterSpacing:'0.18em', textTransform:'uppercase', padding:'7px 18px', color:T.accent, border:`1px solid rgba(0,191,255,0.3)` }}>{tag}</span>
             ))}
           </div>
@@ -626,11 +626,15 @@ function BehindScenes() {
           <div style={{ position:'absolute', left:'24px', top:0, bottom:0, width:'1px', background:`linear-gradient(to bottom, ${T.accent}55, transparent)` }} />
           <div style={{ display:'flex', flexDirection:'column', gap:'0' }}>
             {[
-              { year:'2020–21',   title:'Finding the Players',          body:'We crisscrossed ten states tracking down blind women cricketers — players whose families had never seen them play.' },
-              { year:'2022',      title:'Training Camps',               body:'Embedded in BCCI training camps, we witnessed the raw beauty of players learning to bowl and bat by sound and touch alone.' },
-              { year:'2023',      title:'The World Games — Birmingham', body:'Edgbaston. India vs Australia. Final. The world was not watching. We were. Every frame captured, every emotion preserved.' },
-              { year:'2025',      title:'The Film is Complete',         body:'2.5 years of filming, editing, colour grading, and music composition later — Dekh Le! India was ready for the world to finally see.' },
-              { year:'June 2026', title:'Releasing on Jio Hotstar',     body:'India finally sees its heroes — in English, Hindi, Kannada, Odia, Assamese, Telugu, Malayalam, and Santali.', highlight: true },
+              { year:'Mar 2023',          title:'Team Gets Formed',                      body:'The team gets formed and plays its first international series with Nepal — a humble beginning to an extraordinary journey.' },
+              { year:'Jun 2023',          title:'New Team, New Dream',                   body:'A new team is formed and begins preparing for the IBSA World Blind Games. Training intensifies across the country.' },
+              { year:'Aug 2023',          title:'Birmingham — World Blind Games',      body:'The team travels to Edgbaston, Birmingham to participate in the IBSA World Blind Games. We captured every ball, every wicket, every tear.' },
+              { year:'Oct 2023–Jun 2024', title:'Crew Travels to 10 States',           body:'The crew travels to 10 different states to interview the families of the players — experiencing their joy and sorrows firsthand.' },
+              { year:'Nov 2025',          title:"India Wins the World Cup",              body:"The girls win the first ever Blind Women's T20 World Cup. A historic moment the world almost missed.", highlight: true },
+              { year:'Nov 2025–Feb 2026', title:"Meeting the Nation's Leaders",      body:'The girls meet the Honourable Prime Minister, the Honourable President, many Chief Ministers and celebrities across India.' },
+              { year:'Sep 2025–Feb 2026', title:'Film Festival Circuit',             body:'The film screens at multiple international film festivals and wins at several — NCIFF Nepal, KISFF Kenya, CLEF Music Awards and more.' },
+              { year:'Oct 2025–Mar 2026', title:'Corporate & Institution Screenings', body:'Screened at KPMG, LinkedIn, PVR Cinemas, Emcure Pharma, Oracle, Intellect, Narsee Monjee College, Prabhat Film Club and many more.' },
+              { year:'June 2026',         title:'Releasing on Jio Hotstar',              body:'India finally sees its heroes — in English, Hindi and multiple Indian languages.', highlight: true },
             ].map((t, i) => (
               <FadeUp key={t.year} delay={i * 120}>
                 <div style={{ display:'flex', gap:'32px', padding:'32px 0 32px 60px', borderBottom:`1px solid rgba(255,255,255,0.04)`, position:'relative' }}>
