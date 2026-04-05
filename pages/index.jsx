@@ -229,7 +229,7 @@ function loadRazorpay() {
 /* ─────────────────────────────────────────────────────────────────
    DONATION MODAL
 ───────────────────────────────────────────────────────────────── */
-const PRESETS = [49, 99, 149, 199, 249];
+const PRESETS = [50, 100, 200, 500, 1000];
 
 function DonationModal({ onClose }) {
   const [selected, setSelected] = useState(100);
@@ -384,66 +384,105 @@ function Hero() {
 
   return (
     <section style={{ position:'relative', minHeight:'100vh', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', overflow:'hidden', background:T.black }}>
+      {/* Background video */}
       <div style={{ position:'absolute', inset:0, zIndex:0, overflow:'hidden', pointerEvents:'none' }}>
         <iframe src="https://www.youtube.com/embed/h_JVTDhF6RY?autoplay=1&mute=1&loop=1&playlist=h_JVTDhF6RY&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0" title="Hero background video" allow="autoplay; encrypted-media"
-          style={{ position:'absolute', top:'50%', left:'50%', transform:'translate(-50%, -50%)', width:'calc(100vw + 400px)', height:'calc(100vw * 0.5625 + 225px)', minWidth:'100%', minHeight:'100%', border:'none', opacity:0.35, pointerEvents:'none' }} />
+          style={{ position:'absolute', top:'50%', left:'50%', transform:'translate(-50%, -50%)', width:'calc(100vw + 400px)', height:'calc(100vw * 0.5625 + 225px)', minWidth:'100%', minHeight:'100%', border:'none', opacity:0.18, pointerEvents:'none' }} />
       </div>
-      <div style={{ position:'absolute', inset:0, zIndex:1, pointerEvents:'none', background:'rgba(3,8,16,0.62)' }} />
+      {/* Overlays */}
+      <div style={{ position:'absolute', inset:0, zIndex:1, pointerEvents:'none', background:'rgba(3,8,16,0.75)' }} />
       <div style={{ position:'absolute', inset:0, zIndex:1, pointerEvents:'none', background:`linear-gradient(175deg, rgba(10,31,68,0.75) 0%, rgba(6,15,34,0.6) 50%, rgba(3,8,16,0.85) 100%)` }} />
       <div style={{ position:'absolute', inset:0, zIndex:2, pointerEvents:'none', background:'radial-gradient(ellipse at 50% 40%, transparent 30%, rgba(3,8,16,0.7) 100%)' }} />
       <div style={{ position:'absolute', inset:0, zIndex:3, pointerEvents:'none', opacity:0.06, backgroundImage:`url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }} />
       <div style={{ position:'absolute', top:0, left:0, right:0, height:'160px', zIndex:4, pointerEvents:'none', background:`linear-gradient(to bottom, ${T.black} 0%, transparent 100%)` }} />
       <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'200px', zIndex:4, pointerEvents:'none', background:`linear-gradient(to top, ${T.black} 0%, transparent 100%)` }} />
 
-      <div style={{ position:'relative', zIndex:10, textAlign:'center', padding:'120px 24px 80px', maxWidth:'1100px', width:'100%' }}>
-        <div style={{ ...anim(100), marginBottom:'20px' }}>
-          <div style={{ display:'inline-flex', alignItems:'center', gap:'10px', background:'rgba(255,153,51,0.12)', border:'1px solid rgba(255,153,51,0.45)', padding:'8px 22px', marginBottom:'4px' }}>
-            <span style={{ width:'7px', height:'7px', borderRadius:'50%', background:T.saffron, display:'inline-block', animation:'heroPulse 1.6s ease-in-out infinite', flexShrink:0 }} />
-            <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.88rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.saffron }}>
-              <strong>Releasing on Jio Hotstar — June 2026</strong>
-            </span>
+      {/* Main content — two column */}
+      <div style={{ position:'relative', zIndex:10, width:'100%', maxWidth:'1200px', margin:'0 auto', padding:'120px 40px 80px', display:'flex', alignItems:'center', gap:'60px', flexWrap:'wrap', justifyContent:'center' }}>
+
+        {/* LEFT — text content */}
+        <div style={{ flex:'1 1 420px', minWidth:'300px', textAlign:'left' }}>
+          <div style={{ ...anim(100), marginBottom:'20px' }}>
+            <div style={{ display:'inline-flex', alignItems:'center', gap:'10px', background:'rgba(255,153,51,0.12)', border:'1px solid rgba(255,153,51,0.45)', padding:'8px 22px' }}>
+              <span style={{ width:'7px', height:'7px', borderRadius:'50%', background:T.saffron, display:'inline-block', animation:'heroPulse 1.6s ease-in-out infinite', flexShrink:0 }} />
+              <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.82rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.saffron }}>
+                Releasing on Jio Hotstar — June 2026
+              </span>
+            </div>
+          </div>
+
+          <div style={{ ...anim(200), display:'flex', alignItems:'center', gap:'12px', marginBottom:'20px' }}>
+            <div style={{ height:'1px', width:'32px', background:T.accent }} />
+            <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.68rem', letterSpacing:'0.3em', color:T.accent, textTransform:'uppercase' }}>A Documentary Film</span>
+          </div>
+
+          <div style={{ ...anim(350) }}>
+            <h1 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'clamp(4rem, 10vw, 8rem)', lineHeight:0.88, letterSpacing:'0.02em', margin:'0 0 4px', color:T.white, textShadow:`0 0 60px rgba(0,191,255,0.5), 0 4px 0 rgba(0,0,0,0.9)` }}>DEKH LE!</h1>
+            <h1 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'clamp(4rem, 10vw, 8rem)', lineHeight:0.88, letterSpacing:'0.02em', margin:'0 0 24px', color:T.accent, textShadow:`0 0 50px rgba(0,191,255,0.8), 0 4px 0 rgba(0,0,0,0.9)` }}>INDIA 🇮🇳</h1>
+          </div>
+
+          <p style={{ ...anim(500), fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'clamp(0.95rem,1.8vw,1.15rem)', color:T.dim, marginBottom:'16px', lineHeight:1.75, maxWidth:'460px' }}>
+            A story India never saw.<br />
+            <strong style={{ color:T.white, fontWeight:400, fontStyle:'italic' }}>A team that refused to be unseen.</strong>
+          </p>
+
+          <div style={{ ...anim(650), marginBottom:'36px' }}>
+            <p style={{ fontFamily:'"Georgia",serif', fontStyle:'italic', fontWeight:400, fontSize:'clamp(0.85rem,1.4vw,1rem)', color:T.faint, letterSpacing:'0.05em', margin:0, borderLeft:`2px solid ${T.saffron}`, paddingLeft:'14px' }}>
+              &quot;No Pity · No Sympathy · Just Give Us an Opportunity&quot;
+            </p>
+          </div>
+
+          <div style={{ ...anim(800), display:'flex', gap:'12px', flexWrap:'wrap', marginBottom:'20px' }}>
+            <Btn href="https://www.jiohotstar.com/" external>▶ Watch Now</Btn>
+            <button onClick={() => setShowDonate(true)}
+              style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.9rem', letterSpacing:'0.22em', textTransform:'uppercase', display:'inline-flex', alignItems:'center', gap:'10px', padding:'13px 34px', background:'transparent', color:T.white, border:`1px solid rgba(240,237,232,0.3)`, cursor:'pointer', transition:'all 0.25s' }}
+              onMouseEnter={e => e.currentTarget.style.borderColor='rgba(240,237,232,0.7)'}
+              onMouseLeave={e => e.currentTarget.style.borderColor='rgba(240,237,232,0.3)'}>
+              🤍 Contribute
+            </button>
+          </div>
+
+          {/* Award badges row */}
+          <div style={{ ...anim(950), display:'flex', gap:'8px', flexWrap:'wrap' }}>
+            {['10+ Awards','8+ Countries','Jio Hotstar · June 2026'].map(badge => (
+              <span key={badge} style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.65rem', letterSpacing:'0.16em', textTransform:'uppercase', padding:'5px 12px', color:T.accent, border:`1px solid rgba(0,191,255,0.3)`, background:'rgba(0,191,255,0.05)' }}>{badge}</span>
+            ))}
           </div>
         </div>
-        <div style={{ ...anim(200), display:'flex', alignItems:'center', justifyContent:'center', gap:'14px', marginBottom:'24px' }}>
-          <div style={{ height:'1px', width:'48px', background:T.accent }} />
-          <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.72rem', letterSpacing:'0.38em', color:T.accent, textTransform:'uppercase' }}>A Documentary Film by Shanthi Mohan &amp; Mukund Moorthy</span>
-          <div style={{ height:'1px', width:'48px', background:T.accent }} />
-        </div>
-        <div style={{ ...anim(400), marginBottom:'4px' }}>
-          <h1 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'clamp(5rem, 18vw, 14rem)', lineHeight:0.88, letterSpacing:'0.02em', margin:0, color:T.white, textShadow:`0 0 60px rgba(0,191,255,0.9), 0 0 120px rgba(0,191,255,0.5), 0 0 200px rgba(0,191,255,0.2), 0 4px 0 rgba(0,0,0,0.9)` }}>DEKH LE!</h1>
-        </div>
-        <div style={{ ...anim(560), marginBottom:'4px', position:'relative', display:'inline-block' }}>
-          <div style={{ position:'absolute', bottom:'10%', left:'-2%', right:'-2%', height:'28%', background:`linear-gradient(90deg, ${T.saffron}22, rgba(255,255,255,0.05), ${T.green}22)`, pointerEvents:'none', zIndex:0 }} />
-          <h1 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'clamp(5rem, 18vw, 14rem)', lineHeight:0.88, letterSpacing:'0.02em', margin:0, color:T.accent, position:'relative', zIndex:1, textShadow:`0 0 50px rgba(0,191,255,1), 0 0 100px rgba(0,191,255,0.7), 0 0 180px rgba(0,191,255,0.35), 0 4px 0 rgba(0,0,0,0.9)` }}>INDIA</h1>
-        </div>
-        <div style={{ ...anim(680), fontSize:'clamp(2rem,5vw,3.5rem)', marginBottom:'28px', marginTop:'8px' }}>🇮🇳</div>
-        <p style={{ ...anim(800), fontFamily:'"Inter",sans-serif', fontWeight:300, fontSize:'clamp(1rem,2.2vw,1.25rem)', color:T.dim, maxWidth:'580px', margin:'0 auto 16px', lineHeight:1.7, letterSpacing:'0.02em' }}>
-          A story India never saw.<br />
-          <strong style={{ color:T.white, fontWeight:400, fontStyle:'italic' }}>A team that refused to be unseen.</strong>
-        </p>
-        <div style={{ ...anim(950), marginBottom:'48px' }}>
-          <p style={{ fontFamily:'"Georgia",serif', fontStyle:'italic', fontWeight:400, fontSize:'clamp(0.85rem,1.6vw,1rem)', color:T.faint, letterSpacing:'0.06em', margin:0 }}>
-            &quot;No Pity &nbsp;·&nbsp; No Sympathy &nbsp;·&nbsp; Just Give Us an Opportunity&quot;
+
+        {/* RIGHT — film poster */}
+        <div style={{ ...anim(300), flex:'0 0 auto', width:'clamp(260px, 30vw, 380px)' }}>
+          <div style={{
+            position:'relative',
+            boxShadow:`0 0 0 1px rgba(0,191,255,0.2), 0 0 60px rgba(0,191,255,0.15), 0 32px 80px rgba(0,0,0,0.8)`,
+            transition:'transform 0.4s ease, box-shadow 0.4s ease',
+          }}
+            onMouseEnter={e => { e.currentTarget.style.transform='translateY(-8px) scale(1.02)'; e.currentTarget.style.boxShadow=`0 0 0 1px rgba(0,191,255,0.4), 0 0 80px rgba(0,191,255,0.3), 0 48px 100px rgba(0,0,0,0.9)`; }}
+            onMouseLeave={e => { e.currentTarget.style.transform='translateY(0) scale(1)'; e.currentTarget.style.boxShadow=`0 0 0 1px rgba(0,191,255,0.2), 0 0 60px rgba(0,191,255,0.15), 0 32px 80px rgba(0,0,0,0.8)`; }}
+          >
+            <img
+              src="/images/poster.jpeg"
+              alt="Dekh Le! India — Official Film Poster"
+              style={{ display:'block', width:'100%', height:'auto' }}
+            />
+            {/* Subtle accent line at bottom */}
+            <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'3px', background:`linear-gradient(90deg, ${T.saffron}, ${T.accent}, ${T.green})` }} />
+          </div>
+          {/* "Official Poster" label */}
+          <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.6rem', letterSpacing:'0.28em', textTransform:'uppercase', color:T.faint, textAlign:'center', marginTop:'12px' }}>
+            Official Film Poster
           </p>
         </div>
-        <div style={{ ...anim(1100), display:'flex', gap:'14px', justifyContent:'center', flexWrap:'wrap', marginBottom:'12px' }}>
-          <Btn href="https://www.jiohotstar.com/" external>▶ Watch Now</Btn>
-          <button onClick={() => setShowDonate(true)}
-            style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'0.9rem', letterSpacing:'0.22em', textTransform:'uppercase', display:'inline-flex', alignItems:'center', gap:'10px', padding:'13px 34px', background:'transparent', color:T.white, border:`1px solid rgba(240,237,232,0.3)`, cursor:'pointer', transition:'all 0.25s' }}
-            onMouseEnter={e => e.currentTarget.style.borderColor='rgba(240,237,232,0.7)'}
-            onMouseLeave={e => e.currentTarget.style.borderColor='rgba(240,237,232,0.3)'}>
-            🤍 Contribute
-          </button>
-        </div>
-        <p style={{ ...anim(1200), fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.68rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.saffron }}>
-          🎬 Releasing on Jio Hotstar — June 2026
-        </p>
-        {showDonate && <DonationModal onClose={() => setShowDonate(false)} />}
+
       </div>
-      <div style={{ ...anim(1500), position:'absolute', bottom:'28px', left:'50%', transform:'translateX(-50%)', zIndex:10, display:'flex', flexDirection:'column', alignItems:'center', gap:'6px' }}>
+
+      {/* Scroll indicator */}
+      <div style={{ ...anim(1400), position:'absolute', bottom:'28px', left:'50%', transform:'translateX(-50%)', zIndex:10, display:'flex', flexDirection:'column', alignItems:'center', gap:'6px' }}>
         <span style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.55rem', letterSpacing:'0.3em', textTransform:'uppercase', color:T.faint }}>Scroll</span>
         <div style={{ width:'1px', height:'40px', background:`linear-gradient(to bottom, ${T.accent}88, transparent)`, animation:'scrollPulse 2s ease-in-out infinite' }} />
       </div>
+
+      {showDonate && <DonationModal onClose={() => setShowDonate(false)} />}
       <style>{`@keyframes scrollPulse{0%,100%{opacity:0.3}50%{opacity:1}}@keyframes heroPulse{0%,100%{opacity:1}50%{opacity:0.3}}`}</style>
     </section>
   );
