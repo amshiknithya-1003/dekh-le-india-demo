@@ -214,7 +214,6 @@ function Btn({ href, children, primary = true, external = false }) {
   );
 }
 
-
 /* ─────────────────────────────────────────────────────────────────
    NAVBAR
 ───────────────────────────────────────────────────────────────── */
@@ -255,7 +254,6 @@ function Navbar() {
             <a key={h} href={h} onClick={() => setOpen(false)} style={{ display:'block', fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'1.2rem', letterSpacing:'0.14em', textTransform:'uppercase', color:T.dim, textDecoration:'none', padding:'11px 0', borderBottom:`1px solid ${T.ghost}` }}>{l}</a>
           ))}
           <div style={{ marginTop:'20px', display:'flex', flexDirection:'column', gap:'10px' }}>
-            {/* TODO: Replace href with official Jio Hotstar link when available */}
             <Btn href="https://www.jiohotstar.com/" external>▶ Watch on JioHotstar</Btn>
           </div>
         </div>
@@ -318,8 +316,8 @@ function Hero() {
           </p>
         </div>
         <div style={{ ...anim(1100), display:'flex', gap:'14px', justifyContent:'center', flexWrap:'wrap', marginBottom:'12px' }}>
-          {/* TODO: Replace href with official Jio Hotstar link when available */}
-          <Btn href="https://www.jiohotstar.com/" external>▶ Watch Now</Btn>
+          {/* PLACEHOLDER: Replace with official Jio Hotstar link when available */}
+          <Btn href="https://www.jiohotstar.com/" external>▶ Watch Now on Jio Hotstar</Btn>
         </div>
         <p style={{ ...anim(1200), fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.68rem', letterSpacing:'0.22em', textTransform:'uppercase', color:T.saffron }}>
           🎬 Releasing on Jio Hotstar – 16 June 2026
@@ -377,7 +375,6 @@ function WatchSection() {
             ))}
           </div>
           <div style={{ textAlign:'center', marginTop:'28px' }}>
-            {/* TODO: Replace href with official Jio Hotstar link when available */}
             <Btn href="https://www.jiohotstar.com/" external>▶ Watch Full Film on JioHotstar</Btn>
           </div>
         </FadeUp>
@@ -760,10 +757,29 @@ function FinalCTA() {
           <h2 style={{ fontFamily:'"Bebas Neue",sans-serif', fontWeight:400, fontSize:'clamp(2.2rem,6vw,4.5rem)', color:T.white, lineHeight:1.0, letterSpacing:'0.03em', marginBottom:'20px' }}>
             Bring This Film to Every<br />School &amp; Workplace<br /><span style={{ color:T.accent }}>in India.</span>
           </h2>
-          <div style={{ display:'flex', gap:'14px', justifyContent:'center', flexWrap:'wrap' }}>
-            {/* TODO: Replace href with official Jio Hotstar link when available */}
-            <Btn href="https://www.jiohotstar.com/" external>▶ Watch the Film</Btn>
+
+          {/* ── POSTER PLACEHOLDER ─────────────────────────────────────────
+              Replace this block with:
+              <img src="/images/poster.jpeg" alt="Dekh Le India Poster" style={{...}} />
+              when the official poster is ready.
+          ─────────────────────────────────────────────────────────── */}
+          <div style={{ margin:'0 auto 32px', maxWidth:'280px', padding:'32px 24px', border:`1px dashed rgba(0,191,255,0.25)`, background:'rgba(0,191,255,0.03)' }}>
+            <div style={{ fontSize:'2rem', marginBottom:'8px', opacity:0.35 }}>🎬</div>
+            <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.7rem', letterSpacing:'0.2em', textTransform:'uppercase', color:T.faint, margin:0 }}>
+              Official Poster — Coming Soon
+            </p>
           </div>
+
+          {/* ── JIO HOTSTAR PLACEHOLDER ────────────────────────────────────
+              Replace the href below with the official Jio Hotstar deep link
+              when provided. e.g. href="https://www.jiohotstar.com/movies/dekh-le-india/..."
+          ─────────────────────────────────────────────────────────── */}
+          <div style={{ marginBottom:'20px' }}>
+            <Btn href="https://www.jiohotstar.com/" external>▶ Watch on Jio Hotstar</Btn>
+          </div>
+          <p style={{ fontFamily:'"Bebas Neue",sans-serif', fontSize:'0.68rem', letterSpacing:'0.18em', textTransform:'uppercase', color:T.faint }}>
+            Official Jio Hotstar release link coming soon
+          </p>
         </FadeUp>
       </div>
     </section>
